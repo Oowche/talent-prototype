@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Главная ревью — прототип</title>
+  <style>
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Medium.ttf") format("truetype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --text-primary: rgba(0, 0, 0, 0.88);
+      --text-secondary: rgba(0, 0, 0, 0.6);
+      --text-tertiary: rgba(0, 0, 0, 0.4);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.12);
+      --surface-100: #fff;
+      --surface-0: #f5f5f5;
+      --surface-muted: rgba(0, 0, 0, 0.04);
+      --radius-control: 12px;
+      --radius-inner: 10px;
+      --radius-l: 20px;
+      --space-xs: 8px;
+      --space-m: 16px;
+      --space-l: 20px;
+      --space-xl: 24px;
+      --space-2xl: 32px;
+      --space-3xl: 40px;
+      --header-h: 72px;
+      --sidebar-w: 300px;
+      --title-l: 28px;
+      --title-l-lh: 32px;
+      --title-s: 20px;
+      --title-s-lh: 24px;
+      --body-s: 14px;
+      --body-s-lh: 20px;
+      --body-m: 16px;
+      --body-m-lh: 24px;
+      --caption-m: 12px;
+      --caption-m-lh: 16px;
+      --control-fs: 14px;
+      --control-lh: 20px;
+      --tag-blue-bg: rgba(0, 100, 255, 0.1);
+      --tag-blue-text: #0062ff;
+      --tag-neutral-bg: rgba(0, 0, 0, 0.06);
+      --event-blue-bg: #e8f4ff;
+      --event-blue-text: #0062ff;
+      --event-purple-bg: #f3ebff;
+      --event-purple-text: #722ed1;
+      --holiday: #f5222d;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "YS Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      background: var(--surface-100);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100%;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-100);
+    }
+
+    .sidebar__fixed {
+      padding: 12px;
+    }
+
+    .sidebar__logo {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .sidebar__logo-mark {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar__nav-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar__divider {
+      height: 1px;
+      background: var(--border);
+      border: none;
+      margin: 0;
+    }
+
+    .sidebar__scroll {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar__footer {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-item {
+      height: 40px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border-radius: var(--radius-inner);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .nav-item--muted {
+      color: var(--text-secondary);
+    }
+
+    .nav-item--active {
+      background: var(--surface-muted);
+      font-weight: 500;
+    }
+
+    .nav-item a {
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      margin: 0 -12px;
+      padding: 0 12px;
+      border-radius: var(--radius-inner);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      height: var(--header-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: 0 var(--space-m);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-100);
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-control);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .icon-btn .asset-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .breadcrumbs {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .main-scroll {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .page-content {
+      max-width: 1140px;
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+    }
+
+    .page-hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .page-hero__titles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .page-hero__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-l);
+      line-height: var(--title-l-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .page-hero__sub {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .page-hero__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      flex-shrink: 0;
+    }
+
+    .search-field {
+      display: flex;
+      align-items: stretch;
+      width: 320px;
+      min-height: 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      overflow: hidden;
+    }
+
+    .search-field__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      flex-shrink: 0;
+      color: var(--text-tertiary);
+    }
+
+    .search-field__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .search-field__input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      padding: 10px 12px 10px 0;
+      min-width: 0;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .search-field__input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .v-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--border-strong);
+      margin: 0 4px;
+      align-self: center;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: var(--radius-control);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: var(--text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn-secondary--sm {
+      height: 32px;
+      padding: 0 12px;
+      font-size: 13px;
+      line-height: 18px;
+      border-radius: var(--radius-inner);
+    }
+
+    .btn-secondary__icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-inner);
+      overflow: hidden;
+    }
+
+    .btn-group__btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--surface-100);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .btn-group__btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn-group__btn + .btn-group__btn {
+      border-left: 1px solid var(--border-strong);
+    }
+
+    .btn-group__btn img {
+      width: 12px;
+      height: 12px;
+      display: block;
+      opacity: 0.75;
+    }
+
+    .btn-group__btn--prev img {
+      transform: rotate(90deg);
+    }
+
+    .btn-group__btn--next img {
+      transform: rotate(-90deg);
+    }
+
+    .row-2col {
+      display: flex;
+      gap: var(--space-xl);
+      align-items: stretch;
+    }
+
+    .row-2col > * {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .card-promo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: var(--space-xl);
+      border-radius: var(--radius-l);
+      min-height: 96px;
+    }
+
+    .card-promo--fill {
+      background: var(--surface-0);
+    }
+
+    .card-promo--outline {
+      background: var(--surface-100);
+      border: 1px solid var(--border);
+    }
+
+    .card-promo__text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-promo__title-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .card-promo__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .card-promo__chev {
+      width: 16px;
+      height: 16px;
+      opacity: 0.55;
+      display: block;
+    }
+
+    .card-promo__desc {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .tag-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      font-weight: 500;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .tag-status--blue {
+      background: var(--tag-blue-bg);
+      color: var(--tag-blue-text);
+    }
+
+    .tag-status--neutral {
+      background: var(--tag-neutral-bg);
+      color: var(--text-primary);
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: var(--radius-inner);
+      border: none;
+      background: rgba(0, 0, 0, 0.06);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: var(--text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-pill:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .card-wide {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-l);
+      padding: var(--space-m) var(--space-m) var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+      background: var(--surface-100);
+    }
+
+    .card-wide__head {
+      padding: var(--space-xs) var(--space-xs) 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-m);
+      flex-wrap: wrap;
+    }
+
+    .card-wide__head-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .card-wide__title-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .card-wide__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .card-wide__sub {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .checklist {
+      display: flex;
+      align-items: stretch;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .checklist__col {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: var(--space-xs);
+      border-radius: var(--space-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist__divider {
+      width: 1px;
+      align-self: stretch;
+      min-height: 74px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .checklist__label {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .checklist__hint {
+      margin: 0;
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .checklist__value {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      min-height: 24px;
+    }
+
+    .checklist__check {
+      width: 20px;
+      height: 20px;
+      display: block;
+      opacity: 0.45;
+    }
+
+    .checklist__num {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .checklist__arrow {
+      width: 12px;
+      height: 12px;
+      opacity: 0.55;
+      display: block;
+    }
+
+    .card-wide__footer {
+      display: flex;
+      gap: var(--space-m);
+      padding: var(--space-xs) var(--space-xs) 0;
+      flex-wrap: wrap;
+    }
+
+    .card-wide__footer-col {
+      flex: 1 1 200px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .card-wide__footer-label {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .card-wide__footer-label--dark {
+      color: var(--text-primary);
+    }
+
+    .flags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .card-talent {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: var(--space-xl);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-l);
+      background: var(--surface-100);
+    }
+
+    .card-talent__text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-talent__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .card-talent__desc {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .card-talent__desc a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .pill-count {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: var(--radius-inner);
+      background: rgba(0, 0, 0, 0.06);
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      text-decoration: none;
+    }
+
+    .pill-count:hover {
+      background: rgba(0, 0, 0, 0.08);
+      text-decoration: none;
+    }
+
+    .pill-count__sep {
+      margin: 0 10px;
+      width: 1px;
+      height: 16px;
+      background: var(--border-strong);
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .schedule {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+      padding-top: var(--space-xs);
+    }
+
+    .schedule__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-m);
+    }
+
+    .schedule__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .calendars {
+      display: flex;
+      gap: var(--space-3xl);
+      align-items: flex-start;
+    }
+
+    .cal-month {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .cal-month__title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 var(--space-l);
+      margin-bottom: 0;
+      font-weight: 500;
+      font-size: var(--body-m);
+      line-height: var(--body-m-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .cal-month__title-year {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .cal-weekdays span {
+      text-align: center;
+      padding: 12px var(--space-2xl);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-tertiary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+
+    .cal-cell {
+      min-height: 40px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .cal-cell--muted {
+      color: transparent;
+      user-select: none;
+    }
+
+    .cal-cell--holiday {
+      color: var(--holiday);
+    }
+
+    .cal-cell--mark {
+      background: var(--holiday);
+      color: #fff;
+      border-radius: 100px;
+      width: 28px;
+      height: 28px;
+      min-height: 28px;
+      margin: 6px auto;
+    }
+
+    .cal-events {
+      margin-top: var(--space-m);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .cal-event {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-inner);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 500;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .cal-event--blue {
+      background: var(--event-blue-bg);
+      color: var(--event-blue-text);
+    }
+
+    .cal-event--purple {
+      background: var(--event-purple-bg);
+      color: var(--event-purple-text);
+    }
+
+    .cal-event__ic {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 1100px) {
+      .app {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .row-2col {
+        flex-direction: column;
+      }
+      .search-field {
+        width: 100%;
+        max-width: 320px;
+      }
+      .page-hero {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .page-hero__actions {
+        flex-wrap: wrap;
+      }
+      .calendars {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Навигация">
+      <div class="sidebar__fixed">
+        <div class="sidebar__logo">
+          <span class="sidebar__logo-mark">Яндекс</span>
+        </div>
+        <div class="sidebar__nav-block">
+          <div class="nav-item nav-item--muted">Обзор</div>
+          <div class="nav-item nav-item--muted">Команда</div>
+          <div class="nav-item nav-item--muted">Цели</div>
+          <div class="nav-item nav-item--muted">Настройки</div>
+        </div>
+      </div>
+      <hr class="sidebar__divider" />
+      <nav class="sidebar__scroll">
+        <div class="nav-item nav-item--active">Ревью</div>
+        <div class="nav-item nav-item--muted"><a href="index.html">Разметка талантов</a></div>
+        <div class="nav-item nav-item--muted">Калибровки</div>
+        <div class="nav-item nav-item--muted">Управление талантами</div>
+        <div class="nav-item nav-item--muted">Отчёты</div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="nav-item nav-item--muted">Помощь</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top-header">
+        <button type="button" class="icon-btn" aria-label="Меню">
+          <img class="asset-icon" src="assets/icons/Sidebar%20_%20Left.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+        <nav class="breadcrumbs" aria-label="Текущий раздел">Ревью</nav>
+        <button type="button" class="icon-btn" aria-label="Сообщить об ошибке">
+          <img class="asset-icon" src="assets/icons/Bug.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+      </header>
+
+      <div class="main-scroll">
+        <div class="page-content">
+          <div class="page-hero">
+            <div class="page-hero__titles">
+              <h1 class="page-hero__title">Ревью</h1>
+              <p class="page-hero__sub">Q1–Q2 2026</p>
+            </div>
+            <div class="page-hero__actions">
+              <label class="search-field">
+                <span class="search-field__icon" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10Zm0-1.2A3.8 3.8 0 1 1 7 3.2 3.8 3.8 0 0 1 7 10.8Z"
+                      fill="currentColor"
+                      opacity="0.45"
+                    />
+                    <path d="m10.8 10.8 3.4 3.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.45" />
+                  </svg>
+                </span>
+                <input class="search-field__input" type="search" placeholder="ФИО или логин" autocomplete="off" />
+              </label>
+              <span class="v-divider" aria-hidden="true"></span>
+              <button type="button" class="btn-secondary">
+                <img class="btn-secondary__icon" src="assets/icons/Eye%20_%20Off.svg" alt="" aria-hidden="true" width="16" height="16" />
+                Скрыть данные
+              </button>
+              <button type="button" class="btn-secondary">
+                <img class="btn-secondary__icon" src="assets/icons/Info.svg" alt="" aria-hidden="true" width="16" height="16" />
+                Вики о ревью
+              </button>
+            </div>
+          </div>
+
+          <div class="row-2col">
+            <section class="card-promo card-promo--fill" aria-labelledby="card-review-all">
+              <div class="card-promo__text">
+                <div class="card-promo__title-row">
+                  <h2 class="card-promo__title" id="card-review-all">Всё о ревью</h2>
+                  <span class="tag-status tag-status--blue">Есть новости</span>
+                </div>
+                <p class="card-promo__desc">Цель, ключевые даты, оценки и гайды</p>
+              </div>
+              <button type="button" class="btn-pill">Читать</button>
+            </section>
+            <section class="card-promo card-promo--outline" aria-labelledby="card-cal">
+              <div class="card-promo__text">
+                <div class="card-promo__title-row">
+                  <h2 class="card-promo__title" id="card-cal">Калибровки</h2>
+                  <img class="card-promo__chev" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" width="16" height="16" />
+                </div>
+                <p class="card-promo__desc">4 активных, 1 черновик</p>
+              </div>
+              <button type="button" class="btn-pill">Создать калибровку</button>
+            </section>
+          </div>
+
+          <div class="row-2col">
+            <section class="card-wide" aria-labelledby="direct-title">
+              <div class="card-wide__head">
+                <div class="card-wide__head-text">
+                  <div class="card-wide__title-row">
+                    <h2 class="card-wide__title" id="direct-title">Мои прямые подчинённые</h2>
+                    <img class="card-promo__chev" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" width="16" height="16" />
+                  </div>
+                  <p class="card-wide__sub">В ревью участвуют 5</p>
+                </div>
+              </div>
+              <div class="checklist">
+                <div class="checklist__col">
+                  <p class="checklist__label">Самоотзыв</p>
+                  <p class="checklist__hint">Есть у всех</p>
+                  <div class="checklist__value">
+                    <img class="checklist__check" src="assets/icons/Check.svg" alt="" aria-hidden="true" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Отзывы</p>
+                  <p class="checklist__hint">Есть у всех</p>
+                  <div class="checklist__value">
+                    <img class="checklist__check" src="assets/icons/Check.svg" alt="" aria-hidden="true" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Оценка</p>
+                  <p class="checklist__hint">Кто ждёт от вас</p>
+                  <div class="checklist__value">
+                    <span class="checklist__num">2</span>
+                    <img class="checklist__arrow" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Обоснование</p>
+                  <p class="checklist__hint">Кто ждёт от вас</p>
+                  <div class="checklist__value">
+                    <span class="checklist__num">1</span>
+                    <img class="checklist__arrow" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" />
+                  </div>
+                </div>
+              </div>
+              <div class="card-wide__footer">
+                <div class="card-wide__footer-col">
+                  <p class="card-wide__footer-label">Все отзывы положительные</p>
+                </div>
+                <div class="card-wide__footer-col">
+                  <p class="card-wide__footer-label card-wide__footer-label--dark">Флаги</p>
+                  <div class="flags-row">
+                    <span class="tag-status tag-status--neutral">1</span>
+                    <span class="tag-status tag-status--neutral">1</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card-wide" aria-labelledby="all-part-title">
+              <div class="card-wide__head">
+                <div class="card-wide__head-text">
+                  <div class="card-wide__title-row">
+                    <h2 class="card-wide__title" id="all-part-title">Все участники</h2>
+                    <img class="card-promo__chev" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" width="16" height="16" />
+                  </div>
+                  <p class="card-wide__sub">237 сотрудников</p>
+                </div>
+                <button type="button" class="btn-secondary btn-secondary--sm">Чьи команды не готовы</button>
+              </div>
+              <div class="checklist">
+                <div class="checklist__col">
+                  <p class="checklist__label">Самоотзыв</p>
+                  <p class="checklist__hint">Есть у всех</p>
+                  <div class="checklist__value">
+                    <img class="checklist__check" src="assets/icons/Check.svg" alt="" aria-hidden="true" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Отзывы</p>
+                  <p class="checklist__hint">У кого нет</p>
+                  <div class="checklist__value">
+                    <span class="checklist__num">52</span>
+                    <img class="checklist__arrow" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Оценка</p>
+                  <p class="checklist__hint">У кого нет</p>
+                  <div class="checklist__value">
+                    <span class="checklist__num">90</span>
+                    <img class="checklist__arrow" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" />
+                  </div>
+                </div>
+                <div class="checklist__divider" aria-hidden="true"></div>
+                <div class="checklist__col">
+                  <p class="checklist__label">Обоснование</p>
+                  <p class="checklist__hint">У кого нет</p>
+                  <div class="checklist__value">
+                    <span class="checklist__num">67</span>
+                    <img class="checklist__arrow" src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" style="transform: rotate(-90deg)" />
+                  </div>
+                </div>
+              </div>
+              <div class="card-wide__footer">
+                <div class="card-wide__footer-col">
+                  <p class="card-wide__footer-label card-wide__footer-label--dark">Негативные отзывы</p>
+                  <button type="button" class="btn-secondary btn-secondary--sm">На каких сотрудников</button>
+                </div>
+                <div class="card-wide__footer-col">
+                  <p class="card-wide__footer-label card-wide__footer-label--dark">Флаги</p>
+                  <div class="flags-row">
+                    <span class="tag-status tag-status--neutral">15</span>
+                    <span class="tag-status tag-status--neutral">8</span>
+                    <span class="tag-status tag-status--neutral">11</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="card-talent" aria-labelledby="talent-title">
+            <div class="card-talent__text">
+              <h2 class="card-talent__title" id="talent-title">Разметка талантов</h2>
+              <p class="card-talent__desc">
+                У вас в&nbsp;команде есть сотрудники, для которых нужно заполнить разметку. Внести правки в&nbsp;анкеты других сотрудников можно на&nbsp;странице
+                <a href="#">Управление талантами</a>
+              </p>
+            </div>
+            <a class="pill-count" href="employees-table.html"><span>Осталось заполнить</span><span class="pill-count__sep" aria-hidden="true"></span><span>3</span></a>
+          </section>
+
+          <section class="schedule" aria-labelledby="sched-title">
+            <div class="schedule__head">
+              <h2 class="schedule__title" id="sched-title">Расписание</h2>
+              <div class="btn-group" role="group" aria-label="Переключить месяц">
+                <button type="button" class="btn-group__btn btn-group__btn--prev" aria-label="Назад">
+                  <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" />
+                </button>
+                <button type="button" class="btn-group__btn btn-group__btn--next" aria-label="Вперёд">
+                  <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" />
+                </button>
+              </div>
+            </div>
+            <div class="calendars">
+              <div class="cal-month">
+                <div class="cal-month__title">
+                  <span>Декабрь</span>
+                  <span class="cal-month__title-year">2025</span>
+                </div>
+                <div class="cal-weekdays">
+                  <span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span>сб</span><span>вс</span>
+                </div>
+                <div class="cal-grid" id="cal-dec"></div>
+                <div class="cal-events">
+                  <div class="cal-event cal-event--blue">
+                    <svg class="cal-event__ic" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 3h10v9H3z" stroke="currentColor" stroke-width="1.2" />
+                      <path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                    </svg>
+                    Сбор отзывов и самоотзывов
+                  </div>
+                </div>
+              </div>
+              <div class="cal-month">
+                <div class="cal-month__title">
+                  <span>Январь</span>
+                  <span class="cal-month__title-year">2026</span>
+                </div>
+                <div class="cal-weekdays">
+                  <span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span>сб</span><span>вс</span>
+                </div>
+                <div class="cal-grid" id="cal-jan"></div>
+                <div class="cal-events">
+                  <div class="cal-event cal-event--purple">
+                    <svg class="cal-event__ic" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 14 8 2l5 12" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
+                      <path d="M6 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                    </svg>
+                    Калибровки
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      /* js getDay(): вс=0 … сб=6; сетка с пн: ведущие пустые = (getDay + 6) % 7 */
+      function padMonth(firstDayGetDay, daysInMonth, holidays, markDay) {
+        var frag = document.createDocumentFragment();
+        var monStart = (firstDayGetDay + 6) % 7;
+        var i;
+        for (i = 0; i < monStart; i++) {
+          var e = document.createElement("div");
+          e.className = "cal-cell cal-cell--muted";
+          e.textContent = "";
+          frag.appendChild(e);
+        }
+        for (var d = 1; d <= daysInMonth; d++) {
+          var c = document.createElement("div");
+          c.className = "cal-cell";
+          c.textContent = String(d);
+          if (holidays[d]) c.classList.add("cal-cell--holiday");
+          if (markDay === d) c.classList.add("cal-cell--mark");
+          frag.appendChild(c);
+        }
+        var total = monStart + daysInMonth;
+        var tail = (7 - (total % 7)) % 7;
+        for (i = 0; i < tail; i++) {
+          var t = document.createElement("div");
+          t.className = "cal-cell cal-cell--muted";
+          t.textContent = "";
+          frag.appendChild(t);
+        }
+        return frag;
+      }
+      var dec = document.getElementById("cal-dec");
+      var jan = document.getElementById("cal-jan");
+      if (dec) {
+        var hDec = { 31: true };
+        dec.appendChild(padMonth(new Date(2025, 11, 1).getDay(), 31, hDec, 25));
+      }
+      if (jan) {
+        var hJan = { 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true, 9: true };
+        jan.appendChild(padMonth(new Date(2026, 0, 1).getDay(), 31, hJan, null));
+      }
+    })();
+  </script>
+</body>
+</html>

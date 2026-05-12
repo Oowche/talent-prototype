@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Участники ревью — прототип</title>
+  <style>
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Medium.ttf") format("truetype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --text-primary: rgba(0, 0, 0, 0.88);
+      --text-secondary: rgba(0, 0, 0, 0.6);
+      --text-tertiary: rgba(0, 0, 0, 0.4);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.12);
+      --surface-100: #fff;
+      --surface-0: #f5f5f5;
+      --surface-muted: rgba(0, 0, 0, 0.04);
+      --radius-control: 12px;
+      --radius-inner: 10px;
+      --space-xs: 8px;
+      --space-m: 16px;
+      --space-l: 20px;
+      --space-xl: 24px;
+      --header-h: 72px;
+      --sidebar-w: 300px;
+      --title-l: 28px;
+      --title-l-lh: 32px;
+      --title-s: 20px;
+      --title-s-lh: 24px;
+      --body-s: 14px;
+      --body-s-lh: 20px;
+      --caption-m: 12px;
+      --caption-m-lh: 16px;
+      --control-fs: 14px;
+      --control-lh: 20px;
+      --body-l: 18px;
+      --body-l-lh: 28px;
+      --chart-grey: #ccc;
+      --hr-green-500: #3ea34f;
+      --hr-green-tag-bg: rgba(62, 163, 79, 0.12);
+      --hr-orange-500: #da842f;
+      --hr-red-500: #f5222d;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "YS Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      background: var(--surface-100);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100%;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-100);
+    }
+
+    .sidebar__fixed {
+      padding: 12px;
+    }
+
+    .sidebar__logo-mark {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar__logo {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      margin-bottom: var(--space-xs);
+    }
+
+    .sidebar__nav-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar__divider {
+      height: 1px;
+      background: var(--border);
+      border: none;
+      margin: 0;
+    }
+
+    .sidebar__scroll {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar__footer {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-item {
+      height: 40px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border-radius: var(--radius-inner);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .nav-item--muted {
+      color: var(--text-secondary);
+    }
+
+    .nav-item--active {
+      background: var(--surface-muted);
+      font-weight: 500;
+    }
+
+    .nav-item a {
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      margin: 0 -12px;
+      padding: 0 12px;
+      border-radius: var(--radius-inner);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      height: var(--header-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: 0 var(--space-m);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-100);
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-control);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .icon-btn .asset-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .breadcrumbs {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .breadcrumbs a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .breadcrumbs a:hover {
+      color: var(--text-primary);
+    }
+
+    .breadcrumbs .sep {
+      color: var(--text-tertiary);
+      margin: 0 4px;
+    }
+
+    .breadcrumbs .current {
+      color: var(--text-primary);
+    }
+
+    .main-scroll {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .page {
+      max-width: none;
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+    }
+
+    .page-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-m);
+      flex-wrap: wrap;
+    }
+
+    .page-head__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-l);
+      line-height: var(--title-l-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .page-head__actions {
+      display: flex;
+      gap: var(--space-xs);
+      flex-shrink: 0;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn-outline__ic {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+    }
+
+    .filters {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .filters__row1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-m);
+      flex-wrap: wrap;
+    }
+
+    .filters__left {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .search-field {
+      display: flex;
+      align-items: stretch;
+      width: 320px;
+      min-height: 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      overflow: hidden;
+    }
+
+    .search-field__ic {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    .search-field__ic svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .search-field__input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      padding: 10px 12px 10px 0;
+      min-width: 0;
+    }
+
+    .search-field__input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .select-fake {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 208px;
+      min-height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      cursor: default;
+      gap: var(--space-xs);
+    }
+
+    .select-fake img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.75;
+    }
+
+    .icon-sq {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-100);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .icon-sq:hover {
+      background: var(--surface-muted);
+    }
+
+    .icon-sq svg,
+    .icon-sq img {
+      width: 18px;
+      height: 18px;
+      display: block;
+      opacity: 0.65;
+    }
+
+    .filters__row2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      align-items: flex-start;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-sizing: border-box;
+      min-height: 32px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: var(--radius-inner);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-100);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      color: var(--text-primary);
+    }
+
+    .filter-chip--checked {
+      border-color: rgba(0, 0, 0, 0.88);
+    }
+
+    .filter-chip__check-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+
+    .filter-chip__check-icon img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .filter-chip__trailing-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+      opacity: 0.6;
+    }
+
+    .filter-chip--compound {
+      padding: 0;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .filter-chip__part {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 8px;
+      box-sizing: border-box;
+    }
+
+    .filter-chip__part--muted {
+      color: var(--text-secondary);
+      border-right: 1px solid var(--border-strong);
+      padding-left: 8px;
+    }
+
+    .filter-chip__close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      border: none;
+      background: transparent;
+      padding: 0 8px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .filter-chip__close:hover {
+      background: var(--surface-muted);
+    }
+
+    .filter-chip__close:focus-visible {
+      outline: 2px solid rgba(0, 98, 255, 0.45);
+      outline-offset: -2px;
+    }
+
+    .btn-ghost-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 8px;
+      border: none;
+      border-radius: var(--radius-inner);
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .btn-ghost-sm:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn-ghost-sm__icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .analytics {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .analytics__card {
+      background: var(--surface-0);
+      border-radius: var(--radius-inner);
+      padding: 12px var(--space-m);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .analytics__card--sm {
+      flex: 0 0 auto;
+    }
+
+    .analytics__card--grow {
+      flex: 1 1 320px;
+      min-width: 280px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-m);
+    }
+
+    .analytics__label {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .analytics__hint {
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-tertiary);
+      margin-left: 4px;
+    }
+
+    .analytics__value {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--body-l);
+      line-height: var(--body-l-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .analytics__sep {
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    .analytics__vsep {
+      width: 1px;
+      height: 46px;
+      background: var(--border-strong);
+      flex-shrink: 0;
+    }
+
+    .analytics__mid {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .analytics__bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 56px;
+    }
+
+    .bar-col {
+      width: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .bar-col__pct {
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .bar-col__bar {
+      width: 38px;
+      background: var(--chart-grey);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .bar-col__lbl {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .toggle-pair {
+      display: flex;
+      padding: 2px;
+      background: var(--surface-100);
+      border-radius: var(--radius-inner);
+      gap: 2px;
+    }
+
+    .toggle-pair__btn {
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border: none;
+      border-radius: var(--space-xs);
+      font-family: inherit;
+      font-size: var(--body-s);
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .toggle-pair__btn--on {
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .btn-calc {
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-inner);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-calc:hover {
+      background: var(--surface-muted);
+    }
+
+    .btn-markup-fill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 12px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: var(--text-primary);
+      cursor: pointer;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-markup-fill:hover {
+      background: var(--surface-muted);
+    }
+
+    .emp-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .emp-drawer.is-open {
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .emp-drawer__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .emp-drawer.is-open .emp-drawer__backdrop {
+      opacity: 1;
+    }
+
+    .emp-drawer__shell {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      max-width: 100vw;
+    }
+
+    .emp-drawer.is-open .emp-drawer__shell {
+      transform: translateX(0);
+    }
+
+    .emp-drawer__puller {
+      width: 8px;
+      flex-shrink: 0;
+      background: var(--surface-0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emp-drawer__puller-bar {
+      width: 0;
+      height: 28px;
+      border-left: 2px solid rgba(0, 0, 0, 0.12);
+      border-radius: 1px;
+    }
+
+    .emp-drawer__panel {
+      width: min(720px, calc(100vw - 8px));
+      background: var(--surface-100);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+      min-height: 0;
+      position: relative;
+    }
+
+    .emp-drawer__close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: var(--radius-control);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emp-drawer__close:hover {
+      background: var(--surface-muted);
+    }
+
+    .emp-drawer__close img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.55;
+    }
+
+    .emp-drawer__scroll {
+      flex: 1;
+      overflow: auto;
+      min-height: 0;
+      padding-top: 8px;
+    }
+
+    .emp-drawer__header {
+      padding: 16px 24px 0;
+      position: relative;
+      padding-right: 56px;
+    }
+
+    .emp-drawer__head-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .emp-drawer__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .emp-drawer__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-drawer__meta {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 8px;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+    }
+
+    .emp-drawer__dot {
+      color: var(--text-tertiary);
+    }
+
+    .emp-drawer__more {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--body-s);
+      font-family: inherit;
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: default;
+    }
+
+    .emp-drawer__more:hover {
+      color: var(--text-primary);
+    }
+
+    .emp-drawer__more img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.55;
+    }
+
+    .emp-drawer__pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 24px 0;
+    }
+
+    .emp-drawer__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--body-s);
+      color: var(--text-primary);
+      cursor: default;
+    }
+
+    .emp-drawer__pill img {
+      width: 14px;
+      height: 14px;
+      opacity: 0.5;
+    }
+
+    .emp-drawer__tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 12px 24px 0;
+      border-bottom: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    .emp-drawer__tab {
+      padding: 4px 0 10px;
+      margin-bottom: -1px;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      border-bottom: 1px solid transparent;
+      cursor: default;
+    }
+
+    .emp-drawer__tab--active {
+      color: var(--text-primary);
+      border-bottom-color: #1f1f1f;
+    }
+
+    .emp-drawer__content {
+      padding: 24px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .emp-drawer__content h2 {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      color: var(--text-primary);
+    }
+
+    .emp-drawer__lead {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      max-width: 56ch;
+    }
+
+    .emp-drawer__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: var(--radius-control);
+      background: #1f1f1f;
+      color: #fff;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      text-decoration: none;
+    }
+
+    .emp-drawer__cta:hover {
+      background: #333;
+    }
+
+    .td-sticky--employee {
+      cursor: pointer;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-inner);
+      overflow: auto;
+      max-width: 100%;
+      background: var(--surface-100);
+    }
+
+    .emp-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 3280px;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-table th,
+    .emp-table td {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      text-align: left;
+      height: 56px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+
+    .emp-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--surface-100);
+      font-weight: 400;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.6);
+      height: 56px;
+      min-height: 56px;
+      box-shadow: 0 1px 0 var(--border);
+      white-space: nowrap;
+    }
+
+    .emp-table tbody tr:hover td {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .emp-table tbody tr:hover .td-sticky {
+      background: #fafafa;
+    }
+
+    .emp-table .th-sticky,
+    .emp-table .td-sticky {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: var(--surface-100);
+    }
+
+    .emp-table thead .th-sticky {
+      z-index: 3;
+      background: var(--surface-100);
+    }
+
+    .td-sticky {
+      padding: 4px;
+      vertical-align: middle;
+    }
+
+    .emp-cell--muted {
+      color: var(--text-tertiary);
+    }
+
+    .emp-cell--center {
+      text-align: center;
+    }
+
+    .emp-cell--stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+      min-height: 32px;
+      padding: 6px 0;
+      white-space: normal;
+    }
+
+    .emp-cell-emp {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      padding: 2px 4px 2px 2px;
+    }
+
+    .ui-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin: 0;
+      cursor: default;
+      accent-color: var(--hr-green-500);
+    }
+
+    .emp-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .emp-user__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .emp-user__meta {
+      min-width: 0;
+    }
+
+    .emp-user__name {
+      font-weight: 400;
+      color: var(--text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .emp-user__login {
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mark-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 20px;
+      background: var(--hr-green-tag-bg);
+      color: var(--hr-green-500);
+      font-size: var(--body-s);
+      line-height: 1;
+      font-weight: 500;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .mark-tag--lavender {
+      background: #c1c9ef;
+      color: rgba(0, 0, 0, 0.88);
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .mark-tag--lavender .mark-tag__tier {
+      width: 16px;
+      height: 16px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .history-marks {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 4px 0;
+      white-space: nowrap;
+    }
+
+    .history-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .history-mark__num {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-weight: 400;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .history-mark__review {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: contain;
+    }
+
+    .cell-link-open {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cell-link-open:hover {
+      color: var(--text-primary);
+    }
+
+    .cell-link-open img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+
+    .feedback-line {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      white-space: nowrap;
+    }
+
+    .feedback-line .dot {
+      color: var(--text-tertiary);
+      margin: 0 2px;
+    }
+
+    .feedback-sub {
+      margin-top: 2px;
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-secondary);
+    }
+
+    .text-spectre-green {
+      color: var(--hr-green-500);
+    }
+
+    .text-warn {
+      color: var(--hr-orange-500);
+    }
+
+    .text-danger {
+      color: var(--hr-red-500);
+    }
+
+    .impact-bars {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 0;
+    }
+
+    .impact-bars__seg {
+      width: 20px;
+      height: 4px;
+      border-radius: 19px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .impact-bars__seg--soft {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .icon-check-circle {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .cell-tag {
+      display: inline-flex;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.06);
+      font-size: var(--caption-m);
+      font-weight: 500;
+    }
+
+    @media (max-width: 1100px) {
+      .app {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Навигация">
+      <div class="sidebar__fixed">
+        <div class="sidebar__logo"><span class="sidebar__logo-mark">Яндекс</span></div>
+        <div class="sidebar__nav-block">
+          <div class="nav-item nav-item--muted">Обзор</div>
+          <div class="nav-item nav-item--muted">Команда</div>
+          <div class="nav-item nav-item--muted">Цели</div>
+          <div class="nav-item nav-item--muted">Настройки</div>
+        </div>
+      </div>
+      <hr class="sidebar__divider" />
+      <nav class="sidebar__scroll">
+        <div class="nav-item nav-item--muted"><a href="review-home.html">Ревью</a></div>
+        <div class="nav-item nav-item--active">Участники ревью</div>
+        <div class="nav-item nav-item--muted"><a href="index.html">Разметка талантов</a></div>
+        <div class="nav-item nav-item--muted">Калибровки</div>
+        <div class="nav-item nav-item--muted">Управление талантами</div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="nav-item nav-item--muted">Помощь</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top-header">
+        <button type="button" class="icon-btn" aria-label="Меню">
+          <img class="asset-icon" src="assets/icons/Sidebar%20_%20Left.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="review-home.html">Ревью</a>
+          <span class="sep">/</span>
+          <span class="current">Участники ревью</span>
+        </nav>
+        <button type="button" class="icon-btn" aria-label="Сообщить об ошибке">
+          <img class="asset-icon" src="assets/icons/Bug.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+      </header>
+
+      <div class="main-scroll">
+        <div class="page">
+          <div class="page-head">
+            <h1 class="page-head__title">Участники ревью</h1>
+            <div class="page-head__actions">
+              <button type="button" class="btn-outline">
+                <img class="btn-outline__ic" src="assets/icons/Eye%20_%20Off.svg" alt="" aria-hidden="true" />
+                Скрыть данные
+              </button>
+              <button type="button" class="btn-outline">
+                <img class="btn-outline__ic" src="assets/icons/Info.svg" alt="" aria-hidden="true" />
+                Вики о ревью
+              </button>
+            </div>
+          </div>
+
+          <div class="filters">
+            <div class="filters__row1">
+              <div class="filters__left">
+                <label class="search-field">
+                  <span class="search-field__ic" aria-hidden="true">
+                    <img src="assets/icons/Search.svg" width="16" height="16" alt="" />
+                  </span>
+                  <input class="search-field__input" type="search" placeholder="ФИО или логин" autocomplete="off" />
+                </label>
+                <div class="select-fake" role="button" tabindex="0">
+                  <span>Сохранённые фильтры</span>
+                  <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" />
+                </div>
+              </div>
+              <div class="filters__left">
+                <button type="button" class="icon-sq" aria-label="Фильтры" title="Фильтры">
+                  <img src="assets/icons/Filter%20_%20Alternative.svg" width="18" height="18" alt="" />
+                </button>
+                <button type="button" class="icon-sq" aria-label="Настройки таблицы" title="Настройки">
+                  <img src="assets/icons/Settings.svg" width="18" height="18" alt="" />
+                </button>
+                <button type="button" class="icon-sq" aria-label="Скачать" title="Скачать">
+                  <img src="assets/icons/Download.svg" width="18" height="18" alt="" />
+                </button>
+                <button type="button" class="icon-sq" aria-label="На весь экран" title="На весь экран">
+                  <img src="assets/icons/Fullscreen.svg" width="18" height="18" alt="" />
+                </button>
+              </div>
+            </div>
+            <div class="filters__row2">
+              <div class="filter-chip filter-chip--checked">
+                <span class="filter-chip__check-icon" aria-hidden="true">
+                  <img src="assets/icons/%E2%9D%87%EF%B8%8F%20Checkbox%20%C2%B7%20Base.svg" width="16" height="16" alt="" />
+                </span>
+                Мои прямые подчинённые
+              </div>
+              <div class="filter-chip">
+                Сотрудник
+                <img class="filter-chip__trailing-icon" src="assets/icons/Plus.svg" alt="" />
+              </div>
+              <div class="filter-chip">
+                Подразделение
+                <img class="filter-chip__trailing-icon" src="assets/icons/Plus.svg" alt="" />
+              </div>
+              <div class="filter-chip">
+                Грейд
+                <img class="filter-chip__trailing-icon" src="assets/icons/Plus.svg" alt="" />
+              </div>
+              <div class="filter-chip">
+                Статус ревью
+                <img class="filter-chip__trailing-icon" src="assets/icons/Plus.svg" alt="" />
+              </div>
+              <div class="filter-chip filter-chip--compound filter-chip--checked">
+                <span class="filter-chip__part filter-chip__part--muted">Разметка талантов</span>
+                <span class="filter-chip__part">Нужна, но не заполнена</span>
+                <button type="button" class="filter-chip__close" aria-label="Убрать фильтр">
+                  <img class="filter-chip__trailing-icon" src="assets/icons/Close.svg" alt="" />
+                </button>
+              </div>
+              <button type="button" class="btn-ghost-sm">
+                Сбросить
+                <img class="btn-ghost-sm__icon" src="assets/icons/Refresh.svg" alt="" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+
+          <section class="analytics" aria-label="Аналитика">
+            <div class="analytics__card analytics__card--sm">
+              <p class="analytics__label">Средняя оценка <span class="analytics__hint">факт / цель</span></p>
+              <p class="analytics__value">1.4923 <span class="analytics__sep">/</span> —</p>
+            </div>
+            <div class="analytics__card analytics__card--grow">
+              <div class="analytics__mid">
+                <div>
+                  <p class="analytics__label">Грейдапы <span class="analytics__hint">факт</span></p>
+                  <p class="analytics__value">3.03%</p>
+                </div>
+                <div class="analytics__vsep" aria-hidden="true"></div>
+                <div>
+                  <p class="analytics__label">Распределение</p>
+                  <p class="analytics__hint" style="margin:0">поставлено оценок<br />190 из 258</p>
+                </div>
+                <div class="analytics__bars" aria-hidden="true">
+                  <div class="bar-col"><div class="bar-col__bar" style="height:4px"></div><div class="bar-col__lbl">−</div></div>
+                  <div class="bar-col"><span class="bar-col__pct">4.13%</span><div class="bar-col__bar" style="height:12px"></div><div class="bar-col__lbl">±</div></div>
+                  <div class="bar-col"><span class="bar-col__pct">75.12%</span><div class="bar-col__bar" style="height:44px"></div><div class="bar-col__lbl">+</div></div>
+                  <div class="bar-col"><span class="bar-col__pct">15.82%</span><div class="bar-col__bar" style="height:18px"></div><div class="bar-col__lbl">++</div></div>
+                  <div class="bar-col"><span class="bar-col__pct">6.02%</span><div class="bar-col__bar" style="height:10px"></div><div class="bar-col__lbl">+++</div></div>
+                  <div class="bar-col"><div class="bar-col__bar" style="height:4px"></div><div class="bar-col__lbl">++++</div></div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="toggle-pair" role="group" aria-label="Вид графика">
+                  <button type="button" class="toggle-pair__btn toggle-pair__btn--on">%</button>
+                  <button type="button" class="toggle-pair__btn">Число</button>
+                </div>
+                <button type="button" class="btn-calc">Калькулятор</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="table-wrap">
+            <table class="emp-table">
+              <thead>
+                <tr>
+                  <th class="th-sticky" style="min-width:320px">Сотрудник</th>
+                  <th style="min-width:73px">Флаг</th>
+                  <th style="min-width:228px">История</th>
+                  <th style="min-width:97px">Текущее ревью</th>
+                  <th style="min-width:102px">Обоснование</th>
+                  <th style="min-width:114px">Самоотзыв</th>
+                  <th style="min-width:102px">Отзывы</th>
+                  <th style="min-width:172px">Отзывы на грейде</th>
+                  <th style="min-width:89px">Вовлечённость</th>
+                  <th style="min-width:89px">Код-ревью</th>
+                  <th style="min-width:114px">Overall impact</th>
+                  <th style="min-width:129px">Сигналы руководителя</th>
+                  <th style="min-width:114px">Сигналы дежурства</th>
+                  <th style="min-width:200px">Разметка талантов</th>
+                  <th style="min-width:220px">Потенциал</th>
+                  <th style="min-width:240px">Руководитель</th>
+                  <th style="min-width:240px">VS</th>
+                  <th style="min-width:238px">Статус</th>
+                  <th style="min-width:160px">Оклад</th>
+                  <th style="min-width:92px">Изменение</th>
+                  <th style="min-width:160px">Премия</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-employee-name="Дарина Аверьянова" data-employee-login="darinaaverianova@" data-employee-role="Руководитель группы" data-employee-avatar="assets/avatars/Darina.png">
+                  <td class="td-sticky td-sticky--employee">
+                    <div class="emp-cell-emp">
+                      <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Darina.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Дарина Аверьянова</div>
+                          <div class="emp-user__login">darinaaverianova@&nbsp;&nbsp;•&nbsp;&nbsp;Руководитель группы</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td>
+                    <div class="history-marks">
+                      <div class="history-mark">
+                        <span class="history-mark__num">18</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">18</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Excellent.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">18</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Outstanding.svg" alt="" />
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="mark-tag mark-tag--lavender">
+                      <span>18</span>
+                      <img class="mark-tag__tier" src="assets/icons/Review%20_%20Fantastic.svg" alt="" />
+                    </span>
+                  </td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <div class="feedback-line">
+                        <span class="text-spectre-green">5</span><span class="dot">·</span><span>2</span><span class="text-warn">&nbsp;</span><span class="dot">·</span><span>0</span>
+                      </div>
+                      <div class="feedback-sub">3 ожидается</div>
+                    </div>
+                  </td>
+                  <td class="emp-cell--center">3</td>
+                  <td><span class="text-spectre-green">Top</span></td>
+                  <td>Middle</td>
+                  <td>
+                    <div class="impact-bars" aria-hidden="true">
+                      <span class="impact-bars__seg"></span>
+                      <span class="impact-bars__seg"></span>
+                      <span class="impact-bars__seg impact-bars__seg--soft"></span>
+                    </div>
+                  </td>
+                  <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
+                  <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
+                  <td class="emp-cell--muted">—</td>
+                  <td>
+                    <button type="button" class="btn-markup-fill">Заполнить разметку</button>
+                  </td>
+                  <td>
+                    <div class="emp-cell-emp" style="padding-left:0">
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Elena.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Полина Миронова</div>
+                          <div class="emp-user__login">polinamir@</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>VS Алиса в МС</td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>Оценка выставлена</span>
+                      <span class="feedback-sub" style="margin-top:0">На согласовании</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>200&nbsp;600&nbsp;₽</span>
+                      <span class="feedback-sub" style="margin-top:0">Было 189&nbsp;690&nbsp;₽</span>
+                    </div>
+                  </td>
+                  <td><span class="text-spectre-green">+16,97%</span></td>
+                  <td>200&nbsp;600&nbsp;₽</td>
+                </tr>
+                <tr data-employee-name="Екатерина Компанченко" data-employee-login="ekaterinak@" data-employee-role="Старший разработчик" data-employee-avatar="assets/avatars/Ekaterina.png">
+                  <td class="td-sticky td-sticky--employee">
+                    <div class="emp-cell-emp">
+                      <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Ekaterina.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Екатерина Компанченко</div>
+                          <div class="emp-user__login">ekaterinak@&nbsp;&nbsp;•&nbsp;&nbsp;Старший разработчик</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td>
+                    <div class="history-marks">
+                      <div class="history-mark">
+                        <span class="history-mark__num">14</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Low.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">15</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Average.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">15</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" />
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="mark-tag">15</span></td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <div class="feedback-line">
+                        <span class="text-spectre-green">4</span><span class="dot">·</span><span>2</span><span class="dot">·</span><span>1</span>
+                      </div>
+                      <div class="feedback-sub">3 завершено</div>
+                    </div>
+                  </td>
+                  <td class="emp-cell--center">2</td>
+                  <td>Middle</td>
+                  <td><span class="text-danger">Low</span></td>
+                  <td>
+                    <div class="impact-bars" aria-hidden="true">
+                      <span class="impact-bars__seg impact-bars__seg--soft"></span>
+                      <span class="impact-bars__seg impact-bars__seg--soft"></span>
+                      <span class="impact-bars__seg"></span>
+                    </div>
+                  </td>
+                  <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
+                  <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
+                  <td class="emp-cell--muted">—</td>
+                  <td>
+                    <button type="button" class="btn-markup-fill">Заполнить разметку</button>
+                  </td>
+                  <td>
+                    <div class="emp-cell-emp" style="padding-left:0">
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Elena.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Елена Комиссарова</div>
+                          <div class="emp-user__login">elena.kom@</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>VG Поиск</td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>В работе</span>
+                      <span class="feedback-sub" style="margin-top:0">Ждём самооценку</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>178&nbsp;400&nbsp;₽</span>
+                      <span class="feedback-sub" style="margin-top:0">Было 182&nbsp;900&nbsp;₽</span>
+                    </div>
+                  </td>
+                  <td><span class="text-danger">−2,46%</span></td>
+                  <td>178&nbsp;400&nbsp;₽</td>
+                </tr>
+                <tr data-employee-name="Алексей Морозов" data-employee-login="alexeym@" data-employee-role="Разработчик" data-employee-avatar="assets/avatars/Alexey.png">
+                  <td class="td-sticky td-sticky--employee">
+                    <div class="emp-cell-emp">
+                      <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Alexey.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Алексей Морозов</div>
+                          <div class="emp-user__login">alexeym@&nbsp;&nbsp;•&nbsp;&nbsp;Разработчик</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td>
+                    <div class="history-marks">
+                      <div class="history-mark">
+                        <span class="history-mark__num">12</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Excellent.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">12</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Outstanding.svg" alt="" />
+                      </div>
+                      <div class="history-mark">
+                        <span class="history-mark__num">13</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Fantastic.svg" alt="" />
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="mark-tag">13</span></td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <div class="feedback-line">
+                        <span>0</span><span class="dot">·</span><span>0</span><span class="dot">·</span><span class="text-spectre-green">5</span>
+                      </div>
+                      <div class="feedback-sub">Все отзывы собраны</div>
+                    </div>
+                  </td>
+                  <td class="emp-cell--center">5</td>
+                  <td><span class="text-spectre-green">Top</span></td>
+                  <td><span class="text-spectre-green">Good</span></td>
+                  <td>
+                    <div class="impact-bars" aria-hidden="true">
+                      <span class="impact-bars__seg"></span>
+                      <span class="impact-bars__seg"></span>
+                      <span class="impact-bars__seg"></span>
+                    </div>
+                  </td>
+                  <td><img class="icon-check-circle" src="assets/icons/Review%20%C2%B7%20Empty.svg" alt="" style="opacity:0.35;width:20px;height:20px" /></td>
+                  <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
+                  <td class="emp-cell--muted">—</td>
+                  <td>
+                    <button type="button" class="btn-markup-fill">Заполнить разметку</button>
+                  </td>
+                  <td>
+                    <div class="emp-cell-emp" style="padding-left:0">
+                      <div class="emp-user">
+                        <img class="emp-user__avatar" src="assets/avatars/Dmitry.png" alt="" />
+                        <div class="emp-user__meta">
+                          <div class="emp-user__name">Дмитрий Орлов</div>
+                          <div class="emp-user__login">dorlov@</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>VS Маркет</td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>Черновик</span>
+                      <span class="feedback-sub" style="margin-top:0">Не отправлено</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="emp-cell--stack">
+                      <span>156&nbsp;000&nbsp;₽</span>
+                      <span class="feedback-sub" style="margin-top:0">Было 156&nbsp;000&nbsp;₽</span>
+                    </div>
+                  </td>
+                  <td class="emp-cell--muted">0%</td>
+                  <td>156&nbsp;000&nbsp;₽</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="emp-drawer" class="emp-drawer" hidden>
+    <div class="emp-drawer__backdrop" data-drawer-close tabindex="-1"></div>
+    <div class="emp-drawer__shell">
+      <div class="emp-drawer__puller" aria-hidden="true"><div class="emp-drawer__puller-bar"></div></div>
+      <aside class="emp-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="emp-drawer-emp-name">
+        <button type="button" class="emp-drawer__close" data-drawer-close aria-label="Закрыть">
+          <img src="assets/icons/Close.svg" alt="" />
+        </button>
+        <div class="emp-drawer__scroll">
+          <div class="emp-drawer__header">
+            <div class="emp-drawer__head-row">
+              <img id="emp-drawer-avatar" class="emp-drawer__avatar" src="" alt="" width="48" height="48" />
+              <div>
+                <p id="emp-drawer-emp-name" class="emp-drawer__title"></p>
+                <div class="emp-drawer__meta">
+                  <span id="emp-drawer-login"></span>
+                  <span class="emp-drawer__dot" aria-hidden="true">·</span>
+                  <span id="emp-drawer-role"></span>
+                  <span class="emp-drawer__dot" aria-hidden="true">·</span>
+                  <button type="button" class="emp-drawer__more" tabindex="-1">Подробнее <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" /></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="emp-drawer__pills">
+            <span class="emp-drawer__pill">Финкабинет <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
+            <span class="emp-drawer__pill">Коммиты <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
+            <span class="emp-drawer__pill">Activity insights <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
+            <span class="emp-drawer__pill">План развития <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
+          </div>
+          <nav class="emp-drawer__tabs" aria-label="Разделы">
+            <span class="emp-drawer__tab">Ревью</span>
+            <span class="emp-drawer__tab emp-drawer__tab--active">Разметка талантов</span>
+            <span class="emp-drawer__tab">Цели и проекты</span>
+            <span class="emp-drawer__tab">История</span>
+            <span class="emp-drawer__tab">Отзывы</span>
+            <span class="emp-drawer__tab">Сигналы</span>
+            <span class="emp-drawer__tab">Калибровки</span>
+          </nav>
+          <div class="emp-drawer__content">
+            <h2>Заполните разметку талантов</h2>
+            <p class="emp-drawer__lead">Это поможет понять, какие задачи и область ответственности можно предложить сотруднику</p>
+            <a class="emp-drawer__cta" href="index.html">Заполнить разметку</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById("emp-drawer");
+      if (!root) return;
+      var avatar = document.getElementById("emp-drawer-avatar");
+      var empName = document.getElementById("emp-drawer-emp-name");
+      var login = document.getElementById("emp-drawer-login");
+      var role = document.getElementById("emp-drawer-role");
+      var tbody = document.querySelector(".emp-table tbody");
+
+      function setFromRow(tr) {
+        empName.textContent = tr.dataset.employeeName || "";
+        login.textContent = tr.dataset.employeeLogin || "";
+        role.textContent = tr.dataset.employeeRole || "";
+        var src = tr.dataset.employeeAvatar || "";
+        avatar.src = src;
+        avatar.alt = tr.dataset.employeeName || "";
+      }
+
+      function openDrawer(tr) {
+        setFromRow(tr);
+        root.classList.add("is-open");
+        root.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDrawer() {
+        root.classList.remove("is-open");
+        root.setAttribute("hidden", "");
+        document.body.style.overflow = "";
+      }
+
+      if (tbody) {
+        tbody.addEventListener("click", function (e) {
+          if (e.target.closest('input[type="checkbox"]')) return;
+          var btn = e.target.closest(".btn-markup-fill");
+          var cell = e.target.closest("td.td-sticky--employee");
+          if (!btn && !cell) return;
+          var tr = e.target.closest("tr[data-employee-name]");
+          if (!tr) return;
+          if (cell && tr.querySelector("td.td-sticky--employee") !== cell) return;
+          e.preventDefault();
+          openDrawer(tr);
+        });
+      }
+
+      root.addEventListener("click", function (e) {
+        if (e.target.closest("[data-drawer-close]")) closeDrawer();
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && root.classList.contains("is-open")) closeDrawer();
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,2680 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Разметка талантов — прототип</title>
+  <style>
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Medium.ttf") format("truetype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "YS Text";
+      src: url("./public/fonts/YS-Text-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --text-primary: rgba(0, 0, 0, 0.88);
+      --text-secondary: rgba(0, 0, 0, 0.6);
+      --text-tertiary: rgba(0, 0, 0, 0.2);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.12);
+      --surface-100: #fff;
+      --surface-muted: rgba(0, 0, 0, 0.04);
+      --segment-bg: #f5f5f5;
+      --shadow-sm: 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06);
+      --radius-control: 12px;
+      --radius-inner: 10px;
+      --space-xs: 8px;
+      --space-s: 8px;
+      --space-m: 16px;
+      --space-l: 20px;
+      --space-xl: 24px;
+      --header-h: 72px;
+      --sidebar-w: 300px;
+      --content-max: 768px;
+      --title-l: 28px;
+      --title-l-lh: 32px;
+      --title-m: 20px;
+      --title-m-lh: 24px;
+      --body-s: 14px;
+      --body-s-lh: 20px;
+      --control-fs: 14px;
+      --control-lh: 20px;
+      --required: #e53935;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: "YS Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      background: var(--surface-100);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100%;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-100);
+    }
+
+    .sidebar__fixed {
+      padding: var(--space-s);
+    }
+
+    .sidebar__logo {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      margin-bottom: var(--space-s);
+    }
+
+    .sidebar__logo-mark {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar__nav-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar__divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    .sidebar__scroll {
+      flex: 1;
+      overflow: auto;
+      padding: var(--space-s);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      height: 40px;
+      padding: 0 var(--space-s);
+      border-radius: var(--radius-control);
+      display: flex;
+      align-items: center;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      cursor: default;
+    }
+
+    .nav-item--muted {
+      color: var(--text-secondary);
+    }
+
+    .sidebar__footer {
+      padding: var(--space-s);
+      border-top: 1px solid var(--border);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      height: var(--header-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+      padding: 0 var(--space-m);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-control);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .icon-btn .asset-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .breadcrumbs {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+    }
+
+    .breadcrumbs a,
+    .breadcrumbs span {
+      color: var(--text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
+    }
+
+    .breadcrumbs .sep {
+      padding: 0 var(--space-xs);
+      flex-shrink: 0;
+    }
+
+    .breadcrumbs .current {
+      color: var(--text-primary);
+    }
+
+    .main-scroll {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .sheet {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 0 var(--space-xl) 48px;
+    }
+
+    /* Hero / title block */
+    .hero {
+      padding: var(--space-xl) 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-s);
+      min-height: 136px;
+    }
+
+    .hero__text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero__title {
+      font-weight: 500;
+      font-size: var(--title-l);
+      line-height: var(--title-l-lh);
+      letter-spacing: 0;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .hero__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .hero__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .hero__avatar--photo {
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .hero__avatar--photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero__sub {
+      color: var(--text-secondary);
+      font-weight: 400;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      margin-top: 4px;
+      max-width: 520px;
+    }
+
+    .btn-ghost {
+      flex-shrink: 0;
+      height: 40px;
+      padding: 0 var(--space-m);
+      border-radius: var(--radius-control);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-weight: 400;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-muted);
+    }
+
+    /* Form blocks */
+    .form-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .field-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .field-block__title {
+      font-weight: 500;
+      font-size: var(--title-m);
+      line-height: var(--title-m-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      margin-bottom: 20px;
+    }
+
+    .field-block > .label-row {
+      margin-bottom: var(--space-s);
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .label {
+      font-weight: 500;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+    }
+
+    .req {
+      color: var(--required);
+      font-weight: 500;
+    }
+
+    .info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    .info--with-tooltip {
+      position: relative;
+    }
+
+    .info__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      margin: 0;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      cursor: help;
+      color: rgba(0, 0, 0, 0.6);
+      box-sizing: border-box;
+    }
+
+    .info__btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .info__btn:focus-visible {
+      outline: 2px solid rgba(31, 31, 31, 0.35);
+      outline-offset: 2px;
+    }
+
+    .info__icon-img {
+      display: block;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .info-tooltip {
+      position: absolute;
+      left: 50%;
+      top: calc(100% - 2px);
+      padding-top: 8px;
+      transform: translateX(-50%);
+      z-index: 300;
+      min-width: 260px;
+      max-width: min(380px, calc(100vw - 32px));
+      width: max-content;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.14s ease, visibility 0.14s ease;
+    }
+
+    .info--with-tooltip:hover .info-tooltip,
+    .info--with-tooltip:focus-within .info-tooltip {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .info-tooltip__panel {
+      position: relative;
+      padding: 16px;
+      background: #292929;
+      border-radius: 20px;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.28);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .info-tooltip__panel::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      margin-left: -12px;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 6px solid #292929;
+    }
+
+    .info-tooltip__row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 348px;
+    }
+
+    .info-tooltip__title {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .info-tooltip__desc {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Segmented */
+    .segment {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 4px;
+      height: 40px;
+      min-height: 40px;
+      max-height: 40px;
+      padding: 2px;
+      box-sizing: border-box;
+      background: var(--segment-bg);
+      border-radius: var(--radius-control);
+      max-width: 100%;
+      align-self: flex-start;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .segment--2 {
+      width: 50%;
+    }
+
+    .segment--3 {
+      width: 75%;
+    }
+
+    .segment--4 {
+      width: 100%;
+    }
+
+    .segment__btn {
+      appearance: none;
+      border: none;
+      margin: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.6);
+      background: transparent;
+      border-radius: var(--radius-inner);
+      flex: 1 1 0;
+      min-width: 0;
+      height: auto;
+      align-self: stretch;
+      padding: 0 var(--space-m);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.15s, box-shadow 0.15s;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .segment__btn:hover:not(.segment__btn--active) {
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .segment__btn--active {
+      background: var(--surface-100);
+      box-shadow: var(--shadow-sm);
+      font-weight: 400;
+      color: #000;
+    }
+
+    /* Подпись под «Оцените потенциал» (Figma 9706:411859, Caption / Body S) */
+    .potential-caption {
+      margin-top: var(--space-xs);
+      max-width: 100%;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.6);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      white-space: pre-wrap;
+    }
+
+    /* Анкета «Не могу определить» (Figma 9700:366972) */
+    .potential-quiz {
+      margin-top: 16px;
+      max-width: 720px;
+      width: 100%;
+      padding-top: 0;
+      padding-bottom: var(--space-xs);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .potential-quiz[hidden] {
+      display: none !important;
+    }
+
+    /* Доп. вопросы при «Средняя» / «Высокая» (Figma 9712:125081) */
+    .risk-followup {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .risk-followup[hidden] {
+      display: none !important;
+    }
+
+    .risk-followup__section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      width: 100%;
+    }
+
+    .risk-chips-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      width: 100%;
+    }
+
+    .risk-followup__label {
+      font-size: var(--body-s);
+      line-height: var(--control-lh);
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .risk-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      align-items: flex-start;
+    }
+
+    .risk-chip {
+      appearance: none;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      padding: 6px 12px;
+      min-height: 32px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      background: transparent;
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      text-align: left;
+    }
+
+    .risk-chip:hover {
+      background: var(--surface-muted);
+    }
+
+    .risk-chip--selected {
+      border-color: #1f1f1f;
+      background: transparent;
+    }
+
+    .risk-input-wrap {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .risk-input-wrap[hidden] {
+      display: none !important;
+    }
+
+    .risk-text-input {
+      width: 100%;
+      min-height: 40px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-control);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      background: var(--surface-100);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      box-sizing: border-box;
+    }
+
+    .risk-text-input::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .risk-text-input:focus {
+      outline: none;
+      border-color: rgba(0, 0, 0, 0.24);
+    }
+
+    .risk-checks {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .risk-cb-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .risk-cb-row {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .risk-cb-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .risk-cb-visual {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: var(--surface-100);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .risk-cb-input:checked + .risk-cb-visual {
+      background: #1f1f1f;
+      border-color: #1f1f1f;
+    }
+
+    .risk-cb-input:checked + .risk-cb-visual::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 3px;
+      width: 5px;
+      height: 9px;
+      border: solid #fff;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+      box-sizing: border-box;
+    }
+
+    .risk-cb-input:focus-visible + .risk-cb-visual {
+      outline: 2px solid rgba(31, 31, 31, 0.35);
+      outline-offset: 2px;
+    }
+
+    .potential-quiz__q {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .potential-quiz__stem {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .potential-quiz__radios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xl);
+      align-items: flex-start;
+    }
+
+    .potential-quiz__opt {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.9);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    /* Нативный input поверх круга; визуал как Radiobox selected (Figma 9700:367092) */
+    .potential-quiz__input {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .potential-quiz__ctrl {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      border-radius: 100px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .potential-quiz__input:focus-visible + .potential-quiz__ctrl {
+      outline: 2px solid rgba(0, 0, 0, 0.22);
+      outline-offset: 2px;
+    }
+
+    .potential-quiz__input:checked + .potential-quiz__ctrl {
+      background: #1f1f1f;
+      border-color: #1f1f1f;
+    }
+
+    .potential-quiz__input:checked + .potential-quiz__ctrl::after {
+      content: "";
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .potential-quiz__submit {
+      margin-top: 0;
+      align-self: flex-start;
+      padding: 6px var(--space-m);
+      min-height: 32px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .potential-quiz__submit:hover {
+      background: var(--surface-muted);
+    }
+
+    .stack-fields {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-l);
+    }
+
+    .successor-followup {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      width: 100%;
+      max-width: 720px;
+      margin-top: var(--space-xs);
+    }
+
+    .successor-followup__block[hidden] {
+      display: none !important;
+    }
+
+    .successor-radios {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .successor-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .successor-yes-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .succ-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .succ-cell {
+      flex: 1 1 160px;
+      min-width: 0;
+    }
+
+    .succ-cell--narrow {
+      flex: 0 0 auto;
+    }
+
+    .succ-field {
+      position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-control);
+      min-height: 40px;
+      background: var(--surface-100);
+      box-sizing: border-box;
+    }
+
+    .succ-field:focus-within {
+      border-color: rgba(0, 0, 0, 0.24);
+    }
+
+    .succ-field--person {
+      position: relative;
+    }
+
+    .succ-person-trigger {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 40px;
+      margin: 0;
+      padding: 10px 12px;
+      border: none;
+      border-radius: var(--radius-control);
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      text-align: left;
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      box-sizing: border-box;
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .succ-person-trigger__text--muted {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .succ-field--has-chip .succ-person-trigger {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .succ-dd {
+      position: relative;
+      width: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      box-sizing: border-box;
+    }
+
+    .succ-dd:focus-within {
+      border-color: rgba(0, 0, 0, 0.24);
+    }
+
+    .succ-dd-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      min-height: 40px;
+      margin: 0;
+      padding: 10px 12px;
+      border: none;
+      border-radius: var(--radius-control);
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      text-align: left;
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      box-sizing: border-box;
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .succ-dd-trigger__text {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .succ-dd-trigger__text--muted {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .succ-dd-trigger__chev {
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      margin-right: 2px;
+      display: block;
+      object-fit: contain;
+      opacity: 0.75;
+      transition: transform 0.15s ease;
+    }
+
+    .succ-dd-trigger[aria-expanded="true"] .succ-dd-trigger__chev {
+      transform: rotate(180deg);
+    }
+
+    .succ-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      z-index: 400;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px;
+      margin: 0;
+      list-style: none;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.12);
+      box-sizing: border-box;
+    }
+
+    .succ-menu[hidden] {
+      display: none !important;
+    }
+
+    .succ-menu__opt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      margin: 0;
+      padding: 10px 12px;
+      min-height: 40px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: rgba(0, 0, 0, 0.88);
+      text-align: left;
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      box-sizing: border-box;
+    }
+
+    .succ-menu__opt-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .succ-menu__opt:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .succ-chip-layer {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      padding: 4px 12px 4px 4px;
+      min-height: 40px;
+      box-sizing: border-box;
+    }
+
+    .succ-field--has-chip .succ-chip-layer {
+      display: flex;
+    }
+
+    .succ-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      padding: 2px 4px 2px 2px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 100px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .succ-chip-avatar {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.06);
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .succ-chip-avatar__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .succ-chip-avatar--photo .succ-chip-avatar__img {
+      display: block;
+    }
+
+    .succ-chip-avatar__initials {
+      position: relative;
+      z-index: 1;
+    }
+
+    .succ-chip-avatar--photo .succ-chip-avatar__initials {
+      visibility: hidden;
+    }
+
+    .succ-chip-name {
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: rgba(0, 0, 0, 0.88);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .succ-chip-clear {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      margin: 0;
+      border: none;
+      border-radius: 100px;
+      background: transparent;
+      color: rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .succ-chip-clear:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: rgba(0, 0, 0, 0.75);
+    }
+
+    .succ-chip-clear__icon {
+      display: block;
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .succ-row-remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-radius: var(--radius-control);
+      background: transparent;
+      color: rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .succ-row-remove:hover {
+      background: var(--surface-muted);
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .succ-row-remove__icon {
+      display: block;
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .successor-add-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: flex-start;
+      gap: 4px;
+      min-height: 28px;
+      padding: 2px 8px;
+      margin: 0;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .succ-add-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .successor-add-btn:hover {
+      background: var(--surface-muted);
+    }
+
+    .successor-add-btn[hidden] {
+      display: none !important;
+    }
+
+    .successor-radios .potential-quiz__opt {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    /* Textarea */
+    .textarea {
+      width: 100%;
+      height: 60px;
+      min-height: 60px;
+      max-height: 60px;
+      resize: none;
+      overflow-y: auto;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      padding: var(--space-s) var(--space-m);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      background: var(--surface-100);
+    }
+
+    .textarea::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .textarea:focus {
+      outline: 2px solid rgba(0, 0, 0, 0.12);
+      outline-offset: 0;
+    }
+
+    /* Fake select */
+    .select {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-control);
+      padding: 0 40px 0 var(--space-m);
+      display: flex;
+      align-items: center;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-secondary);
+      background: var(--surface-100);
+      position: relative;
+      cursor: default;
+    }
+
+    .select::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      transform: translateY(-50%);
+      background: url("assets/icons/Arrow%20_%20Short%20_%20Down.svg") center / contain no-repeat;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .select--value {
+      color: var(--text-primary);
+    }
+
+    .skill-input {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      min-height: 40px;
+      width: 100%;
+      max-width: 720px;
+      padding: 4px 40px 4px 4px;
+      box-sizing: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-control);
+      background: var(--surface-100);
+      cursor: pointer;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .skill-input:focus-within {
+      border-color: rgba(0, 0, 0, 0.24);
+    }
+
+    .skill-input::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      transform: translateY(-50%);
+      background: url("assets/icons/Arrow%20_%20Short%20_%20Down.svg") center / contain no-repeat;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .skill-input__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+      min-height: 32px;
+    }
+
+    .skill-input__hint {
+      margin: 0;
+      padding: 6px 8px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      text-align: left;
+      flex: 1 1 120px;
+      min-width: 0;
+    }
+
+    .skill-input:has(.skill-tag) .skill-input__hint {
+      flex: 0 1 auto;
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
+      background: var(--surface-100);
+      box-sizing: border-box;
+    }
+
+    .skill-tag__text {
+      padding: 6px 4px 6px 10px;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: rgba(0, 0, 0, 0.88);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+    }
+
+    .skill-tag__remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin: 0 4px 0 0;
+      padding: 0;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .skill-tag__remove:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .skill-tag__remove-icon {
+      display: block;
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .skill-tag__remove:hover .skill-tag__remove-icon {
+      opacity: 0.75;
+    }
+
+    .form-footer {
+      margin-top: 32px;
+    }
+
+    .btn-submit {
+      height: 40px;
+      min-width: 170px;
+      padding: 0 var(--space-l);
+      border: none;
+      border-radius: var(--radius-control);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .btn-submit:disabled {
+      cursor: not-allowed;
+      background: var(--surface-muted);
+      color: var(--text-tertiary);
+    }
+
+    .btn-submit:not(:disabled) {
+      cursor: pointer;
+      background: #1f1f1f;
+      color: #fff;
+    }
+
+    .btn-submit:not(:disabled):hover {
+      filter: brightness(1.08);
+    }
+
+    @media (max-width: 1100px) {
+      .app {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar__scroll {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .segment--2,
+      .segment--3 {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Навигация">
+      <div class="sidebar__fixed">
+        <div class="sidebar__logo">
+          <span class="sidebar__logo-mark">Яндекс</span>
+        </div>
+        <div class="sidebar__nav-block">
+          <div class="nav-item nav-item--muted">Обзор</div>
+          <div class="nav-item nav-item--muted">Команда</div>
+          <div class="nav-item nav-item--muted">Цели</div>
+          <div class="nav-item nav-item--muted">Настройки</div>
+        </div>
+      </div>
+      <hr class="sidebar__divider" />
+      <nav class="sidebar__scroll">
+        <div class="nav-item nav-item--muted">Пункт меню</div>
+        <div class="nav-item nav-item--muted">Пункт меню</div>
+        <div class="nav-item nav-item--muted">Пункт меню</div>
+        <div class="nav-item">Разметка талантов</div>
+        <div class="nav-item nav-item--muted">Пункт меню</div>
+        <div class="nav-item nav-item--muted">Пункт меню</div>
+      </nav>
+      <div class="sidebar__footer">
+        <div class="nav-item nav-item--muted">Помощь</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top-header">
+        <button type="button" class="icon-btn" aria-label="Меню">
+          <img
+            class="asset-icon"
+            src="assets/icons/Sidebar%20_%20Left.svg"
+            width="20"
+            height="20"
+            alt=""
+            decoding="async"
+          />
+        </button>
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="review-home.html">Ревью</a>
+          <span class="sep">/</span>
+          <span class="current">Разметка талантов</span>
+        </nav>
+        <button type="button" class="icon-btn" aria-label="Сообщить об ошибке">
+          <img class="asset-icon" src="assets/icons/Bug.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+      </header>
+
+      <div class="main-scroll">
+        <div class="sheet">
+          <section class="hero">
+            <div class="hero__text">
+              <div class="hero__title">Разметка талантов</div>
+              <div class="hero__row hero__title">
+                <span>для</span>
+                <span class="hero__avatar hero__avatar--photo" role="img" aria-label="Елена Комиссарова">
+                  <img src="assets/avatars/Elena.png" alt="" width="32" height="32" decoding="async" />
+                </span>
+                <span>Елены Комиссаровой</span>
+              </div>
+              <p class="hero__sub">Поможет спланировать развитие сотрудника и поставить цели на сезон</p>
+            </div>
+            <button type="button" class="btn-ghost">Не размечать</button>
+          </section>
+
+          <form class="form-stack" id="talent-form" novalidate>
+            <!-- Потенциал -->
+            <div class="field-block">
+              <div class="field-block__title">Потенциал</div>
+              <div class="label-row">
+                <span class="label">Оцените потенциал</span>
+                <span class="req" aria-hidden="true">*</span>
+              </div>
+              <div class="segment segment--4" role="group" aria-label="Потенциал">
+                <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Не могу определить</button>
+                <button type="button" class="segment__btn" data-name="potential" data-value="basic">Базовый</button>
+                <button type="button" class="segment__btn" data-name="potential" data-value="growing">Растущий</button>
+                <button type="button" class="segment__btn" data-name="potential" data-value="high">Высокий</button>
+              </div>
+              <p id="potential-caption" class="potential-caption" hidden aria-live="polite"></p>
+              <div id="potential-quiz" class="potential-quiz" hidden>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    Конструктивно и аргументированно доносит свою позицию до стейкхолдеров и может влиять на решение
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 1">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-0" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-0" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    Самостоятельно ставит амбициозные цели, принимает сложные решения и достигает результата
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 2">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-1" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-1" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    В стрессе сохраняет спокойствие, эффективность и помогает команде/коллегам собраться
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 3">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-2" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-2" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    В условиях неопределённости улавливает главное в сложном контексте, умеет быстро принимать решения
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 4">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-3" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-3" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">Развивается, делает выводы на основе опыта, меняет поведение</p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 5">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-4" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-4" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    Хочет расти в другой роли или расширять зону ответственности в текущей
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 6">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-5" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-5" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <div class="potential-quiz__q">
+                  <p class="potential-quiz__stem">
+                    Оценивает перспективу на основе данных, формирует повестку и мыслит в масштабе всего бизнеса
+                  </p>
+                  <div class="potential-quiz__radios" role="radiogroup" aria-label="Вопрос 7">
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-6" value="no" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Нет</span></label
+                    >
+                    <label class="potential-quiz__opt"
+                      ><input type="radio" class="potential-quiz__input" name="pq-6" value="yes" /><span class="potential-quiz__ctrl" aria-hidden="true"></span><span>Да</span></label
+                    >
+                  </div>
+                </div>
+                <button type="button" class="potential-quiz__submit" id="potential-calc-btn">
+                  Рассчитать потенциал
+                </button>
+              </div>
+            </div>
+
+            <!-- Риск -->
+            <div class="field-block">
+              <div class="field-block__title">Риск потери и последствия</div>
+              <div class="label-row">
+                <span class="label">Оцените вероятность ухода Дарины</span>
+                <span class="req" aria-hidden="true">*</span>
+                <span class="info info--with-tooltip">
+                  <button
+                    type="button"
+                    class="info__btn"
+                    aria-describedby="risk-probability-hint"
+                    aria-label="Пояснение к шкале вероятности ухода"
+                  >
+                    <img
+                      class="info__icon-img"
+                      src="assets/icons/Info.svg"
+                      width="16"
+                      height="16"
+                      alt=""
+                      aria-hidden="true"
+                      decoding="async"
+                    />
+                  </button>
+                  <span id="risk-probability-hint" class="info-tooltip" role="tooltip">
+                    <span class="info-tooltip__panel">
+                      <span class="info-tooltip__row">
+                        <span class="info-tooltip__title">Низкая</span>
+                        <span class="info-tooltip__desc">Не планирует уходить, закрыт для внешних предложений</span>
+                      </span>
+                      <span class="info-tooltip__row">
+                        <span class="info-tooltip__title">Средняя</span>
+                        <span class="info-tooltip__desc">Может уйти, но не ищет другую работу открыто</span>
+                      </span>
+                      <span class="info-tooltip__row">
+                        <span class="info-tooltip__title">Высокая</span>
+                        <span class="info-tooltip__desc">Высока вероятность ухода в течение 3 – 6 месяцев, открыто ищет другую работу</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <div class="segment segment--3" role="group" aria-label="Риск ухода">
+                <button type="button" class="segment__btn" data-name="risk" data-value="low">Низкая</button>
+                <button type="button" class="segment__btn" data-name="risk" data-value="mid">Средняя</button>
+                <button type="button" class="segment__btn" data-name="risk" data-value="high">Высокая</button>
+              </div>
+              <div id="risk-followup" class="risk-followup" hidden>
+                <div class="risk-followup__section">
+                  <div class="risk-followup__label">Почему она может уйти?</div>
+                  <div class="risk-chips-stack">
+                    <div class="risk-chips" role="group" aria-label="Причины ухода">
+                      <button type="button" class="risk-chip" data-chip>Большая нагрузка (стресс, выгорание, усталость)</button>
+                      <button type="button" class="risk-chip" data-chip>Руководитель / Команда</button>
+                      <button type="button" class="risk-chip" data-chip>Неинтересные задачи</button>
+                      <button type="button" class="risk-chip" data-chip>Не устраивают зарплата и премии</button>
+                      <button type="button" class="risk-chip" data-chip>Не видит возможностей для ротации</button>
+                      <button type="button" class="risk-chip" data-chip>Хочет релоцироваться</button>
+                      <button type="button" class="risk-chip" data-chip>Хочет сменить сферу / индустрию</button>
+                      <button type="button" class="risk-chip" data-chip data-chip-other>Другое</button>
+                    </div>
+                    <div id="risk-leave-other-wrap" class="risk-input-wrap" hidden>
+                      <input
+                        type="text"
+                        class="risk-text-input"
+                        id="risk-leave-other"
+                        name="risk-leave-other"
+                        placeholder="Укажите возможную причину ухода"
+                        autocomplete="off"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="risk-followup__section">
+                  <div class="risk-followup__label">Как уход Елены повлияет на цели и команду?</div>
+                  <div class="risk-checks">
+                    <label class="risk-cb-row" for="risk-impact-critical">
+                      <input type="checkbox" class="risk-cb-input" id="risk-impact-critical" name="risk-impact" value="critical" />
+                      <span class="risk-cb-visual" aria-hidden="true"></span>
+                      Пострадает критический процесс
+                    </label>
+                    <div class="risk-cb-block">
+                      <label class="risk-cb-row" for="risk-impact-expertise">
+                        <input type="checkbox" class="risk-cb-input" id="risk-impact-expertise" name="risk-impact" value="expertise" />
+                        <span class="risk-cb-visual" aria-hidden="true"></span>
+                        Потеряем редкую экспертизу
+                      </label>
+                      <div id="risk-impact-expertise-wrap" class="risk-input-wrap" hidden>
+                        <input
+                          type="text"
+                          class="risk-text-input"
+                          id="risk-impact-expertise-detail"
+                          name="risk-impact-expertise-detail"
+                          placeholder="Укажите редкие навыки"
+                          autocomplete="off"
+                        />
+                      </div>
+                    </div>
+                    <label class="risk-cb-row" for="risk-impact-team">
+                      <input type="checkbox" class="risk-cb-input" id="risk-impact-team" name="risk-impact" value="team" />
+                      <span class="risk-cb-visual" aria-hidden="true"></span>
+                      Команда может развалиться или потерять мотивацию
+                    </label>
+                    <div class="risk-cb-block">
+                      <label class="risk-cb-row" for="risk-impact-other">
+                        <input type="checkbox" class="risk-cb-input" id="risk-impact-other" name="risk-impact" value="other" />
+                        <span class="risk-cb-visual" aria-hidden="true"></span>
+                        Другое
+                      </label>
+                      <div id="risk-impact-other-wrap" class="risk-input-wrap" hidden>
+                        <input
+                          type="text"
+                          class="risk-text-input"
+                          id="risk-impact-other-detail"
+                          name="risk-impact-other-detail"
+                          placeholder="Расскажите подробнее"
+                          autocomplete="off"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ключевая роль -->
+            <div class="field-block">
+              <div class="field-block__title">Ключевая роль и преемники</div>
+              <div class="stack-fields">
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label">Дарина занимает ключевую роль?</span>
+                  </div>
+                  <div class="segment segment--2" role="group">
+                    <button type="button" class="segment__btn" data-name="keyrole" data-value="no">Нет</button>
+                    <button type="button" class="segment__btn" data-name="keyrole" data-value="yes">Да</button>
+                  </div>
+                </div>
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label" id="successor-label">Кто-то сможет заменить Дарину в случае ухода или повышения?</span>
+                    <span id="successor-req" class="req" aria-hidden="true" hidden>*</span>
+                  </div>
+                  <div
+                    id="successor-segment"
+                    class="segment segment--2"
+                    role="group"
+                    aria-labelledby="successor-label"
+                    aria-required="false"
+                  >
+                    <button type="button" class="segment__btn" data-name="successor" data-value="no">Нет</button>
+                    <button type="button" class="segment__btn" data-name="successor" data-value="yes">Да</button>
+                  </div>
+                  <div id="successor-followup" class="successor-followup">
+                    <div
+                      id="successor-no-detail"
+                      class="successor-followup__block"
+                      aria-label="Если замены нет"
+                      hidden
+                    >
+                      <div class="successor-radios" role="radiogroup" aria-label="Сценарий без замены">
+                        <label class="potential-quiz__opt" for="successor-no-plan-reconsider">
+                          <input
+                            type="radio"
+                            class="potential-quiz__input"
+                            id="successor-no-plan-reconsider"
+                            name="successor-no-plan"
+                            value="reconsider"
+                          />
+                          <span class="potential-quiz__ctrl" aria-hidden="true"></span>
+                          <span>Если уйдёт, пересмотрим роль</span>
+                        </label>
+                        <label class="potential-quiz__opt" for="successor-no-plan-find">
+                          <input
+                            type="radio"
+                            class="potential-quiz__input"
+                            id="successor-no-plan-find"
+                            name="successor-no-plan"
+                            value="find"
+                          />
+                          <span class="potential-quiz__ctrl" aria-hidden="true"></span>
+                          <span>Нужно будет найти замену на эту роль</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div id="successor-yes-detail" class="successor-followup__block successor-yes-stack" hidden>
+                      <div id="successor-rows" class="successor-rows"></div>
+                      <button type="button" id="successor-add-btn" class="successor-add-btn">
+                        <img
+                          class="succ-add-icon"
+                          src="assets/icons/Plus.svg"
+                          width="14"
+                          height="14"
+                          alt=""
+                          aria-hidden="true"
+                          decoding="async"
+                        />
+                        Добавить преемника
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <template id="succ-row-template">
+              <div class="succ-row" data-succ-row>
+                <div class="succ-cell succ-cell--person">
+                  <div class="succ-field succ-field--person" data-succ-person-field data-succ-picker>
+                    <div class="succ-chip-layer" data-succ-chip-layer aria-hidden="true">
+                      <div class="succ-chip">
+                        <span class="succ-chip-avatar" data-succ-avatar>
+                          <img class="succ-chip-avatar__img" alt="" width="24" height="24" data-succ-avatar-img decoding="async" />
+                          <span class="succ-chip-avatar__initials" data-succ-avatar-initials aria-hidden="true"></span>
+                        </span>
+                        <span class="succ-chip-name" data-succ-chip-name></span>
+                        <button type="button" class="succ-chip-clear" data-succ-chip-clear aria-label="Сбросить выбор преемника">
+                          <img
+                            class="succ-chip-clear__icon"
+                            src="assets/icons/Close.svg"
+                            width="14"
+                            height="14"
+                            alt=""
+                            aria-hidden="true"
+                            decoding="async"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="succ-person-trigger"
+                      data-succ-person-trigger
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                    >
+                      <span class="succ-person-trigger__text succ-person-trigger__text--muted" data-succ-person-label>Выберите преемника</span>
+                    </button>
+                    <input type="hidden" value="" data-succ-person-value />
+                    <div class="succ-menu" data-succ-person-menu hidden role="listbox">
+                      <button type="button" class="succ-menu__opt" role="option" data-value="ek" data-label="Екатерина Компанченко">
+                        <img
+                          class="succ-menu__opt-avatar"
+                          src="assets/avatars/Ekaterina.png"
+                          width="24"
+                          height="24"
+                          alt=""
+                          decoding="async"
+                        />
+                        Екатерина Компанченко
+                      </button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="am" data-label="Алексей Морозов">
+                        <img
+                          class="succ-menu__opt-avatar"
+                          src="assets/avatars/Alexey.png"
+                          width="24"
+                          height="24"
+                          alt=""
+                          decoding="async"
+                        />
+                        Алексей Морозов
+                      </button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="in" data-label="Ирина Николаева">
+                        <img
+                          class="succ-menu__opt-avatar"
+                          src="assets/avatars/Irina.png"
+                          width="24"
+                          height="24"
+                          alt=""
+                          decoding="async"
+                        />
+                        Ирина Николаева
+                      </button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="dp" data-label="Дмитрий Павлов">
+                        <img
+                          class="succ-menu__opt-avatar"
+                          src="assets/avatars/Dmitry.png"
+                          width="24"
+                          height="24"
+                          alt=""
+                          decoding="async"
+                        />
+                        Дмитрий Павлов
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="succ-cell">
+                  <div class="succ-dd" data-succ-picker>
+                    <button
+                      type="button"
+                      class="succ-dd-trigger"
+                      data-succ-ready-trigger
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                    >
+                      <span class="succ-dd-trigger__text succ-dd-trigger__text--muted" data-succ-ready-label>Степень готовности</span>
+                      <img
+                        class="succ-dd-trigger__chev"
+                        src="assets/icons/Arrow%20_%20Short%20_%20Down.svg"
+                        width="12"
+                        height="12"
+                        alt=""
+                        aria-hidden="true"
+                        decoding="async"
+                      />
+                    </button>
+                    <input type="hidden" value="" data-succ-ready-value />
+                    <div class="succ-menu" data-succ-ready-menu hidden role="listbox">
+                      <button type="button" class="succ-menu__opt" role="option" data-value="ready" data-label="Готов">Готов</button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="y1" data-label="До года на подготовку">
+                        До года на подготовку
+                      </button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="y2" data-label="1–2 года на подготовку">
+                        1–2 года на подготовку
+                      </button>
+                      <button type="button" class="succ-menu__opt" role="option" data-value="temp" data-label="Временная замена">
+                        Временная замена
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="succ-cell succ-cell--narrow">
+                  <button type="button" class="succ-row-remove" data-succ-row-remove aria-label="Удалить строку преемника">
+                    <img
+                      class="succ-row-remove__icon"
+                      src="assets/icons/Trash%20_%20Alternative.svg"
+                      width="16"
+                      height="16"
+                      alt=""
+                      aria-hidden="true"
+                      decoding="async"
+                    />
+                  </button>
+                </div>
+              </div>
+            </template>
+
+            <!-- Рост -->
+            <div class="field-block">
+              <div class="field-block__title">Направления роста</div>
+              <div class="stack-fields">
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label">Какую роль Дарину могла бы занять в будущем?</span>
+                  </div>
+                  <textarea
+                    class="textarea"
+                    placeholder="Новый продукт, проект, направление или роль"
+                  ></textarea>
+                </div>
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label">Как сама Дарина видит своё развитие в компании?</span>
+                  </div>
+                  <textarea
+                    class="textarea"
+                    placeholder="Карьерный путь, цели, проекты"
+                  ></textarea>
+                </div>
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label"
+                      >Если внутри команды нет возможности роста, можно открыть профиль Дарины для внутреннего найма</span
+                    >
+                  </div>
+                  <div class="segment segment--3" role="group">
+                    <button type="button" class="segment__btn" data-name="openness" data-value="all">Во всём Яндексе</button>
+                    <button type="button" class="segment__btn" data-name="openness" data-value="bg">Внутри бизнес-группы</button>
+                    <button type="button" class="segment__btn" data-name="openness" data-value="none">Не открывать никому</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Сильные стороны -->
+            <div class="field-block">
+              <div class="field-block__title">Сильные стороны и зоны роста</div>
+              <div class="stack-fields">
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label" id="skill-strengths-label">Сильные стороны Дарины</span>
+                  </div>
+                  <div
+                    class="skill-input"
+                    data-skill-input
+                    data-skill-pool="strengths"
+                    role="group"
+                    aria-labelledby="skill-strengths-label"
+                  >
+                    <div class="skill-input__tags" data-skill-tags></div>
+                    <button type="button" class="skill-input__hint">Найти навык</button>
+                  </div>
+                </div>
+                <div>
+                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                    <span class="label" id="skill-growth-label">Над чем можно поработать</span>
+                  </div>
+                  <div
+                    class="skill-input"
+                    data-skill-input
+                    data-skill-pool="growth"
+                    role="group"
+                    aria-labelledby="skill-growth-label"
+                  >
+                    <div class="skill-input__tags" data-skill-tags></div>
+                    <button type="button" class="skill-input__hint">Найти навык</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="btn-submit" id="submit-btn" disabled title="Заполните обязательные поля">
+                Завершить разметку
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var groups = {};
+      var potentialCaptionEl = document.getElementById("potential-caption");
+      var potentialCaptions = {
+        basic:
+          "Соответствует текущей роли.\nДля перехода на следующий уровень пока недостаточно навыков, опыта и/или мотивации.",
+        growing:
+          "Успешно развивается в текущей роли.\nОсваивает необходимые компетенции и постепенно готовится к следующему уровню ответственности.",
+        high:
+          "Готов к переходу на следующую роль в течение года.\nОбладает необходимыми навыками и опытом, успешно ведет сложные проекты и проактивно расширяет зону ответственности.",
+      };
+
+      function syncPotentialCaption() {
+        if (!potentialCaptionEl || !groups.potential) return;
+        var active = null;
+        for (var i = 0; i < groups.potential.length; i++) {
+          if (groups.potential[i].classList.contains("segment__btn--active")) {
+            active = groups.potential[i];
+            break;
+          }
+        }
+        var val = active ? active.getAttribute("data-value") : null;
+        var text = val && potentialCaptions[val] ? potentialCaptions[val] : null;
+        if (text) {
+          potentialCaptionEl.textContent = text;
+          potentialCaptionEl.hidden = false;
+        } else {
+          potentialCaptionEl.textContent = "";
+          potentialCaptionEl.hidden = true;
+        }
+      }
+
+      var potentialQuizEl = document.getElementById("potential-quiz");
+      /* Анкета с вопросами — только после явного нажатия «Не могу определить» */
+      var potentialUnknownQuizShown = false;
+
+      function syncPotentialQuizVisibility() {
+        if (!potentialQuizEl || !groups.potential) return;
+        var active = null;
+        for (var j = 0; j < groups.potential.length; j++) {
+          if (groups.potential[j].classList.contains("segment__btn--active")) {
+            active = groups.potential[j];
+            break;
+          }
+        }
+        var v = active ? active.getAttribute("data-value") : null;
+        potentialQuizEl.hidden = !(potentialUnknownQuizShown && v === "unknown");
+      }
+
+      var riskFollowupEl = document.getElementById("risk-followup");
+      var riskLeaveOtherWrap = document.getElementById("risk-leave-other-wrap");
+      var riskChipOther = document.querySelector(".risk-chip[data-chip-other]");
+      var riskImpactExpertise = document.getElementById("risk-impact-expertise");
+      var riskImpactExpertiseWrap = document.getElementById("risk-impact-expertise-wrap");
+      var riskImpactOther = document.getElementById("risk-impact-other");
+      var riskImpactOtherWrap = document.getElementById("risk-impact-other-wrap");
+
+      function syncRiskLeaveOtherInput() {
+        if (!riskLeaveOtherWrap || !riskChipOther) return;
+        riskLeaveOtherWrap.hidden = !riskChipOther.classList.contains("risk-chip--selected");
+      }
+
+      function syncRiskImpactDetailInputs() {
+        if (riskImpactExpertiseWrap && riskImpactExpertise) {
+          riskImpactExpertiseWrap.hidden = !riskImpactExpertise.checked;
+        }
+        if (riskImpactOtherWrap && riskImpactOther) {
+          riskImpactOtherWrap.hidden = !riskImpactOther.checked;
+        }
+      }
+
+      function syncRiskFollowup() {
+        if (!riskFollowupEl || !groups.risk) return;
+        var activeR = null;
+        for (var ri = 0; ri < groups.risk.length; ri++) {
+          if (groups.risk[ri].classList.contains("segment__btn--active")) {
+            activeR = groups.risk[ri];
+            break;
+          }
+        }
+        var rv = activeR ? activeR.getAttribute("data-value") : null;
+        riskFollowupEl.hidden = rv !== "mid" && rv !== "high";
+        if (!riskFollowupEl.hidden) {
+          syncRiskLeaveOtherInput();
+          syncRiskImpactDetailInputs();
+        }
+      }
+
+      function setPotentialSegment(value) {
+        potentialUnknownQuizShown = false;
+        if (!groups.potential) return;
+        groups.potential.forEach(function (b) {
+          b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === value);
+        });
+        syncPotentialCaption();
+        syncPotentialQuizVisibility();
+        syncSubmitButton();
+      }
+
+      function countPotentialQuizYes() {
+        var n = 0;
+        for (var q = 0; q < 7; q++) {
+          var el = document.querySelector('input[name="pq-' + q + '"]:checked');
+          if (el && el.value === "yes") n++;
+        }
+        return n;
+      }
+
+      document.querySelectorAll(".segment__btn").forEach(function (btn) {
+        var name = btn.getAttribute("data-name");
+        if (!name) return;
+        if (!groups[name]) groups[name] = [];
+        groups[name].push(btn);
+        btn.addEventListener("click", function () {
+          groups[name].forEach(function (b) {
+            b.classList.remove("segment__btn--active");
+          });
+          btn.classList.add("segment__btn--active");
+          if (name === "potential") {
+            var pv = btn.getAttribute("data-value");
+            potentialUnknownQuizShown = pv === "unknown";
+            syncPotentialCaption();
+            syncPotentialQuizVisibility();
+          } else if (name === "risk") {
+            syncRiskFollowup();
+          } else if (name === "keyrole") {
+            syncSuccessorRequired();
+          } else if (name === "successor") {
+            syncSuccessorFollowup();
+          }
+          syncSubmitButton();
+        });
+      });
+
+      document.querySelectorAll(".risk-chip[data-chip]").forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chip.classList.toggle("risk-chip--selected");
+          syncRiskLeaveOtherInput();
+        });
+      });
+
+      if (riskImpactExpertise) {
+        riskImpactExpertise.addEventListener("change", syncRiskImpactDetailInputs);
+      }
+      if (riskImpactOther) {
+        riskImpactOther.addEventListener("change", syncRiskImpactDetailInputs);
+      }
+
+      syncRiskLeaveOtherInput();
+      syncRiskImpactDetailInputs();
+
+      var calcBtn = document.getElementById("potential-calc-btn");
+      if (calcBtn) {
+        calcBtn.addEventListener("click", function () {
+          var yes = countPotentialQuizYes();
+          var target = "basic";
+          if (yes >= 6) target = "high";
+          else if (yes >= 4) target = "growing";
+          setPotentialSegment(target);
+        });
+      }
+
+      var successorReqEl = document.getElementById("successor-req");
+      var successorSegmentEl = document.getElementById("successor-segment");
+      var successorNoDetailEl = document.getElementById("successor-no-detail");
+      var successorYesDetailEl = document.getElementById("successor-yes-detail");
+      var successorRowsEl = document.getElementById("successor-rows");
+      var successorAddBtnEl = document.getElementById("successor-add-btn");
+      var succRowTemplate = document.getElementById("succ-row-template");
+      var submitBtnEl = document.getElementById("submit-btn");
+
+      function getActiveSegmentValue(name) {
+        if (!groups[name]) return null;
+        for (var gi = 0; gi < groups[name].length; gi++) {
+          if (groups[name][gi].classList.contains("segment__btn--active")) {
+            return groups[name][gi].getAttribute("data-value");
+          }
+        }
+        return null;
+      }
+
+      function isFormComplete() {
+        var pot = getActiveSegmentValue("potential");
+        if (pot !== "basic" && pot !== "growing" && pot !== "high") return false;
+        var keyrole = getActiveSegmentValue("keyrole");
+        if (keyrole !== "yes") return true;
+        var succ = getActiveSegmentValue("successor");
+        if (succ === "no") return true;
+        if (succ !== "yes") return false;
+        if (!successorRowsEl) return false;
+        var rows = successorRowsEl.querySelectorAll("[data-succ-row]");
+        for (var r = 0; r < rows.length; r++) {
+          var pv = rows[r].querySelector("[data-succ-person-value]");
+          var rv = rows[r].querySelector("[data-succ-ready-value]");
+          if (pv && pv.value && rv && rv.value) return true;
+        }
+        return false;
+      }
+
+      function syncSubmitButton() {
+        if (!submitBtnEl) return;
+        var ok = isFormComplete();
+        submitBtnEl.disabled = !ok;
+        submitBtnEl.title = ok
+          ? ""
+          : "Выберите базовый, растущий или высокий потенциал; при ключевой роли «да» укажите преемника или ответьте «нет»";
+      }
+
+      function initialsFromName(text) {
+        var p = String(text || "")
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean);
+        if (p.length >= 2) return (p[0][0] + p[1][0]).toUpperCase();
+        return (String(text || "").slice(0, 2) || "—").toUpperCase();
+      }
+
+      var SUCC_PERSON_LABELS = {
+        ek: "Екатерина Компанченко",
+        am: "Алексей Морозов",
+        in: "Ирина Николаева",
+        dp: "Дмитрий Павлов",
+      };
+
+      var SUCC_PERSON_AVATARS = {
+        ek: "assets/avatars/Ekaterina.png",
+        am: "assets/avatars/Alexey.png",
+        in: "assets/avatars/Irina.png",
+        dp: "assets/avatars/Dmitry.png",
+      };
+
+      var SUCC_READY_LABELS = {
+        ready: "Готов",
+        y1: "До года на подготовку",
+        y2: "1–2 года на подготовку",
+        temp: "Временная замена",
+      };
+
+      function succPersonLabel(value) {
+        return SUCC_PERSON_LABELS[value] || "";
+      }
+
+      function succReadyLabel(value) {
+        return SUCC_READY_LABELS[value] || "";
+      }
+
+      function closeAllSuccessorPickers() {
+        if (!successorRowsEl) return;
+        successorRowsEl.querySelectorAll("[data-succ-person-menu], [data-succ-ready-menu]").forEach(function (menu) {
+          menu.hidden = true;
+        });
+        successorRowsEl.querySelectorAll("[data-succ-person-trigger], [data-succ-ready-trigger]").forEach(function (tr) {
+          tr.setAttribute("aria-expanded", "false");
+        });
+      }
+
+      document.addEventListener("mousedown", function (e) {
+        if (!successorYesDetailEl || successorYesDetailEl.hidden) return;
+        if (e.target.closest("[data-succ-picker]")) return;
+        closeAllSuccessorPickers();
+      });
+
+      function setPersonValue(row, value) {
+        try {
+          var hid = row.querySelector("[data-succ-person-value]");
+          var field = row.querySelector("[data-succ-person-field]");
+          var label = row.querySelector("[data-succ-person-label]");
+          var avatarWrap = row.querySelector("[data-succ-avatar]");
+          var avatarImg = row.querySelector("[data-succ-avatar-img]");
+          var avatarInitials = row.querySelector("[data-succ-avatar-initials]");
+          var nameEl = row.querySelector("[data-succ-chip-name]");
+          if (hid) hid.value = value || "";
+          if (!value) {
+            if (field) field.classList.remove("succ-field--has-chip");
+            if (label) {
+              label.textContent = "Выберите преемника";
+              label.classList.add("succ-person-trigger__text--muted");
+            }
+            if (avatarImg) avatarImg.removeAttribute("src");
+            if (avatarInitials) avatarInitials.textContent = "";
+            if (avatarWrap) avatarWrap.classList.remove("succ-chip-avatar--photo");
+            if (nameEl) nameEl.textContent = "";
+            return;
+          }
+          var nameText = succPersonLabel(value);
+          if (field) field.classList.add("succ-field--has-chip");
+          if (label) {
+            label.textContent = "Выберите преемника";
+            label.classList.add("succ-person-trigger__text--muted");
+          }
+          if (nameEl) nameEl.textContent = nameText;
+          var photoUrl = SUCC_PERSON_AVATARS[value];
+          if (photoUrl && avatarImg && avatarWrap) {
+            avatarImg.src = photoUrl;
+            avatarWrap.classList.add("succ-chip-avatar--photo");
+            if (avatarInitials) avatarInitials.textContent = "";
+          } else {
+            if (avatarImg) avatarImg.removeAttribute("src");
+            if (avatarWrap) avatarWrap.classList.remove("succ-chip-avatar--photo");
+            if (avatarInitials) avatarInitials.textContent = initialsFromName(nameText);
+          }
+        } finally {
+          syncSubmitButton();
+        }
+      }
+
+      function setReadinessValue(row, value) {
+        try {
+          var hid = row.querySelector("[data-succ-ready-value]");
+          var label = row.querySelector("[data-succ-ready-label]");
+          var trig = row.querySelector("[data-succ-ready-trigger]");
+          var menu = row.querySelector("[data-succ-ready-menu]");
+          if (hid) hid.value = value || "";
+          if (!value) {
+            if (label) {
+              label.textContent = "Степень готовности";
+              label.classList.add("succ-dd-trigger__text--muted");
+            }
+            if (trig) trig.setAttribute("aria-expanded", "false");
+            if (menu) menu.hidden = true;
+            return;
+          }
+          if (label) {
+            label.textContent = succReadyLabel(value);
+            label.classList.remove("succ-dd-trigger__text--muted");
+          }
+          if (trig) trig.setAttribute("aria-expanded", "false");
+          if (menu) menu.hidden = true;
+        } finally {
+          syncSubmitButton();
+        }
+      }
+
+      function bindSuccessorRow(row) {
+        var personTrig = row.querySelector("[data-succ-person-trigger]");
+        var personMenu = row.querySelector("[data-succ-person-menu]");
+        var readyTrig = row.querySelector("[data-succ-ready-trigger]");
+        var readyMenu = row.querySelector("[data-succ-ready-menu]");
+        var field = row.querySelector("[data-succ-person-field]");
+        var clearBtn = row.querySelector("[data-succ-chip-clear]");
+        var removeBtn = row.querySelector("[data-succ-row-remove]");
+        if (!personTrig || !personMenu || !readyTrig || !readyMenu || !field || !clearBtn || !removeBtn) return;
+
+        personTrig.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var wasOpen = !personMenu.hidden;
+          closeAllSuccessorPickers();
+          if (!wasOpen) {
+            personMenu.hidden = false;
+            personTrig.setAttribute("aria-expanded", "true");
+          }
+        });
+
+        personMenu.querySelectorAll(".succ-menu__opt").forEach(function (optBtn) {
+          optBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var val = optBtn.getAttribute("data-value");
+            setPersonValue(row, val);
+            personMenu.hidden = true;
+            personTrig.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        readyTrig.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var wasOpen = !readyMenu.hidden;
+          closeAllSuccessorPickers();
+          if (!wasOpen) {
+            readyMenu.hidden = false;
+            readyTrig.setAttribute("aria-expanded", "true");
+          }
+        });
+
+        readyMenu.querySelectorAll(".succ-menu__opt").forEach(function (optBtn) {
+          optBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var val = optBtn.getAttribute("data-value");
+            setReadinessValue(row, val);
+            closeAllSuccessorPickers();
+          });
+        });
+
+        clearBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          setPersonValue(row, "");
+          closeAllSuccessorPickers();
+        });
+
+        removeBtn.addEventListener("click", function () {
+          try {
+            var rows = successorRowsEl.querySelectorAll("[data-succ-row]");
+            if (rows.length <= 1) {
+              setPersonValue(row, "");
+              setReadinessValue(row, "");
+              closeAllSuccessorPickers();
+              return;
+            }
+            row.remove();
+            syncSuccessorAddButtonVisibility();
+          } finally {
+            syncSubmitButton();
+          }
+        });
+      }
+
+      function syncSuccessorAddButtonVisibility() {
+        if (!successorAddBtnEl || !successorRowsEl) return;
+        var n = successorRowsEl.querySelectorAll("[data-succ-row]").length;
+        successorAddBtnEl.hidden = n >= 4;
+      }
+
+      function addSuccessorRow() {
+        if (!succRowTemplate || !successorRowsEl) return;
+        var n = successorRowsEl.querySelectorAll("[data-succ-row]").length;
+        if (n >= 4) return;
+        var frag = succRowTemplate.content.cloneNode(true);
+        successorRowsEl.appendChild(frag);
+        var row = successorRowsEl.lastElementChild;
+        if (row) bindSuccessorRow(row);
+        syncSuccessorAddButtonVisibility();
+        syncSubmitButton();
+      }
+
+      function ensureSuccessorRowsMinOne() {
+        if (!successorRowsEl) return;
+        if (successorRowsEl.querySelectorAll("[data-succ-row]").length === 0) {
+          addSuccessorRow();
+        }
+      }
+
+      function getActiveSuccessorValue() {
+        if (!groups.successor) return null;
+        for (var si = 0; si < groups.successor.length; si++) {
+          if (groups.successor[si].classList.contains("segment__btn--active")) {
+            return groups.successor[si].getAttribute("data-value");
+          }
+        }
+        return null;
+      }
+
+      function syncSuccessorFollowup() {
+        if (!successorNoDetailEl || !successorYesDetailEl) return;
+        var v = getActiveSuccessorValue();
+        successorNoDetailEl.hidden = v !== "no";
+        successorYesDetailEl.hidden = v !== "yes";
+        if (v !== "yes") {
+          closeAllSuccessorPickers();
+        }
+        if (v === "yes") {
+          ensureSuccessorRowsMinOne();
+          syncSuccessorAddButtonVisibility();
+        }
+        syncSubmitButton();
+      }
+
+      var SKILL_POOLS = {
+        strengths: ["Продуктовая аналитика", "Стратегия", "Работа с данными", "Лидерство", "Системное мышление"],
+        growth: ["Сложные коммуникации", "Делегирование", "Глубокий фокус", "Публичные выступления", "Планирование времени"]
+      };
+
+      function addSkillTag(tagsEl, text) {
+        if (!tagsEl || text == null) return;
+        var tag = document.createElement("span");
+        tag.className = "skill-tag";
+        var t = document.createElement("span");
+        t.className = "skill-tag__text";
+        t.textContent = text;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "skill-tag__remove";
+        btn.setAttribute("data-skill-remove", "");
+        btn.setAttribute("aria-label", "Удалить навык");
+        var rmIcon = document.createElement("img");
+        rmIcon.className = "skill-tag__remove-icon";
+        rmIcon.src = "assets/icons/Close.svg";
+        rmIcon.width = 16;
+        rmIcon.height = 16;
+        rmIcon.alt = "";
+        rmIcon.setAttribute("aria-hidden", "true");
+        rmIcon.decoding = "async";
+        btn.appendChild(rmIcon);
+        tag.appendChild(t);
+        tag.appendChild(btn);
+        tagsEl.appendChild(tag);
+      }
+
+      function resetSkillFields() {
+        document.querySelectorAll("[data-skill-input]").forEach(function (field) {
+          var tags = field.querySelector("[data-skill-tags]");
+          if (tags) tags.innerHTML = "";
+          field.dataset.addIdx = "0";
+        });
+      }
+
+      document.addEventListener("click", function (e) {
+        var field = e.target.closest("[data-skill-input]");
+        if (!field) return;
+        if (e.target.closest("[data-skill-remove]")) {
+          e.preventDefault();
+          var tag = e.target.closest(".skill-tag");
+          if (tag) tag.remove();
+          return;
+        }
+        if (e.target.closest(".skill-tag")) {
+          return;
+        }
+        var tagsEl = field.querySelector("[data-skill-tags]");
+        var poolName = field.getAttribute("data-skill-pool");
+        var pool = SKILL_POOLS[poolName];
+        if (!pool || !pool.length || !tagsEl) return;
+        var idx = parseInt(field.dataset.addIdx || "0", 10) % pool.length;
+        addSkillTag(tagsEl, pool[idx]);
+        field.dataset.addIdx = String(idx + 1);
+      });
+
+      if (successorAddBtnEl) {
+        successorAddBtnEl.addEventListener("click", function () {
+          addSuccessorRow();
+        });
+      }
+
+      function syncSuccessorRequired() {
+        if (!groups.keyrole) return;
+        var activeK = null;
+        for (var ki = 0; ki < groups.keyrole.length; ki++) {
+          if (groups.keyrole[ki].classList.contains("segment__btn--active")) {
+            activeK = groups.keyrole[ki];
+            break;
+          }
+        }
+        var keyVal = activeK ? activeK.getAttribute("data-value") : null;
+        var required = keyVal === "yes";
+        if (successorReqEl) {
+          successorReqEl.hidden = !required;
+        }
+        if (successorSegmentEl) {
+          successorSegmentEl.setAttribute("aria-required", required ? "true" : "false");
+        }
+      }
+
+      function bootstrapForm() {
+        if (successorRowsEl) successorRowsEl.innerHTML = "";
+        if (groups.openness) {
+          groups.openness.forEach(function (b) {
+            b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === "none");
+          });
+        }
+        if (groups.risk) {
+          groups.risk.forEach(function (b) {
+            b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === "low");
+          });
+        }
+        potentialUnknownQuizShown = false;
+        syncPotentialCaption();
+        syncPotentialQuizVisibility();
+        syncRiskFollowup();
+        syncSuccessorRequired();
+        syncSuccessorFollowup();
+        resetSkillFields();
+        syncSubmitButton();
+      }
+
+      bootstrapForm();
+    })();
+  </script>
+</body>
+</html>

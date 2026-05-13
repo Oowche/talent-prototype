@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Разметка талантов — прототип</title>
+  <title>Разметка талантов — Дарина Аверьянова</title>
   <style>
     @font-face {
       font-family: "YS Text";
@@ -45,7 +45,11 @@
       --space-l: 20px;
       --space-xl: 24px;
       --header-h: 72px;
-      --sidebar-w: 300px;
+      --sidebar-w: 64px;
+      --sidebar-rail-bg: #ebedf5;
+      --sidebar-rail-hover: rgba(0, 0, 0, 0.06);
+      --sidebar-rail-active: rgba(0, 0, 0, 0.08);
+      --brand-yandex-red: #fc3f1d;
       --content-max: 768px;
       --title-l: 28px;
       --title-l-lh: 32px;
@@ -81,74 +85,149 @@
       min-height: 100%;
     }
 
-    /* Sidebar */
-    .sidebar {
+    /* Sidebar rail (Talent) */
+    .sidebar.sidebar--rail {
       width: var(--sidebar-w);
       flex-shrink: 0;
-      border-right: 1px solid var(--border);
+      border-right: none;
       display: flex;
       flex-direction: column;
-      background: var(--surface-100);
-    }
-
-    .sidebar__fixed {
-      padding: var(--space-s);
-    }
-
-    .sidebar__logo {
-      height: 40px;
-      display: flex;
       align-items: center;
-      padding: 4px;
-      margin-bottom: var(--space-s);
+      background: var(--sidebar-rail-bg);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
-    .sidebar__logo-mark {
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-
-    .sidebar__nav-block {
+    .sidebar-rail__top {
+      width: 100%;
+      padding: 12px 10px 0;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 4px;
     }
 
-    .sidebar__divider {
+    .sidebar-rail__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 100px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-rail__logo img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .sidebar-rail__tools {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .sidebar-rail__btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .sidebar-rail__btn:hover {
+      background: var(--sidebar-rail-hover);
+    }
+
+    .sidebar-rail__btn--active {
+      background: var(--sidebar-rail-active);
+    }
+
+    .sidebar-rail__btn--active:hover {
+      background: var(--sidebar-rail-active);
+    }
+
+    .sidebar-rail__icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      object-fit: contain;
+      opacity: 0.88;
+    }
+
+    .sidebar-rail__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sidebar-rail__badge {
+      position: absolute;
+      top: 4px;
+      right: 2px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 6px;
+      background: #da4e4e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      text-align: center;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .sidebar-rail__divider {
+      width: calc(100% - 16px);
       height: 1px;
-      background: var(--border);
-      margin: 0;
+      margin: 10px 0 6px;
+      background: rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
     }
 
-    .sidebar__scroll {
+    .sidebar-rail__nav {
       flex: 1;
-      overflow: auto;
-      padding: var(--space-s);
+      width: 100%;
+      padding: 0 10px 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-
-    .nav-item {
-      height: 40px;
-      padding: 0 var(--space-s);
-      border-radius: var(--radius-control);
-      display: flex;
       align-items: center;
-      font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      color: var(--text-primary);
-      cursor: default;
+      gap: 4px;
+      min-height: 0;
+      overflow-y: auto;
     }
 
-    .nav-item--muted {
-      color: var(--text-secondary);
+    .sidebar-rail__footer {
+      width: 100%;
+      padding: 0 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
-    .sidebar__footer {
-      padding: var(--space-s);
-      border-top: 1px solid var(--border);
+    .sidebar-rail__footer .sidebar-rail__divider {
+      margin-top: 0;
+      margin-bottom: 8px;
     }
 
     /* Main */
@@ -1486,14 +1565,46 @@
       .app {
         flex-direction: column;
       }
-      .sidebar {
+      .sidebar.sidebar--rail {
         width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-      .sidebar__scroll {
         flex-direction: row;
         flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        box-shadow: none;
+      }
+      .sidebar-rail__top {
+        flex-direction: row;
+        width: auto;
+        padding: 8px;
+        gap: 4px;
+      }
+      .sidebar-rail__logo {
+        margin-bottom: 0;
+      }
+      .sidebar-rail__tools {
+        flex-direction: row;
+      }
+      .sidebar-rail__divider {
+        display: none;
+      }
+      .sidebar-rail__nav {
+        flex: 1 1 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 8px;
+        overflow: visible;
+      }
+      .sidebar-rail__footer {
+        flex-direction: row;
+        width: auto;
+        padding: 8px;
+      }
+      .sidebar-rail__footer .sidebar-rail__divider {
+        display: none;
       }
     }
 
@@ -1511,29 +1622,65 @@
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar" aria-label="Навигация">
-      <div class="sidebar__fixed">
-        <div class="sidebar__logo">
-          <span class="sidebar__logo-mark">Яндекс</span>
-        </div>
-        <div class="sidebar__nav-block">
-          <div class="nav-item nav-item--muted">Обзор</div>
-          <div class="nav-item nav-item--muted">Команда</div>
-          <div class="nav-item nav-item--muted">Цели</div>
-          <div class="nav-item nav-item--muted">Настройки</div>
+    <aside class="sidebar sidebar--rail" aria-label="Навигация">
+      <div class="sidebar-rail__top">
+        <a class="sidebar-rail__logo" href="review-home.html" title="Яндекс" aria-label="Яндекс">
+          <img src="assets/icons/Logo.svg" width="32" height="32" alt="" decoding="async" />
+        </a>
+        <div class="sidebar-rail__tools">
+          <button type="button" class="sidebar-rail__btn" title="Поиск" aria-label="Поиск">
+            <img class="sidebar-rail__icon" src="assets/icons/Search.svg" width="20" height="20" alt="" decoding="async" />
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Уведомления" aria-label="Уведомления">
+            <img class="sidebar-rail__icon" src="assets/icons/Notifications.svg" width="20" height="20" alt="" decoding="async" />
+            <span class="sidebar-rail__badge" aria-hidden="true">8</span>
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Все сервисы" aria-label="Все сервисы">
+            <img class="sidebar-rail__icon" src="assets/icons/Grid%20Dots.svg" width="20" height="20" alt="" decoding="async" />
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Профиль" aria-label="Профиль">
+            <img class="sidebar-rail__avatar" src="assets/avatars/Irina.png" width="32" height="32" alt="" decoding="async" />
+          </button>
         </div>
       </div>
-      <hr class="sidebar__divider" />
-      <nav class="sidebar__scroll">
-        <div class="nav-item nav-item--muted">Пункт меню</div>
-        <div class="nav-item nav-item--muted">Пункт меню</div>
-        <div class="nav-item nav-item--muted">Пункт меню</div>
-        <div class="nav-item">Разметка талантов</div>
-        <div class="nav-item nav-item--muted">Пункт меню</div>
-        <div class="nav-item nav-item--muted">Пункт меню</div>
+      <div class="sidebar-rail__divider" aria-hidden="true"></div>
+      <nav class="sidebar-rail__nav" aria-label="Разделы Talent">
+        <a class="sidebar-rail__btn" href="review-home.html" title="Главная">
+          <img class="sidebar-rail__icon" src="assets/icons/Home.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Сигналы" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Megaphone.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="employees-table.html" title="Потолки">
+          <img class="sidebar-rail__icon" src="assets/icons/Group.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Финансы" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Finance%20_%20Coin%20_%20On.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn sidebar-rail__btn--active" href="review-home.html" title="Перформанс" aria-current="page">
+          <img class="sidebar-rail__icon" src="assets/icons/Review%20_%20Fantastic.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="index.html" title="Планы развития">
+          <img class="sidebar-rail__icon" src="assets/icons/Graduation%20Cap.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Офис" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Chart.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
       </nav>
-      <div class="sidebar__footer">
-        <div class="nav-item nav-item--muted">Помощь</div>
+      <div class="sidebar-rail__footer">
+        <div class="sidebar-rail__divider" aria-hidden="true"></div>
+        <a class="sidebar-rail__btn" href="#" title="Настройки" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Settings.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Поделитесь мнением" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Help.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <button type="button" class="sidebar-rail__btn" title="Обновить" aria-label="Обновить">
+          <img class="sidebar-rail__icon" src="assets/icons/Refresh.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+        <button type="button" class="sidebar-rail__btn" title="Развернуть панель" aria-label="Развернуть панель">
+          <img class="sidebar-rail__icon" src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
       </div>
     </aside>
 
@@ -1566,12 +1713,12 @@
               <div class="hero__title">Разметка талантов</div>
               <div class="hero__row hero__title">
                 <span>для</span>
-                <span class="hero__avatar hero__avatar--photo" role="img" aria-label="Елена Комиссарова">
-                  <img src="assets/avatars/Elena.png" alt="" width="32" height="32" decoding="async" />
+                <span id="hero-emp-avatar" class="hero__avatar hero__avatar--photo" role="img" aria-label="Дарины Аверьяновой">
+                  <img id="hero-emp-avatar-img" src="assets/avatars/Darina.png" alt="" width="32" height="32" decoding="async" />
                 </span>
-                <span>Елены Комиссаровой</span>
+                <span id="hero-emp-genitive">Дарины Аверьяновой</span>
               </div>
-              <p class="hero__sub">Поможет спланировать развитие сотрудника и поставить цели на сезон</p>
+              <p id="hero-emp-sub" class="hero__sub">Поможет спланировать развитие сотрудника и поставить цели на сезон</p>
             </div>
             <button type="button" class="btn-ghost">Не размечать</button>
           </section>
@@ -1691,7 +1838,7 @@
             <div class="field-block">
               <div class="field-block__title">Риск потери и последствия</div>
               <div class="label-row">
-                <span class="label">Оцените вероятность ухода Дарины</span>
+                <span class="label" id="talent-lbl-risk-probability">Оцените вероятность ухода Дарины</span>
                 <span class="req" aria-hidden="true">*</span>
                 <span class="info info--with-tooltip">
                   <button
@@ -1735,7 +1882,7 @@
               </div>
               <div id="risk-followup" class="risk-followup" hidden>
                 <div class="risk-followup__section">
-                  <div class="risk-followup__label">Почему она может уйти?</div>
+                  <div class="risk-followup__label" id="talent-lbl-risk-why">Почему она может уйти?</div>
                   <div class="risk-chips-stack">
                     <div class="risk-chips" role="group" aria-label="Причины ухода">
                       <button type="button" class="risk-chip" data-chip>Большая нагрузка (стресс, выгорание, усталость)</button>
@@ -1760,7 +1907,7 @@
                   </div>
                 </div>
                 <div class="risk-followup__section">
-                  <div class="risk-followup__label">Как уход Елены повлияет на цели и команду?</div>
+                  <div class="risk-followup__label" id="talent-lbl-risk-impact">Как уход Дарины повлияет на цели и команду?</div>
                   <div class="risk-checks">
                     <label class="risk-cb-row" for="risk-impact-critical">
                       <input type="checkbox" class="risk-cb-input" id="risk-impact-critical" name="risk-impact" value="critical" />
@@ -1817,7 +1964,7 @@
               <div class="stack-fields">
                 <div>
                   <div class="label-row" style="margin-bottom: var(--space-s)">
-                    <span class="label">Дарина занимает ключевую роль?</span>
+                    <span class="label"><span id="talent-label-keyrole-name">Дарина</span> занимает ключевую роль?</span>
                   </div>
                   <div class="segment segment--2" role="group">
                     <button type="button" class="segment__btn" data-name="keyrole" data-value="no">Нет</button>
@@ -2030,25 +2177,27 @@
               <div class="stack-fields">
                 <div>
                   <div class="label-row" style="margin-bottom: var(--space-s)">
-                    <span class="label">Какую роль Дарину могла бы занять в будущем?</span>
+                    <span class="label" id="talent-lbl-future-role">Какую роль Дарина могла бы занять в будущем?</span>
                   </div>
                   <textarea
+                    id="talent-field-future-role"
                     class="textarea"
                     placeholder="Новый продукт, проект, направление или роль"
                   ></textarea>
                 </div>
                 <div>
                   <div class="label-row" style="margin-bottom: var(--space-s)">
-                    <span class="label">Как сама Дарина видит своё развитие в компании?</span>
+                    <span class="label">Как <span id="talent-label-dev-name">Дарина</span> видит своё развитие в компании?</span>
                   </div>
                   <textarea
+                    id="talent-field-career-dev"
                     class="textarea"
                     placeholder="Карьерный путь, цели, проекты"
                   ></textarea>
                 </div>
                 <div>
                   <div class="label-row" style="margin-bottom: var(--space-s)">
-                    <span class="label"
+                    <span class="label" id="talent-lbl-open-profile"
                       >Если внутри команды нет возможности роста, можно открыть профиль Дарины для внутреннего найма</span
                     >
                   </div>
@@ -2108,6 +2257,98 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var BY_SLUG = {
+        darina: {
+          nominative: "Дарина Аверьянова",
+          genitive: "Дарины Аверьяновой",
+          avatar: "assets/avatars/Darina.png",
+          first: "Дарина",
+          firstGenitive: "Дарины",
+          firstAccusative: "Дарину",
+          gender: "f",
+          succMenuValue: null,
+        },
+        ekaterina: {
+          nominative: "Екатерина Компанченко",
+          genitive: "Екатерины Компанченко",
+          avatar: "assets/avatars/Ekaterina.png",
+          first: "Екатерина",
+          firstGenitive: "Екатерины",
+          firstAccusative: "Екатерину",
+          gender: "f",
+          succMenuValue: "ek",
+        },
+        alexey: {
+          nominative: "Алексей Морозов",
+          genitive: "Алексея Морозова",
+          avatar: "assets/avatars/Alexey.png",
+          first: "Алексей",
+          firstGenitive: "Алексея",
+          firstAccusative: "Алексея",
+          gender: "m",
+          succMenuValue: "am",
+        },
+      };
+      var params = new URLSearchParams(window.location.search);
+      var raw = (params.get("e") || "darina").toLowerCase();
+      var emp = BY_SLUG[raw] || BY_SLUG.darina;
+
+      function setText(id, text) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      var img = document.getElementById("hero-emp-avatar-img");
+      var genSpan = document.getElementById("hero-emp-genitive");
+      var avWrap = document.getElementById("hero-emp-avatar");
+      if (img && emp.avatar) img.src = emp.avatar;
+      if (genSpan) genSpan.textContent = emp.genitive;
+      if (avWrap) avWrap.setAttribute("aria-label", emp.genitive);
+      document.title = "Разметка талантов — " + emp.nominative;
+
+      setText(
+        "hero-emp-sub",
+        "Поможет спланировать развитие " + emp.firstGenitive + " и поставить цели на сезон"
+      );
+
+      var heShe = emp.gender === "m" ? "он" : "она";
+      var could = emp.gender === "m" ? "мог бы" : "могла бы";
+
+      setText("talent-lbl-risk-probability", "Оцените вероятность ухода " + emp.firstGenitive);
+      setText("talent-lbl-risk-why", "Почему " + heShe + " может уйти?");
+      setText("talent-lbl-risk-impact", "Как уход " + emp.firstGenitive + " повлияет на цели и команду?");
+      setText("talent-label-keyrole-name", emp.first);
+      setText(
+        "successor-label",
+        "Кто-то сможет заменить " + emp.firstAccusative + " в случае ухода или повышения?"
+      );
+      setText("talent-lbl-future-role", "Какую роль " + emp.first + " " + could + " занять в будущем?");
+      setText("talent-label-dev-name", emp.first);
+      setText(
+        "talent-lbl-open-profile",
+        "Если внутри команды нет возможности роста, можно открыть профиль " +
+          emp.firstGenitive +
+          " для внутреннего найма"
+      );
+      setText("skill-strengths-label", "Сильные стороны " + emp.firstGenitive);
+
+      var hideVal = emp.succMenuValue;
+      if (hideVal) {
+        var tpl = document.getElementById("succ-row-template");
+        if (tpl) {
+          tpl.querySelectorAll('.succ-menu__opt[data-value="' + hideVal + '"]').forEach(function (btn) {
+            btn.remove();
+          });
+        }
+      }
+
+      window.__talentEmp = emp;
+      window.__talentEmpSlug = raw;
+    })();
+  </script>
 
   <script>
     (function () {
@@ -2649,6 +2890,162 @@
         if (successorSegmentEl) {
           successorSegmentEl.setAttribute("aria-required", required ? "true" : "false");
         }
+      }
+
+      var TALENT_SAVE_PREFIX = "talentMarkupV1:";
+
+      function getActiveSegmentLabel(name) {
+        if (!groups[name]) return "";
+        for (var gi = 0; gi < groups[name].length; gi++) {
+          if (groups[name][gi].classList.contains("segment__btn--active")) {
+            return groups[name][gi].textContent.replace(/\s+/g, " ").trim();
+          }
+        }
+        return "";
+      }
+
+      var RISK_LINE_MAP = {
+        low: "Низкая вероятность ухода",
+        mid: "Средняя вероятность ухода",
+        high: "Высокая вероятность ухода",
+      };
+
+      function buildCohortBand(pot) {
+        if (pot === "high") return "HiPo";
+        if (pot === "growing") return "HiPro";
+        if (pot === "basic") return "Core";
+        if (pot === "unknown") return "Perf Focus";
+        return "Core";
+      }
+
+      function buildPotentialHeadline(pot, keyrole) {
+        var potShort = getActiveSegmentLabel("potential") || "";
+        if (pot === "high" && keyrole === "yes") return "Высокий потенциал, занимает ключевую роль";
+        if (keyrole === "yes") return potShort ? potShort + ", занимает ключевую роль" : "Занимает ключевую роль";
+        if (keyrole === "no") return potShort ? potShort + ", не занимает ключевую роль" : "Не занимает ключевую роль";
+        return potShort || "—";
+      }
+
+      function collectSkillTags(pool) {
+        var wrap = document.querySelector('[data-skill-input][data-skill-pool="' + pool + '"] [data-skill-tags]');
+        if (!wrap) return [];
+        var out = [];
+        wrap.querySelectorAll(".skill-tag__text").forEach(function (t) {
+          var s = t.textContent.trim();
+          if (s) out.push(s);
+        });
+        return out;
+      }
+
+      function collectRiskReasonList() {
+        var out = [];
+        document.querySelectorAll(".risk-chip.risk-chip--selected").forEach(function (c) {
+          if (!c.hasAttribute("data-chip-other")) {
+            var s = c.textContent.trim();
+            if (s) out.push(s);
+          }
+        });
+        var otherInp = document.getElementById("risk-leave-other");
+        if (otherInp && otherInp.value.trim()) out.push(otherInp.value.trim());
+        return out;
+      }
+
+      function collectRiskImpactText() {
+        var parts = [];
+        document.querySelectorAll('input.risk-cb-input[name="risk-impact"]:checked').forEach(function (inp) {
+          var id = inp.id;
+          if (id === "risk-impact-critical") {
+            parts.push("Пострадает критический процесс.");
+            return;
+          }
+          if (id === "risk-impact-expertise") {
+            var d = document.getElementById("risk-impact-expertise-detail");
+            parts.push("Потеряем редкую экспертизу" + (d && d.value.trim() ? ": " + d.value.trim() : "") + ".");
+            return;
+          }
+          if (id === "risk-impact-team") {
+            parts.push("Команда может развалиться или потерять мотивацию.");
+            return;
+          }
+          if (id === "risk-impact-other") {
+            var o = document.getElementById("risk-impact-other-detail");
+            if (o && o.value.trim()) parts.push(o.value.trim());
+          }
+        });
+        return parts.join(" ");
+      }
+
+      function collectSuccessorsSnap() {
+        var out = [];
+        if (!successorRowsEl) return out;
+        successorRowsEl.querySelectorAll("[data-succ-row]").forEach(function (row) {
+          var pv = row.querySelector("[data-succ-person-value]");
+          var rv = row.querySelector("[data-succ-ready-value]");
+          var pk = pv && pv.value;
+          var rk = rv && rv.value;
+          if (!pk || !rk) return;
+          out.push({
+            code: pk,
+            name: succPersonLabel(pk),
+            readyKey: rk,
+            ready: succReadyLabel(rk),
+            avatar: SUCC_PERSON_AVATARS[pk] || "",
+          });
+        });
+        return out;
+      }
+
+      function collectTalentSnapshot() {
+        var emp = window.__talentEmp || {};
+        var slug = window.__talentEmpSlug || "darina";
+        var pot = getActiveSegmentValue("potential");
+        var keyrole = getActiveSegmentValue("keyrole");
+        var risk = getActiveSegmentValue("risk");
+        var taFuture = document.getElementById("talent-field-future-role");
+        var taDev = document.getElementById("talent-field-career-dev");
+        var futureText = taFuture ? taFuture.value.trim() : "";
+        var devText = taDev ? taDev.value.trim() : "";
+        var cap = "";
+        if (potentialCaptionEl && !potentialCaptionEl.hidden) {
+          cap = potentialCaptionEl.textContent.replace(/\n/g, " ").trim();
+        }
+        var detailParts = [cap, devText].filter(Boolean);
+        var opennessLabel = getActiveSegmentLabel("openness");
+        var fg = emp.firstGenitive || "";
+        return {
+          v: 1,
+          slug: slug,
+          savedAt: Date.now(),
+          firstGenitive: fg,
+          nominative: emp.nominative || "",
+          cohortTitle: "Предварительная когорта " + fg + " — " + buildCohortBand(pot),
+          cohortSub: "Определим точную когорту, когда будет согласована оценка перформанса",
+          potential: pot,
+          keyrole: keyrole,
+          potentialLine: buildPotentialHeadline(pot, keyrole),
+          potentialDetail: detailParts.length ? detailParts.join(" ") : "",
+          risk: risk,
+          riskLine: RISK_LINE_MAP[risk] || "",
+          riskImpact: collectRiskImpactText() || "",
+          riskReasons: collectRiskReasonList(),
+          futureRole: futureText || "",
+          careerDev: devText,
+          opennessLabel: opennessLabel,
+          successors: collectSuccessorsSnap(),
+          strengths: collectSkillTags("strengths"),
+          growth: collectSkillTags("growth"),
+        };
+      }
+
+      if (submitBtnEl) {
+        submitBtnEl.addEventListener("click", function () {
+          if (submitBtnEl.disabled) return;
+          try {
+            var snap = collectTalentSnapshot();
+            localStorage.setItem(TALENT_SAVE_PREFIX + snap.slug, JSON.stringify(snap));
+            window.location.href = "employees-table.html?openDrawer=" + encodeURIComponent(snap.slug);
+          } catch (err) {}
+        });
       }
 
       function bootstrapForm() {

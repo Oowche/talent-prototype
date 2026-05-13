@@ -43,7 +43,11 @@
       --space-l: 20px;
       --space-xl: 24px;
       --header-h: 72px;
-      --sidebar-w: 300px;
+      --sidebar-w: 64px;
+      --sidebar-rail-bg: #ebedf5;
+      --sidebar-rail-hover: rgba(0, 0, 0, 0.06);
+      --sidebar-rail-active: rgba(0, 0, 0, 0.08);
+      --brand-yandex-red: #fc3f1d;
       --title-l: 28px;
       --title-l-lh: 32px;
       --title-s: 20px;
@@ -86,91 +90,148 @@
       min-height: 100%;
     }
 
-    .sidebar {
+    .sidebar.sidebar--rail {
       width: var(--sidebar-w);
       flex-shrink: 0;
-      border-right: 1px solid var(--border);
+      border-right: none;
       display: flex;
       flex-direction: column;
-      background: var(--surface-100);
-    }
-
-    .sidebar__fixed {
-      padding: 12px;
-    }
-
-    .sidebar__logo-mark {
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-
-    .sidebar__logo {
-      height: 40px;
-      display: flex;
       align-items: center;
-      padding: 4px;
-      margin-bottom: var(--space-xs);
+      background: var(--sidebar-rail-bg);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
-    .sidebar__nav-block {
+    .sidebar-rail__top {
+      width: 100%;
+      padding: 12px 10px 0;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 4px;
     }
 
-    .sidebar__divider {
-      height: 1px;
-      background: var(--border);
+    .sidebar-rail__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 100px;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-rail__logo img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .sidebar-rail__tools {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .sidebar-rail__btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
       border: none;
-      margin: 0;
-    }
-
-    .sidebar__scroll {
-      flex: 1;
-      overflow: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .sidebar__footer {
-      padding: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .nav-item {
-      height: 40px;
-      padding: 0 12px;
+      border-radius: 12px;
+      background: transparent;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      border-radius: var(--radius-inner);
-      font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      color: var(--text-primary);
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .sidebar-rail__btn:hover {
+      background: var(--sidebar-rail-hover);
+    }
+
+    .sidebar-rail__btn--active {
+      background: var(--sidebar-rail-active);
+    }
+
+    .sidebar-rail__btn--active:hover {
+      background: var(--sidebar-rail-active);
+    }
+
+    .sidebar-rail__icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      object-fit: contain;
+      opacity: 0.88;
+    }
+
+    .sidebar-rail__avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sidebar-rail__badge {
+      position: absolute;
+      top: 4px;
+      right: 2px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 6px;
+      background: #da4e4e;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      text-align: center;
       font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .nav-item--muted {
-      color: var(--text-secondary);
+    .sidebar-rail__divider {
+      width: calc(100% - 16px);
+      height: 1px;
+      margin: 10px 0 6px;
+      background: rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
     }
 
-    .nav-item--active {
-      background: var(--surface-muted);
-      font-weight: 500;
-    }
-
-    .nav-item a {
-      color: inherit;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
+    .sidebar-rail__nav {
+      flex: 1;
       width: 100%;
-      height: 100%;
-      margin: 0 -12px;
-      padding: 0 12px;
-      border-radius: var(--radius-inner);
+      padding: 0 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-rail__footer {
+      width: 100%;
+      padding: 0 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-rail__footer .sidebar-rail__divider {
+      margin-top: 0;
+      margin-bottom: 8px;
     }
 
     .main {
@@ -938,6 +999,165 @@
       color: var(--text-primary);
     }
 
+    .emp-drawer__markup-empty {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .emp-drawer__markup-saved {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    #emp-drawer-markup-saved[hidden],
+    #emp-drawer-markup-empty[hidden] {
+      display: none !important;
+    }
+
+    .emp-drawer__cohort-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .emp-drawer__cohort-title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      color: var(--text-primary);
+    }
+
+    .emp-drawer__cohort-sub {
+      margin: 8px 0 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 48ch;
+    }
+
+    .emp-drawer__edit {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: var(--radius-control);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .emp-drawer__edit:hover {
+      background: var(--surface-muted);
+    }
+
+    .emp-drawer__edit img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+    }
+
+    .emp-drawer__saved-block {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 12px 20px;
+      align-items: start;
+    }
+
+    .emp-drawer__saved-label {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.45);
+      padding-top: 2px;
+    }
+
+    .emp-drawer__saved-body {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+    }
+
+    .emp-drawer__saved-lead {
+      margin: 0 0 8px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .emp-drawer__saved-text {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .emp-drawer__saved-text + .emp-drawer__saved-text {
+      margin-top: 8px;
+    }
+
+    .emp-drawer__reasons {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .emp-drawer__succ-row {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .emp-drawer__succ-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+      max-width: 100%;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+    }
+
+    .emp-drawer__succ-pill img {
+      width: 24px;
+      height: 24px;
+      border-radius: 100px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .emp-drawer__succ-meta {
+      color: rgba(0, 0, 0, 0.55);
+      font-weight: 400;
+    }
+
+    .emp-drawer__tag-list {
+      margin: 8px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .emp-drawer__mini-tag {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.06);
+      font-size: 13px;
+      line-height: 18px;
+    }
+
     .emp-drawer__lead {
       margin: 0;
       font-size: var(--body-s);
@@ -1267,36 +1487,111 @@
       .app {
         flex-direction: column;
       }
-      .sidebar {
+      .sidebar.sidebar--rail {
         width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
         border-right: none;
         border-bottom: 1px solid var(--border);
+        box-shadow: none;
+      }
+      .sidebar-rail__top {
+        flex-direction: row;
+        width: auto;
+        padding: 8px;
+        gap: 4px;
+      }
+      .sidebar-rail__logo {
+        margin-bottom: 0;
+      }
+      .sidebar-rail__tools {
+        flex-direction: row;
+      }
+      .sidebar-rail__divider {
+        display: none;
+      }
+      .sidebar-rail__nav {
+        flex: 1 1 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 8px;
+        overflow: visible;
+      }
+      .sidebar-rail__footer {
+        flex-direction: row;
+        width: auto;
+        padding: 8px;
+      }
+      .sidebar-rail__footer .sidebar-rail__divider {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar" aria-label="Навигация">
-      <div class="sidebar__fixed">
-        <div class="sidebar__logo"><span class="sidebar__logo-mark">Яндекс</span></div>
-        <div class="sidebar__nav-block">
-          <div class="nav-item nav-item--muted">Обзор</div>
-          <div class="nav-item nav-item--muted">Команда</div>
-          <div class="nav-item nav-item--muted">Цели</div>
-          <div class="nav-item nav-item--muted">Настройки</div>
+    <aside class="sidebar sidebar--rail" aria-label="Навигация">
+      <div class="sidebar-rail__top">
+        <a class="sidebar-rail__logo" href="review-home.html" title="Яндекс" aria-label="Яндекс">
+          <img src="assets/icons/Logo.svg" width="32" height="32" alt="" decoding="async" />
+        </a>
+        <div class="sidebar-rail__tools">
+          <button type="button" class="sidebar-rail__btn" title="Поиск" aria-label="Поиск">
+            <img class="sidebar-rail__icon" src="assets/icons/Search.svg" width="20" height="20" alt="" decoding="async" />
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Уведомления" aria-label="Уведомления">
+            <img class="sidebar-rail__icon" src="assets/icons/Notifications.svg" width="20" height="20" alt="" decoding="async" />
+            <span class="sidebar-rail__badge" aria-hidden="true">8</span>
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Все сервисы" aria-label="Все сервисы">
+            <img class="sidebar-rail__icon" src="assets/icons/Grid%20Dots.svg" width="20" height="20" alt="" decoding="async" />
+          </button>
+          <button type="button" class="sidebar-rail__btn" title="Профиль" aria-label="Профиль">
+            <img class="sidebar-rail__avatar" src="assets/avatars/Irina.png" width="32" height="32" alt="" decoding="async" />
+          </button>
         </div>
       </div>
-      <hr class="sidebar__divider" />
-      <nav class="sidebar__scroll">
-        <div class="nav-item nav-item--muted"><a href="review-home.html">Ревью</a></div>
-        <div class="nav-item nav-item--active">Участники ревью</div>
-        <div class="nav-item nav-item--muted"><a href="index.html">Разметка талантов</a></div>
-        <div class="nav-item nav-item--muted">Калибровки</div>
-        <div class="nav-item nav-item--muted">Управление талантами</div>
+      <div class="sidebar-rail__divider" aria-hidden="true"></div>
+      <nav class="sidebar-rail__nav" aria-label="Разделы Talent">
+        <a class="sidebar-rail__btn" href="review-home.html" title="Главная">
+          <img class="sidebar-rail__icon" src="assets/icons/Home.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Сигналы" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Megaphone.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="employees-table.html" title="Потолки">
+          <img class="sidebar-rail__icon" src="assets/icons/Group.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Финансы" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Finance%20_%20Coin%20_%20On.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn sidebar-rail__btn--active" href="review-home.html" title="Перформанс" aria-current="page">
+          <img class="sidebar-rail__icon" src="assets/icons/Review%20_%20Fantastic.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="index.html" title="Планы развития">
+          <img class="sidebar-rail__icon" src="assets/icons/Graduation%20Cap.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Офис" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Chart.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
       </nav>
-      <div class="sidebar__footer">
-        <div class="nav-item nav-item--muted">Помощь</div>
+      <div class="sidebar-rail__footer">
+        <div class="sidebar-rail__divider" aria-hidden="true"></div>
+        <a class="sidebar-rail__btn" href="#" title="Настройки" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Settings.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <a class="sidebar-rail__btn" href="#" title="Поделитесь мнением" onclick="return false;">
+          <img class="sidebar-rail__icon" src="assets/icons/Help.svg" width="20" height="20" alt="" decoding="async" />
+        </a>
+        <button type="button" class="sidebar-rail__btn" title="Обновить" aria-label="Обновить">
+          <img class="sidebar-rail__icon" src="assets/icons/Refresh.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
+        <button type="button" class="sidebar-rail__btn" title="Развернуть панель" aria-label="Развернуть панель">
+          <img class="sidebar-rail__icon" src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" width="20" height="20" alt="" decoding="async" />
+        </button>
       </div>
     </aside>
 
@@ -1460,7 +1755,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr data-employee-name="Дарина Аверьянова" data-employee-login="darinaaverianova@" data-employee-role="Руководитель группы" data-employee-avatar="assets/avatars/Darina.png">
+                <tr data-employee-slug="darina" data-employee-name="Дарина Аверьянова" data-employee-login="darinaaverianova@" data-employee-role="Руководитель группы" data-employee-avatar="assets/avatars/Darina.png">
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -1553,7 +1848,7 @@
                   <td><span class="text-spectre-green">+16,97%</span></td>
                   <td>200&nbsp;600&nbsp;₽</td>
                 </tr>
-                <tr data-employee-name="Екатерина Компанченко" data-employee-login="ekaterinak@" data-employee-role="Старший разработчик" data-employee-avatar="assets/avatars/Ekaterina.png">
+                <tr data-employee-slug="ekaterina" data-employee-name="Екатерина Компанченко" data-employee-login="ekaterinak@" data-employee-role="Старший разработчик" data-employee-avatar="assets/avatars/Ekaterina.png">
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -1641,7 +1936,7 @@
                   <td><span class="text-danger">−2,46%</span></td>
                   <td>178&nbsp;400&nbsp;₽</td>
                 </tr>
-                <tr data-employee-name="Алексей Морозов" data-employee-login="alexeym@" data-employee-role="Разработчик" data-employee-avatar="assets/avatars/Alexey.png">
+                <tr data-employee-slug="alexey" data-employee-name="Алексей Морозов" data-employee-login="alexeym@" data-employee-role="Разработчик" data-employee-avatar="assets/avatars/Alexey.png">
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -1777,9 +2072,51 @@
             <span class="emp-drawer__tab">Калибровки</span>
           </nav>
           <div class="emp-drawer__content">
-            <h2>Заполните разметку талантов</h2>
-            <p class="emp-drawer__lead">Это поможет понять, какие задачи и область ответственности можно предложить сотруднику</p>
-            <a class="emp-drawer__cta" href="index.html">Заполнить разметку</a>
+            <div id="emp-drawer-markup-empty" class="emp-drawer__markup-empty">
+              <h2>Заполните разметку талантов</h2>
+              <p class="emp-drawer__lead">Это поможет понять, какие задачи и область ответственности можно предложить этому сотруднику</p>
+              <a id="emp-drawer-cta" class="emp-drawer__cta" href="index.html">Заполнить разметку</a>
+            </div>
+            <div id="emp-drawer-markup-saved" class="emp-drawer__markup-saved" hidden>
+              <div class="emp-drawer__cohort-head">
+                <div>
+                  <h2 id="emp-saved-cohort-title" class="emp-drawer__cohort-title"></h2>
+                  <p id="emp-saved-cohort-sub" class="emp-drawer__cohort-sub"></p>
+                </div>
+                <a id="emp-drawer-edit" class="emp-drawer__edit" href="index.html">
+                  Изменить
+                  <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" width="16" height="16" decoding="async" />
+                </a>
+              </div>
+              <div class="emp-drawer__saved-block">
+                <div class="emp-drawer__saved-label">Потенциал</div>
+                <div class="emp-drawer__saved-body">
+                  <p id="emp-saved-potential-line" class="emp-drawer__saved-lead"></p>
+                  <p id="emp-saved-potential-detail" class="emp-drawer__saved-text"></p>
+                </div>
+                <div class="emp-drawer__saved-label">Вероятность ухода</div>
+                <div class="emp-drawer__saved-body">
+                  <p id="emp-saved-risk-line" class="emp-drawer__saved-lead"></p>
+                  <p id="emp-saved-risk-impact" class="emp-drawer__saved-text"></p>
+                  <ul id="emp-saved-risk-reasons" class="emp-drawer__reasons" hidden></ul>
+                </div>
+                <div class="emp-drawer__saved-label">Возможная роль</div>
+                <div class="emp-drawer__saved-body">
+                  <p id="emp-saved-role" class="emp-drawer__saved-lead"></p>
+                  <p id="emp-saved-role-extra" class="emp-drawer__saved-text"></p>
+                  <div id="emp-saved-successors" class="emp-drawer__succ-row" hidden></div>
+                </div>
+                <div id="emp-saved-skills-head" class="emp-drawer__saved-label">Сильные стороны и зоны роста</div>
+                <div id="emp-saved-skills-body" class="emp-drawer__saved-body">
+                  <p id="emp-saved-strengths-wrap" class="emp-drawer__saved-text">
+                    <span style="color: rgba(0,0,0,0.45)">Сильные стороны: </span><span id="emp-saved-strengths"></span>
+                  </p>
+                  <p id="emp-saved-growth-wrap" class="emp-drawer__saved-text" style="margin-top: 8px">
+                    <span style="color: rgba(0,0,0,0.45)">Зоны роста: </span><span id="emp-saved-growth"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </aside>
@@ -1794,15 +2131,142 @@
       var empName = document.getElementById("emp-drawer-emp-name");
       var login = document.getElementById("emp-drawer-login");
       var role = document.getElementById("emp-drawer-role");
+      var markupEmpty = document.getElementById("emp-drawer-markup-empty");
+      var markupSaved = document.getElementById("emp-drawer-markup-saved");
+      var cta = document.getElementById("emp-drawer-cta");
       var tbody = document.querySelector(".emp-table tbody");
+      var TALENT_SAVE_PREFIX = "talentMarkupV1:";
+
+      function loadMarkupSave(slug) {
+        try {
+          var raw = localStorage.getItem(TALENT_SAVE_PREFIX + slug);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function setText(id, text) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = text != null ? String(text) : "";
+      }
+
+      function setOptionalBlock(id, text) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var v = text != null ? String(text).trim() : "";
+        if (!v || v === "—") {
+          el.textContent = "";
+          el.hidden = true;
+        } else {
+          el.textContent = v;
+          el.hidden = false;
+        }
+      }
+
+      function applyMarkupView(slug) {
+        var data = loadMarkupSave(slug);
+        if (!markupEmpty || !markupSaved) return;
+        if (!data || !data.v) {
+          markupEmpty.hidden = false;
+          markupSaved.hidden = true;
+          return;
+        }
+        markupEmpty.hidden = true;
+        markupSaved.hidden = false;
+        setText("emp-saved-cohort-title", data.cohortTitle || "");
+        setText("emp-saved-cohort-sub", data.cohortSub || "");
+        var edit = document.getElementById("emp-drawer-edit");
+        if (edit) edit.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
+        setText("emp-saved-potential-line", data.potentialLine || "");
+        setOptionalBlock("emp-saved-potential-detail", data.potentialDetail || "");
+        setText("emp-saved-risk-line", data.riskLine || "");
+        setOptionalBlock("emp-saved-risk-impact", data.riskImpact || "");
+        var ul = document.getElementById("emp-saved-risk-reasons");
+        if (ul) {
+          ul.innerHTML = "";
+          if (data.riskReasons && data.riskReasons.length) {
+            ul.hidden = false;
+            data.riskReasons.forEach(function (r) {
+              var li = document.createElement("li");
+              li.textContent = r;
+              ul.appendChild(li);
+            });
+          } else {
+            ul.hidden = true;
+          }
+        }
+        setText("emp-saved-role", data.futureRole || "");
+        var extraParts = [];
+        if (data.careerDev) extraParts.push(data.careerDev);
+        if (data.opennessLabel) {
+          extraParts.push("Внутренний найм: «" + data.opennessLabel + "».");
+        }
+        setOptionalBlock("emp-saved-role-extra", extraParts.length ? extraParts.join("\n\n") : "");
+        var succHost = document.getElementById("emp-saved-successors");
+        if (succHost) {
+          succHost.innerHTML = "";
+          if (data.successors && data.successors.length) {
+            succHost.hidden = false;
+            data.successors.forEach(function (s) {
+              var pill = document.createElement("div");
+              pill.className = "emp-drawer__succ-pill";
+              if (s.avatar) {
+                var im = document.createElement("img");
+                im.src = s.avatar;
+                im.alt = "";
+                im.width = 24;
+                im.height = 24;
+                pill.appendChild(im);
+              }
+              var span = document.createElement("span");
+              span.appendChild(document.createTextNode((s.name || "") + " "));
+              var sm = document.createElement("span");
+              sm.className = "emp-drawer__succ-meta";
+              sm.textContent = "— " + (s.ready || "");
+              span.appendChild(sm);
+              pill.appendChild(span);
+              succHost.appendChild(pill);
+            });
+          } else {
+            succHost.hidden = true;
+          }
+        }
+        function tagLine(arr) {
+          if (!arr || !arr.length) return "";
+          return arr.join(", ");
+        }
+        var st = tagLine(data.strengths);
+        var gr = tagLine(data.growth);
+        setText("emp-saved-strengths", st);
+        setText("emp-saved-growth", gr);
+        var sw = document.getElementById("emp-saved-strengths-wrap");
+        var gw = document.getElementById("emp-saved-growth-wrap");
+        if (sw) sw.hidden = !st;
+        if (gw) {
+          gw.hidden = !gr;
+          if (st && gr) gw.style.marginTop = "8px";
+          else gw.style.marginTop = "0";
+        }
+        var skHead = document.getElementById("emp-saved-skills-head");
+        var skBody = document.getElementById("emp-saved-skills-body");
+        var showSkills = !!(st || gr);
+        if (skHead) skHead.hidden = !showSkills;
+        if (skBody) skBody.hidden = !showSkills;
+      }
 
       function setFromRow(tr) {
-        empName.textContent = tr.dataset.employeeName || "";
+        var name = tr.dataset.employeeName || "";
+        var slug = (tr.dataset.employeeSlug || "darina").trim();
+        empName.textContent = name;
         login.textContent = tr.dataset.employeeLogin || "";
         role.textContent = tr.dataset.employeeRole || "";
         var src = tr.dataset.employeeAvatar || "";
         avatar.src = src;
-        avatar.alt = tr.dataset.employeeName || "";
+        avatar.alt = name;
+        if (cta) cta.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
+        applyMarkupView(slug);
       }
 
       function openDrawer(tr) {
@@ -1839,6 +2303,27 @@
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && root.classList.contains("is-open")) closeDrawer();
       });
+
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var openSlug = params.get("openDrawer");
+        if (openSlug && tbody) {
+          var s = decodeURIComponent(openSlug).trim();
+          if (s) {
+            var esc =
+              typeof CSS !== "undefined" && CSS.escape
+                ? CSS.escape(s)
+                : s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+            var row = tbody.querySelector('tr[data-employee-slug="' + esc + '"]');
+            if (row) {
+              openDrawer(row);
+              var base = window.location.pathname.split("/").pop();
+              if (!base) base = "employees-table.html";
+              history.replaceState(null, "", base);
+            }
+          }
+        }
+      } catch (eOpen) {}
     })();
   </script>
 </body>

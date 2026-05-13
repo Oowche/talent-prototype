@@ -19,12 +19,11 @@
   <p><a id="back" href="employees-table.html" style="display: none">Перейти к таблице сотрудников</a></p>
   <script>
     (function () {
-      var prefix = "talentMarkupV1:";
       var removed = 0;
       try {
         for (var i = localStorage.length - 1; i >= 0; i--) {
           var k = localStorage.key(i);
-          if (k && k.indexOf(prefix) === 0) {
+          if (k && k.indexOf("talentMarkup") === 0) {
             localStorage.removeItem(k);
             removed++;
           }

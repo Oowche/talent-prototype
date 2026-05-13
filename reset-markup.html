@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Сброс разметки</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 40rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <p id="msg">Удаляю сохранённые разметки из localStorage…</p>
+  <p><a id="back" href="employees-table.html" style="display: none">Перейти к таблице сотрудников</a></p>
+  <script>
+    (function () {
+      var prefix = "talentMarkupV1:";
+      var removed = 0;
+      try {
+        for (var i = localStorage.length - 1; i >= 0; i--) {
+          var k = localStorage.key(i);
+          if (k && k.indexOf(prefix) === 0) {
+            localStorage.removeItem(k);
+            removed++;
+          }
+        }
+        document.getElementById("msg").textContent =
+          "Готово. Удалено записей: " + removed + ". Можно закрыть эту вкладку.";
+      } catch (e) {
+        document.getElementById("msg").textContent =
+          "Не удалось очистить localStorage (ограничения браузера или приватный режим).";
+      }
+      document.getElementById("back").style.display = "inline";
+    })();
+  </script>
+</body>
+</html>

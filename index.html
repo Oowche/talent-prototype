@@ -2536,6 +2536,7 @@
         var pot = getActiveSegmentValue("potential");
         if (pot !== "basic" && pot !== "growing" && pot !== "high") return false;
         var keyrole = getActiveSegmentValue("keyrole");
+        if (keyrole !== "yes" && keyrole !== "no") return false;
         if (keyrole !== "yes") return true;
         var succ = getActiveSegmentValue("successor");
         if (succ === "no") return true;
@@ -2556,7 +2557,7 @@
         submitBtnEl.disabled = !ok;
         submitBtnEl.title = ok
           ? ""
-          : "Выберите базовый, растущий или высокий потенциал; при ключевой роли «да» укажите преемника или ответьте «нет»";
+          : "Выберите базовый, растущий или высокий потенциал; ответьте, ключевая ли роль; при «да» по ключевой роли ответьте на вопрос о замене и при «да» там укажите преемника";
       }
 
       function initialsFromName(text) {
@@ -2995,6 +2996,38 @@
         return out;
       }
 
+      function collectRiskImpactState() {
+        var crit = document.getElementById("risk-impact-critical");
+        var exp = document.getElementById("risk-impact-expertise");
+        var team = document.getElementById("risk-impact-team");
+        var oth = document.getElementById("risk-impact-other");
+        var expD = document.getElementById("risk-impact-expertise-detail");
+        var othD = document.getElementById("risk-impact-other-detail");
+        return {
+          critical: !!(crit && crit.checked),
+          expertise: !!(exp && exp.checked),
+          team: !!(team && team.checked),
+          other: !!(oth && oth.checked),
+          expertiseDetail: expD && expD.value ? expD.value.trim() : "",
+          otherDetail: othD && othD.value ? othD.value.trim() : "",
+        };
+      }
+
+      function collectRiskChipSelection() {
+        var presets = [];
+        var otherText = "";
+        document.querySelectorAll(".risk-chip[data-chip]").forEach(function (chip) {
+          if (!chip.classList.contains("risk-chip--selected")) return;
+          if (chip.hasAttribute("data-chip-other")) {
+            var o = document.getElementById("risk-leave-other");
+            otherText = o && o.value ? o.value.trim() : "";
+          } else {
+            presets.push(chip.textContent.replace(/\s+/g, " ").trim());
+          }
+        });
+        return { presets: presets, otherText: otherText };
+      }
+
       function collectTalentSnapshot() {
         var emp = window.__talentEmp || {};
         var slug = window.__talentEmpSlug || "darina";
@@ -3034,7 +3067,168 @@
           successors: collectSuccessorsSnap(),
           strengths: collectSkillTags("strengths"),
           growth: collectSkillTags("growth"),
+          openness: getActiveSegmentValue("openness"),
+          successorChoice: getActiveSuccessorValue(),
+          riskChips: collectRiskChipSelection(),
+          riskImpactState: collectRiskImpactState(),
         };
+      }
+
+      function activateSegment(name, value) {
+        if (value == null || !groups[name]) return;
+        groups[name].forEach(function (b) {
+          b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === value);
+        });
+        if (name === "potential") {
+          potentialUnknownQuizShown = value === "unknown";
+          syncPotentialCaption();
+          syncPotentialQuizVisibility();
+        } else if (name === "risk") {
+          syncRiskFollowup();
+        } else if (name === "keyrole") {
+          syncSuccessorRequired();
+        } else if (name === "successor") {
+          syncSuccessorFollowup();
+        }
+      }
+
+      function applyRiskChipSelection(sel) {
+        if (!sel) return;
+        document.querySelectorAll(".risk-chip[data-chip]").forEach(function (chip) {
+          chip.classList.remove("risk-chip--selected");
+        });
+        (sel.presets || []).forEach(function (label) {
+          document.querySelectorAll(".risk-chip[data-chip]").forEach(function (chip) {
+            if (chip.hasAttribute("data-chip-other")) return;
+            if (chip.textContent.replace(/\s+/g, " ").trim() === label) {
+              chip.classList.add("risk-chip--selected");
+            }
+          });
+        });
+        if (sel.otherText && riskChipOther) {
+          riskChipOther.classList.add("risk-chip--selected");
+          var ri = document.getElementById("risk-leave-other");
+          if (ri) ri.value = sel.otherText;
+        }
+        syncRiskLeaveOtherInput();
+      }
+
+      function applyRiskImpactState(st) {
+        if (!st) return;
+        function setCh(id, on) {
+          var el = document.getElementById(id);
+          if (el) el.checked = !!on;
+        }
+        setCh("risk-impact-critical", st.critical);
+        setCh("risk-impact-expertise", st.expertise);
+        setCh("risk-impact-team", st.team);
+        setCh("risk-impact-other", st.other);
+        var ed = document.getElementById("risk-impact-expertise-detail");
+        var od = document.getElementById("risk-impact-other-detail");
+        if (ed) ed.value = st.expertiseDetail || "";
+        if (od) od.value = st.otherDetail || "";
+        syncRiskImpactDetailInputs();
+      }
+
+      function applySkillsFromArrays(strengths, growth) {
+        function poolTags(pool, arr) {
+          var field = document.querySelector('[data-skill-input][data-skill-pool="' + pool + '"]');
+          if (!field) return;
+          var tags = field.querySelector("[data-skill-tags]");
+          if (!tags) return;
+          tags.innerHTML = "";
+          field.dataset.addIdx = "0";
+          (arr || []).forEach(function (t) {
+            addSkillTag(tags, t);
+          });
+        }
+        poolTags("strengths", strengths);
+        poolTags("growth", growth);
+      }
+
+      function legacyRiskChipsFromReasons(data) {
+        if (data.riskChips) return data.riskChips;
+        if (!data.riskReasons || !data.riskReasons.length) return null;
+        var presets = [];
+        var otherParts = [];
+        var known = {};
+        document.querySelectorAll(".risk-chip[data-chip]:not([data-chip-other])").forEach(function (c) {
+          known[c.textContent.replace(/\s+/g, " ").trim()] = true;
+        });
+        data.riskReasons.forEach(function (r) {
+          var t = String(r || "").trim();
+          if (!t) return;
+          if (known[t]) presets.push(t);
+          else otherParts.push(t);
+        });
+        return { presets: presets, otherText: otherParts.join(", ") };
+      }
+
+      function applySnapshotToForm(data) {
+        if (!data || !data.v) return;
+        activateSegment("potential", data.potential);
+        activateSegment("keyrole", data.keyrole);
+        activateSegment("risk", data.risk);
+        if (data.openness != null) {
+          activateSegment("openness", data.openness);
+        }
+        syncRiskFollowup();
+        applyRiskChipSelection(legacyRiskChipsFromReasons(data));
+        applyRiskImpactState(data.riskImpactState);
+
+        var sc = data.successorChoice;
+        if (sc == null && data.keyrole === "yes") {
+          sc = data.successors && data.successors.length ? "yes" : "no";
+        }
+        if (data.keyrole === "yes") {
+          activateSegment("successor", sc || "no");
+        } else {
+          activateSegment("successor", "no");
+        }
+        syncSuccessorFollowup();
+
+        var tf = document.getElementById("talent-field-future-role");
+        var td = document.getElementById("talent-field-career-dev");
+        if (tf) tf.value = data.futureRole || "";
+        if (td) td.value = data.careerDev || "";
+
+        if (data.keyrole === "yes" && getActiveSuccessorValue() === "yes" && successorRowsEl && data.successors && data.successors.length) {
+          successorRowsEl.innerHTML = "";
+          data.successors.forEach(function () {
+            addSuccessorRow();
+          });
+          var rows = successorRowsEl.querySelectorAll("[data-succ-row]");
+          data.successors.forEach(function (s, idx) {
+            if (rows[idx]) {
+              if (s.code) setPersonValue(rows[idx], s.code);
+              if (s.readyKey) setReadinessValue(rows[idx], s.readyKey);
+            }
+          });
+          syncSuccessorAddButtonVisibility();
+        } else if (data.keyrole === "yes" && getActiveSuccessorValue() === "yes") {
+          ensureSuccessorRowsMinOne();
+        }
+
+        applySkillsFromArrays(data.strengths, data.growth);
+
+        syncPotentialCaption();
+        syncPotentialQuizVisibility();
+        syncSuccessorRequired();
+        syncSuccessorFollowup();
+        syncRiskFollowup();
+        syncRiskLeaveOtherInput();
+        syncRiskImpactDetailInputs();
+        syncSubmitButton();
+      }
+
+      function tryHydrateSavedMarkup() {
+        var slug = window.__talentEmpSlug || "darina";
+        try {
+          var raw = localStorage.getItem(TALENT_SAVE_PREFIX + slug);
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          applySnapshotToForm(data);
+        } catch (eHydr) {}
       }
 
       if (submitBtnEl) {
@@ -3071,6 +3265,7 @@
       }
 
       bootstrapForm();
+      tryHydrateSavedMarkup();
     })();
   </script>
 </body>

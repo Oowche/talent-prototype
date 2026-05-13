@@ -60,7 +60,6 @@
       --control-lh: 20px;
       --body-l: 18px;
       --body-l-lh: 28px;
-      --chart-grey: #ccc;
       --hr-green-500: #3ea34f;
       --hr-green-tag-bg: rgba(62, 163, 79, 0.12);
       --hr-orange-500: #da842f;
@@ -593,153 +592,6 @@
       flex-shrink: 0;
     }
 
-    .analytics {
-      display: flex;
-      gap: 12px;
-      align-items: stretch;
-      flex-wrap: wrap;
-    }
-
-    .analytics__card {
-      background: var(--surface-0);
-      border-radius: var(--radius-inner);
-      padding: 12px var(--space-m);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-xs);
-    }
-
-    .analytics__card--sm {
-      flex: 0 0 auto;
-    }
-
-    .analytics__card--grow {
-      flex: 1 1 320px;
-      min-width: 280px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: var(--space-m);
-    }
-
-    .analytics__label {
-      margin: 0;
-      font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      font-feature-settings: "lnum" 1, "pnum" 1;
-    }
-
-    .analytics__hint {
-      font-size: var(--caption-m);
-      line-height: var(--caption-m-lh);
-      color: var(--text-tertiary);
-      margin-left: 4px;
-    }
-
-    .analytics__value {
-      margin: 0;
-      font-weight: 500;
-      font-size: var(--body-l);
-      line-height: var(--body-l-lh);
-      font-feature-settings: "lnum" 1, "pnum" 1;
-    }
-
-    .analytics__sep {
-      color: var(--text-tertiary);
-      font-weight: 400;
-    }
-
-    .analytics__vsep {
-      width: 1px;
-      height: 46px;
-      background: var(--border-strong);
-      flex-shrink: 0;
-    }
-
-    .analytics__mid {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xl);
-      flex-wrap: wrap;
-    }
-
-    .analytics__bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 56px;
-    }
-
-    .bar-col {
-      width: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 4px;
-    }
-
-    .bar-col__pct {
-      font-size: var(--caption-m);
-      line-height: var(--caption-m-lh);
-      font-feature-settings: "lnum" 1, "pnum" 1;
-    }
-
-    .bar-col__bar {
-      width: 38px;
-      background: var(--chart-grey);
-      border-radius: 4px 4px 0 0;
-    }
-
-    .bar-col__lbl {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
-
-    .toggle-pair {
-      display: flex;
-      padding: 2px;
-      background: var(--surface-100);
-      border-radius: var(--radius-inner);
-      gap: 2px;
-    }
-
-    .toggle-pair__btn {
-      min-width: 28px;
-      height: 28px;
-      padding: 0 8px;
-      border: none;
-      border-radius: var(--space-xs);
-      font-family: inherit;
-      font-size: var(--body-s);
-      cursor: pointer;
-      background: transparent;
-      color: var(--text-secondary);
-    }
-
-    .toggle-pair__btn--on {
-      background: var(--surface-0);
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .btn-calc {
-      height: 32px;
-      padding: 0 12px;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-inner);
-      background: var(--surface-100);
-      font-family: inherit;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .btn-calc:hover {
-      background: var(--surface-muted);
-    }
-
     .btn-markup-fill {
       display: inline-flex;
       align-items: center;
@@ -1008,7 +860,7 @@
     .emp-drawer__markup-saved {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 0;
     }
 
     #emp-drawer-markup-saved[hidden],
@@ -1016,130 +868,174 @@
       display: none !important;
     }
 
-    .emp-drawer__cohort-head {
+    .emp-drawer__saved-anketa {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 0 0 8px;
+    }
+
+    .emp-drawer__anketa-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+      width: 100%;
     }
 
-    .emp-drawer__cohort-title {
+    .emp-drawer__anketa-head-text {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .emp-drawer__anketa-title {
       margin: 0;
       font-weight: 500;
       font-size: var(--title-s);
       line-height: var(--title-s-lh);
-      color: var(--text-primary);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .emp-drawer__cohort-sub {
-      margin: 8px 0 0;
+    .emp-drawer__anketa-sub {
+      margin: 0;
       font-size: var(--body-s);
       line-height: var(--body-s-lh);
       color: rgba(0, 0, 0, 0.6);
-      max-width: 48ch;
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .emp-drawer__edit {
+    .emp-drawer__edit-btn {
       flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      height: 36px;
+      height: 32px;
       padding: 0 12px;
       border-radius: var(--radius-control);
-      border: 1px solid var(--border-strong);
+      border: 1px solid rgba(0, 0, 0, 0.12);
       background: var(--surface-100);
       font-family: inherit;
-      font-size: var(--control-fs);
-      line-height: var(--control-lh);
-      color: var(--text-primary);
+      font-size: var(--body-s);
+      line-height: 20px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.88);
       text-decoration: none;
       white-space: nowrap;
+      box-sizing: border-box;
     }
 
-    .emp-drawer__edit:hover {
+    .emp-drawer__edit-btn:hover {
       background: var(--surface-muted);
     }
 
-    .emp-drawer__edit img {
-      width: 16px;
-      height: 16px;
-      opacity: 0.6;
+    .emp-drawer__edit-btn img {
+      display: block;
+      opacity: 0.65;
     }
 
-    .emp-drawer__saved-block {
-      display: grid;
-      grid-template-columns: 112px minmax(0, 1fr);
-      gap: 12px 20px;
-      align-items: start;
+    .emp-drawer__anketa-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
     }
 
-    .emp-drawer__saved-label {
+    .emp-drawer__anketa-label {
+      flex: 0 0 110px;
+      width: 110px;
       font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      color: rgba(0, 0, 0, 0.45);
-      padding-top: 2px;
+      line-height: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .emp-drawer__saved-body {
-      font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      color: var(--text-primary);
-    }
-
-    .emp-drawer__saved-lead {
-      margin: 0 0 8px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .emp-drawer__saved-text {
-      margin: 0;
-      color: rgba(0, 0, 0, 0.88);
-    }
-
-    .emp-drawer__saved-text + .emp-drawer__saved-text {
-      margin-top: 8px;
-    }
-
-    .emp-drawer__reasons {
-      margin: 8px 0 0;
-      padding-left: 18px;
-      color: rgba(0, 0, 0, 0.88);
-    }
-
-    .emp-drawer__succ-row {
-      margin-top: 12px;
+    .emp-drawer__anketa-value {
+      flex: 1 1 auto;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .emp-drawer__succ-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      align-self: flex-start;
-      max-width: 100%;
-      padding: 6px 10px 6px 6px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border);
+    .emp-drawer__anketa-lead {
+      margin: 0;
+      font-weight: 500;
       font-size: var(--body-s);
       line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .emp-drawer__succ-pill img {
+    .emp-drawer__anketa-p {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+      white-space: pre-wrap;
+    }
+
+    .emp-drawer__anketa-p--reasons {
+      white-space: pre-wrap;
+    }
+
+    .emp-succ-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .emp-succ-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      min-height: 32px;
+      padding: 0 8px 0 4px;
+      box-sizing: border-box;
+      border-radius: 100px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #fff;
+      max-width: 100%;
+    }
+
+    .emp-succ-tag__avatar {
       width: 24px;
       height: 24px;
       border-radius: 100px;
       object-fit: cover;
       flex-shrink: 0;
+      display: block;
     }
 
-    .emp-drawer__succ-meta {
-      color: rgba(0, 0, 0, 0.55);
-      font-weight: 400;
+    .emp-succ-tag__name {
+      margin: 0 6px 0 4px;
+      font-size: var(--body-s);
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.88);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    .emp-succ-tag__sep {
+      width: 1px;
+      height: 16px;
+      background: rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    .emp-succ-tag__ready {
+      font-size: var(--body-s);
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
     }
 
     .emp-drawer__tag-list {
@@ -1358,6 +1254,27 @@
     }
 
     .mark-tag--lavender .mark-tag__tier {
+      width: 16px;
+      height: 16px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    /* Текущее ревью — UI kit Tag status blue (node 2596:32799) */
+    .mark-tag.mark-tag--current-review {
+      align-items: center;
+      height: auto;
+      min-height: 24px;
+      padding: 4px 10px 5px;
+      border-radius: 999px;
+      background: #aad5ea;
+      color: rgba(0, 0, 0, 0.75);
+      gap: 4px;
+      box-sizing: border-box;
+    }
+
+    .mark-tag.mark-tag--current-review .mark-tag__tier {
       width: 16px;
       height: 16px;
       display: block;
@@ -1692,41 +1609,6 @@
             </div>
           </div>
 
-          <section class="analytics" aria-label="Аналитика">
-            <div class="analytics__card analytics__card--sm">
-              <p class="analytics__label">Средняя оценка <span class="analytics__hint">факт / цель</span></p>
-              <p class="analytics__value">1.4923 <span class="analytics__sep">/</span> —</p>
-            </div>
-            <div class="analytics__card analytics__card--grow">
-              <div class="analytics__mid">
-                <div>
-                  <p class="analytics__label">Грейдапы <span class="analytics__hint">факт</span></p>
-                  <p class="analytics__value">3.03%</p>
-                </div>
-                <div class="analytics__vsep" aria-hidden="true"></div>
-                <div>
-                  <p class="analytics__label">Распределение</p>
-                  <p class="analytics__hint" style="margin:0">поставлено оценок<br />190 из 258</p>
-                </div>
-                <div class="analytics__bars" aria-hidden="true">
-                  <div class="bar-col"><div class="bar-col__bar" style="height:4px"></div><div class="bar-col__lbl">−</div></div>
-                  <div class="bar-col"><span class="bar-col__pct">4.13%</span><div class="bar-col__bar" style="height:12px"></div><div class="bar-col__lbl">±</div></div>
-                  <div class="bar-col"><span class="bar-col__pct">75.12%</span><div class="bar-col__bar" style="height:44px"></div><div class="bar-col__lbl">+</div></div>
-                  <div class="bar-col"><span class="bar-col__pct">15.82%</span><div class="bar-col__bar" style="height:18px"></div><div class="bar-col__lbl">++</div></div>
-                  <div class="bar-col"><span class="bar-col__pct">6.02%</span><div class="bar-col__bar" style="height:10px"></div><div class="bar-col__lbl">+++</div></div>
-                  <div class="bar-col"><div class="bar-col__bar" style="height:4px"></div><div class="bar-col__lbl">++++</div></div>
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="toggle-pair" role="group" aria-label="Вид графика">
-                  <button type="button" class="toggle-pair__btn toggle-pair__btn--on">%</button>
-                  <button type="button" class="toggle-pair__btn">Число</button>
-                </div>
-                <button type="button" class="btn-calc">Калькулятор</button>
-              </div>
-            </div>
-          </section>
-
           <div class="table-wrap">
             <table class="emp-table">
               <thead>
@@ -1865,20 +1747,23 @@
                   <td>
                     <div class="history-marks">
                       <div class="history-mark">
-                        <span class="history-mark__num">14</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Low.svg" alt="" />
+                        <span class="history-mark__num">16</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Outstanding.svg" alt="" title="+++" />
                       </div>
                       <div class="history-mark">
-                        <span class="history-mark__num">15</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Average.svg" alt="" />
+                        <span class="history-mark__num">17</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" title="+" />
                       </div>
                       <div class="history-mark">
-                        <span class="history-mark__num">15</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" />
+                        <span class="history-mark__num">17</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Excellent.svg" alt="" title="++" />
                       </div>
                     </div>
                   </td>
-                  <td><span class="mark-tag">15</span></td>
+                  <td>
+                    <span class="mark-tag mark-tag--current-review" title="Текущее ревью"
+                      ><span>17</span><img class="mark-tag__tier" src="assets/icons/Review%20_%20Excellent.svg" alt="" title="++" /></span>
+                  </td>
                   <td>
                     <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
                   </td>
@@ -1890,7 +1775,6 @@
                       <div class="feedback-line">
                         <span class="text-spectre-green">4</span><span class="dot">·</span><span>2</span><span class="dot">·</span><span>1</span>
                       </div>
-                      <div class="feedback-sub">3 завершено</div>
                     </div>
                   </td>
                   <td class="emp-cell--center">2</td>
@@ -1953,20 +1837,23 @@
                   <td>
                     <div class="history-marks">
                       <div class="history-mark">
-                        <span class="history-mark__num">12</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Excellent.svg" alt="" />
+                        <span class="history-mark__num">15</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Outstanding.svg" alt="" title="+++" />
                       </div>
                       <div class="history-mark">
-                        <span class="history-mark__num">12</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Outstanding.svg" alt="" />
+                        <span class="history-mark__num">16</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" title="+" />
                       </div>
                       <div class="history-mark">
-                        <span class="history-mark__num">13</span>
-                        <img class="history-mark__review" src="assets/icons/Review%20_%20Fantastic.svg" alt="" />
+                        <span class="history-mark__num">16</span>
+                        <img class="history-mark__review" src="assets/icons/Review%20_%20Good.svg" alt="" title="+" />
                       </div>
                     </div>
                   </td>
-                  <td><span class="mark-tag">13</span></td>
+                  <td>
+                    <span class="mark-tag mark-tag--current-review" title="Текущее ревью"
+                      ><span>16</span><img class="mark-tag__tier" src="assets/icons/Review%20_%20Excellent.svg" alt="" title="++" /></span>
+                  </td>
                   <td>
                     <a class="cell-link-open" href="#"><span>Открыть</span><img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></a>
                   </td>
@@ -1978,7 +1865,6 @@
                       <div class="feedback-line">
                         <span>0</span><span class="dot">·</span><span>0</span><span class="dot">·</span><span class="text-spectre-green">5</span>
                       </div>
-                      <div class="feedback-sub">Все отзывы собраны</div>
                     </div>
                   </td>
                   <td class="emp-cell--center">5</td>
@@ -2078,42 +1964,57 @@
               <a id="emp-drawer-cta" class="emp-drawer__cta" href="index.html">Заполнить разметку</a>
             </div>
             <div id="emp-drawer-markup-saved" class="emp-drawer__markup-saved" hidden>
-              <div class="emp-drawer__cohort-head">
-                <div>
-                  <h2 id="emp-saved-cohort-title" class="emp-drawer__cohort-title"></h2>
-                  <p id="emp-saved-cohort-sub" class="emp-drawer__cohort-sub"></p>
+              <div class="emp-drawer__saved-anketa">
+                <div class="emp-drawer__anketa-head">
+                  <div class="emp-drawer__anketa-head-text">
+                    <h2 id="emp-saved-cohort-title" class="emp-drawer__anketa-title"></h2>
+                    <p id="emp-saved-cohort-sub" class="emp-drawer__anketa-sub"></p>
+                  </div>
+                  <a id="emp-drawer-edit" class="emp-drawer__edit-btn" href="index.html">
+                    <img src="assets/icons/Refresh.svg" alt="" width="16" height="16" decoding="async" />
+                    Изменить
+                  </a>
                 </div>
-                <a id="emp-drawer-edit" class="emp-drawer__edit" href="index.html">
-                  Изменить
-                  <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" width="16" height="16" decoding="async" />
-                </a>
-              </div>
-              <div class="emp-drawer__saved-block">
-                <div class="emp-drawer__saved-label">Потенциал</div>
-                <div class="emp-drawer__saved-body">
-                  <p id="emp-saved-potential-line" class="emp-drawer__saved-lead"></p>
-                  <p id="emp-saved-potential-detail" class="emp-drawer__saved-text"></p>
+
+                <div id="emp-ank-row-potential" class="emp-drawer__anketa-row">
+                  <div class="emp-drawer__anketa-label">Потенциал</div>
+                  <div class="emp-drawer__anketa-value">
+                    <p id="emp-saved-potential-line" class="emp-drawer__anketa-lead"></p>
+                    <p id="emp-saved-potential-detail" class="emp-drawer__anketa-p" hidden></p>
+                  </div>
                 </div>
-                <div class="emp-drawer__saved-label">Вероятность ухода</div>
-                <div class="emp-drawer__saved-body">
-                  <p id="emp-saved-risk-line" class="emp-drawer__saved-lead"></p>
-                  <p id="emp-saved-risk-impact" class="emp-drawer__saved-text"></p>
-                  <ul id="emp-saved-risk-reasons" class="emp-drawer__reasons" hidden></ul>
+
+                <div id="emp-ank-row-risk" class="emp-drawer__anketa-row">
+                  <div class="emp-drawer__anketa-label">Риск потери</div>
+                  <div class="emp-drawer__anketa-value">
+                    <p id="emp-saved-risk-line" class="emp-drawer__anketa-lead"></p>
+                    <p id="emp-saved-risk-impact" class="emp-drawer__anketa-p" hidden></p>
+                    <p id="emp-saved-risk-reasons-block" class="emp-drawer__anketa-p emp-drawer__anketa-p--reasons" hidden></p>
+                  </div>
                 </div>
-                <div class="emp-drawer__saved-label">Возможная роль</div>
-                <div class="emp-drawer__saved-body">
-                  <p id="emp-saved-role" class="emp-drawer__saved-lead"></p>
-                  <p id="emp-saved-role-extra" class="emp-drawer__saved-text"></p>
-                  <div id="emp-saved-successors" class="emp-drawer__succ-row" hidden></div>
+
+                <div id="emp-ank-row-succ" class="emp-drawer__anketa-row">
+                  <div class="emp-drawer__anketa-label">Преемники</div>
+                  <div class="emp-drawer__anketa-value">
+                    <div id="emp-saved-successors" class="emp-succ-tags" hidden></div>
+                  </div>
                 </div>
-                <div id="emp-saved-skills-head" class="emp-drawer__saved-label">Сильные стороны и зоны роста</div>
-                <div id="emp-saved-skills-body" class="emp-drawer__saved-body">
-                  <p id="emp-saved-strengths-wrap" class="emp-drawer__saved-text">
-                    <span style="color: rgba(0,0,0,0.45)">Сильные стороны: </span><span id="emp-saved-strengths"></span>
-                  </p>
-                  <p id="emp-saved-growth-wrap" class="emp-drawer__saved-text" style="margin-top: 8px">
-                    <span style="color: rgba(0,0,0,0.45)">Зоны роста: </span><span id="emp-saved-growth"></span>
-                  </p>
+
+                <div id="emp-ank-row-growth" class="emp-drawer__anketa-row">
+                  <div class="emp-drawer__anketa-label">Направления роста</div>
+                  <div class="emp-drawer__anketa-value">
+                    <p id="emp-saved-growth-role" class="emp-drawer__anketa-p" hidden></p>
+                    <p id="emp-saved-growth-ambi" class="emp-drawer__anketa-p" hidden></p>
+                    <p id="emp-saved-growth-open" class="emp-drawer__anketa-p" hidden></p>
+                  </div>
+                </div>
+
+                <div id="emp-ank-row-skills" class="emp-drawer__anketa-row">
+                  <div class="emp-drawer__anketa-label">Сильные стороны и зоны роста</div>
+                  <div class="emp-drawer__anketa-value">
+                    <p id="emp-saved-skills-st" class="emp-drawer__anketa-p" hidden></p>
+                    <p id="emp-saved-skills-gr" class="emp-drawer__anketa-p" hidden></p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2175,85 +2076,157 @@
         }
         markupEmpty.hidden = true;
         markupSaved.hidden = false;
+
+        function showRow(id, show) {
+          var el = document.getElementById(id);
+          if (el) el.hidden = !show;
+        }
+
+        function formatOpennessLine(d) {
+          var lab = d.opennessLabel || "";
+          var g = d.firstGenitive || "сотрудника";
+          if (!lab || lab.indexOf("Не открывать") !== -1) {
+            return "Профиль " + g + " не открыт для внутреннего найма.";
+          }
+          if (lab.indexOf("бизнес-групп") !== -1) {
+            return "Профиль " + g + " открыт для найма внутри бизнес-группы";
+          }
+          if (lab.indexOf("Яндекс") !== -1) {
+            return "Профиль " + g + " открыт для найма во всём Яндексе";
+          }
+          return "Внутренний найм: «" + lab + "».";
+        }
+
+        function tagLine(arr) {
+          if (!arr || !arr.length) return "";
+          return arr.join(", ");
+        }
+
         setText("emp-saved-cohort-title", data.cohortTitle || "");
         setText("emp-saved-cohort-sub", data.cohortSub || "");
         var edit = document.getElementById("emp-drawer-edit");
         if (edit) edit.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
+
         setText("emp-saved-potential-line", data.potentialLine || "");
         setOptionalBlock("emp-saved-potential-detail", data.potentialDetail || "");
+        showRow(
+          "emp-ank-row-potential",
+          !!(data.potentialLine && String(data.potentialLine).trim()) ||
+            !!(data.potentialDetail && String(data.potentialDetail).trim())
+        );
+
         setText("emp-saved-risk-line", data.riskLine || "");
         setOptionalBlock("emp-saved-risk-impact", data.riskImpact || "");
-        var ul = document.getElementById("emp-saved-risk-reasons");
-        if (ul) {
-          ul.innerHTML = "";
+        var rb = document.getElementById("emp-saved-risk-reasons-block");
+        if (rb) {
           if (data.riskReasons && data.riskReasons.length) {
-            ul.hidden = false;
-            data.riskReasons.forEach(function (r) {
-              var li = document.createElement("li");
-              li.textContent = r;
-              ul.appendChild(li);
-            });
+            var fg = data.firstGenitive || "сотрудника";
+            rb.textContent =
+              "Причины, по которым " + fg + " может уйти:\n" + data.riskReasons.join(", ");
+            rb.hidden = false;
           } else {
-            ul.hidden = true;
+            rb.textContent = "";
+            rb.hidden = true;
           }
         }
-        setText("emp-saved-role", data.futureRole || "");
-        var extraParts = [];
-        if (data.careerDev) extraParts.push(data.careerDev);
-        if (data.opennessLabel) {
-          extraParts.push("Внутренний найм: «" + data.opennessLabel + "».");
-        }
-        setOptionalBlock("emp-saved-role-extra", extraParts.length ? extraParts.join("\n\n") : "");
+        showRow(
+          "emp-ank-row-risk",
+          !!(data.riskLine && String(data.riskLine).trim()) ||
+            !!(data.riskImpact && String(data.riskImpact).trim()) ||
+            !!(data.riskReasons && data.riskReasons.length)
+        );
+
         var succHost = document.getElementById("emp-saved-successors");
         if (succHost) {
           succHost.innerHTML = "";
           if (data.successors && data.successors.length) {
             succHost.hidden = false;
             data.successors.forEach(function (s) {
-              var pill = document.createElement("div");
-              pill.className = "emp-drawer__succ-pill";
+              var tag = document.createElement("div");
+              tag.className = "emp-succ-tag";
               if (s.avatar) {
                 var im = document.createElement("img");
+                im.className = "emp-succ-tag__avatar";
                 im.src = s.avatar;
                 im.alt = "";
                 im.width = 24;
                 im.height = 24;
-                pill.appendChild(im);
+                tag.appendChild(im);
               }
-              var span = document.createElement("span");
-              span.appendChild(document.createTextNode((s.name || "") + " "));
-              var sm = document.createElement("span");
-              sm.className = "emp-drawer__succ-meta";
-              sm.textContent = "— " + (s.ready || "");
-              span.appendChild(sm);
-              pill.appendChild(span);
-              succHost.appendChild(pill);
+              var nm = document.createElement("span");
+              nm.className = "emp-succ-tag__name";
+              nm.textContent = s.name || "";
+              tag.appendChild(nm);
+              var sep = document.createElement("span");
+              sep.className = "emp-succ-tag__sep";
+              sep.setAttribute("aria-hidden", "true");
+              tag.appendChild(sep);
+              var rd = document.createElement("span");
+              rd.className = "emp-succ-tag__ready";
+              rd.textContent = (s.ready || "").replace(/^—\s*/, "");
+              tag.appendChild(rd);
+              succHost.appendChild(tag);
             });
           } else {
             succHost.hidden = true;
           }
         }
-        function tagLine(arr) {
-          if (!arr || !arr.length) return "";
-          return arr.join(", ");
+        showRow("emp-ank-row-succ", !!(data.successors && data.successors.length));
+
+        var roleEl = document.getElementById("emp-saved-growth-role");
+        var ambiEl = document.getElementById("emp-saved-growth-ambi");
+        var openEl = document.getElementById("emp-saved-growth-open");
+        var fr = (data.futureRole || "").trim();
+        var cd = (data.careerDev || "").trim();
+        var ol = formatOpennessLine(data);
+        if (roleEl) {
+          if (fr) {
+            roleEl.textContent = "Возможная роль: " + fr;
+            roleEl.hidden = false;
+          } else {
+            roleEl.textContent = "";
+            roleEl.hidden = true;
+          }
         }
+        if (ambiEl) {
+          if (cd) {
+            ambiEl.textContent = "Амбиции: " + cd;
+            ambiEl.hidden = false;
+          } else {
+            ambiEl.textContent = "";
+            ambiEl.hidden = true;
+          }
+        }
+        if (openEl) {
+          openEl.textContent = ol;
+          openEl.hidden = false;
+        }
+        showRow("emp-ank-row-growth", !!(fr || cd || ol));
+
         var st = tagLine(data.strengths);
         var gr = tagLine(data.growth);
-        setText("emp-saved-strengths", st);
-        setText("emp-saved-growth", gr);
-        var sw = document.getElementById("emp-saved-strengths-wrap");
-        var gw = document.getElementById("emp-saved-growth-wrap");
-        if (sw) sw.hidden = !st;
-        if (gw) {
-          gw.hidden = !gr;
-          if (st && gr) gw.style.marginTop = "8px";
-          else gw.style.marginTop = "0";
+        var stEl = document.getElementById("emp-saved-skills-st");
+        var grEl = document.getElementById("emp-saved-skills-gr");
+        var gname = data.firstGenitive || "сотрудника";
+        if (stEl) {
+          if (st) {
+            stEl.textContent = "Сильные стороны " + gname + ": " + st;
+            stEl.hidden = false;
+          } else {
+            stEl.textContent = "";
+            stEl.hidden = true;
+          }
         }
-        var skHead = document.getElementById("emp-saved-skills-head");
-        var skBody = document.getElementById("emp-saved-skills-body");
-        var showSkills = !!(st || gr);
-        if (skHead) skHead.hidden = !showSkills;
-        if (skBody) skBody.hidden = !showSkills;
+        if (grEl) {
+          if (gr) {
+            grEl.textContent = "Над чем можно поработать: " + gr;
+            grEl.hidden = false;
+          } else {
+            grEl.textContent = "";
+            grEl.hidden = true;
+          }
+        }
+        showRow("emp-ank-row-skills", !!(st || gr));
       }
 
       function setFromRow(tr) {

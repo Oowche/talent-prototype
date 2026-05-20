@@ -1102,8 +1102,8 @@
       flex-shrink: 0;
     }
 
-    .emp-result-block__edit-btn svg {
-      display: block;
+    .emp-result-block__edit-btn .asset-icon {
+      opacity: 0.88;
     }
 
     .emp-result-block__field-label {
@@ -1228,6 +1228,26 @@
       );
     }
 
+    .asset-icon {
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .asset-icon--16 {
+      width: 16px;
+      height: 16px;
+    }
+
+    .asset-icon--muted {
+      opacity: 0.6;
+    }
+
+    .asset-icon--on-dark {
+      opacity: 0.96;
+      filter: brightness(0) invert(1);
+    }
+
     .emp-btn-talent-markup {
       display: inline-flex;
       align-items: center;
@@ -1238,24 +1258,38 @@
       box-sizing: border-box;
       border: none;
       border-radius: 12px;
-      background: rgba(0, 0, 0, 0.04);
       font-family: inherit;
       font-size: var(--control-fs);
       line-height: var(--control-lh);
       font-weight: 400;
-      color: var(--text-primary);
       text-decoration: none;
       white-space: nowrap;
       font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
-    .emp-btn-talent-markup:hover {
-      background: rgba(0, 0, 0, 0.06);
-    }
-
     .emp-btn-talent-markup:focus-visible {
       outline: 2px solid rgba(0, 98, 255, 0.45);
       outline-offset: 2px;
+    }
+
+    .emp-btn-talent-markup--secondary {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-primary);
+    }
+
+    .emp-btn-talent-markup--secondary:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .emp-btn-talent-markup--primary {
+      align-self: flex-start;
+      width: fit-content;
+      background: #1f1f1f;
+      color: rgba(255, 255, 255, 0.96);
+    }
+
+    .emp-btn-talent-markup--primary:hover {
+      background: #333;
     }
 
     .emp-btn-talent-markup__icon {
@@ -1265,13 +1299,6 @@
       width: 32px;
       height: 20px;
       flex-shrink: 0;
-    }
-
-    .emp-btn-talent-markup__icon img {
-      width: 16px;
-      height: 16px;
-      display: block;
-      opacity: 0.6;
     }
 
     .emp-review-section {
@@ -1420,9 +1447,15 @@
       background: var(--surface-muted);
     }
 
-    .emp-drawer__edit-btn img {
-      display: block;
-      opacity: 0.65;
+    .emp-drawer__edit-btn .emp-drawer__edit-btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .emp-drawer__edit-btn .asset-icon--muted {
+      opacity: 0.6;
     }
 
     .emp-drawer__anketa-row {
@@ -2451,8 +2484,15 @@
             <div id="emp-view-review-empty" class="emp-drawer-view emp-drawer-view--stack" hidden>
               <div class="emp-review-title-row">
                 <span class="emp-review-title-row__link">
-                  Название ревью будет отображено здесь
-                  <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                  HR-департамент — Летнее ревью 2026
+                  <img
+                    class="asset-icon asset-icon--16 asset-icon--muted"
+                    src="assets/icons/In%20New%20Tab.svg"
+                    alt=""
+                    width="16"
+                    height="16"
+                    decoding="async"
+                  />
                 </span>
                 <span class="emp-review-viewed" role="presentation">
                   <span class="emp-review-viewed__box" aria-hidden="true"></span>
@@ -2487,15 +2527,14 @@
                         <div class="emp-result-block__grade-top">
                           <span class="emp-result-block__grade-num">18</span>
                           <button type="button" class="emp-result-block__edit-btn" aria-label="Изменить грейд" tabindex="-1">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                              <path
-                                d="M11.05 2.617a1.06 1.06 0 0 1 1.5 1.5L5.55 11.117l-2.2.55.55-2.2 7.15-7.85Z"
-                                stroke="currentColor"
-                                stroke-width="1.2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
+                            <img
+                              class="asset-icon asset-icon--16"
+                              src="assets/icons/Edit.svg"
+                              alt=""
+                              width="16"
+                              height="16"
+                              decoding="async"
+                            />
                           </button>
                         </div>
                         <div>
@@ -2526,7 +2565,14 @@
                 <button type="button" class="emp-review-actions__primary" tabindex="-1">Согласовать оценку</button>
                 <button type="button" class="emp-review-actions__flag" aria-label="Поставить флаг" tabindex="-1">
                   <span class="emp-review-actions__flag-icon">
-                    <img src="assets/icons/Flag%20_%20Checked.svg" alt="" width="16" height="16" decoding="async" />
+                    <img
+                      class="asset-icon asset-icon--16"
+                      src="assets/icons/Flag.svg"
+                      alt=""
+                      width="16"
+                      height="16"
+                      decoding="async"
+                    />
                   </span>
                   <span class="emp-review-actions__flag-sep" aria-hidden="true"></span>
                   <span class="emp-review-actions__flag-chevron" aria-hidden="true">
@@ -2535,14 +2581,21 @@
                 </button>
                 <span class="emp-review-actions__divider" aria-hidden="true"></span>
                 <a
-                  class="emp-btn-talent-markup emp-drawer-markup-cta"
+                  class="emp-btn-talent-markup emp-btn-talent-markup--secondary emp-drawer-markup-cta"
                   href="index.html"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <span>Заполнить разметку талантов</span>
                   <span class="emp-btn-talent-markup__icon" aria-hidden="true">
-                    <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                    <img
+                      class="asset-icon asset-icon--16 asset-icon--muted"
+                      src="assets/icons/In%20New%20Tab.svg"
+                      alt=""
+                      width="16"
+                      height="16"
+                      decoding="async"
+                    />
                   </span>
                 </a>
               </div>
@@ -2566,13 +2619,22 @@
                   Это поможет понять, какие задачи и область ответственности можно предложить этому сотруднику
                 </p>
                 <a
-                  class="emp-btn-talent-markup emp-drawer-markup-cta"
+                  class="emp-btn-talent-markup emp-btn-talent-markup--primary emp-drawer-markup-cta"
                   href="index.html"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <span>Заполнить разметку талантов</span>
-                  <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                  <span class="emp-btn-talent-markup__icon" aria-hidden="true">
+                    <img
+                      class="asset-icon asset-icon--16 asset-icon--on-dark"
+                      src="assets/icons/In%20New%20Tab.svg"
+                      alt=""
+                      width="16"
+                      height="16"
+                      decoding="async"
+                    />
+                  </span>
                 </a>
               </div>
             </div>
@@ -2586,7 +2648,16 @@
                     </div>
                     <a id="emp-drawer-edit" class="emp-drawer__edit-btn" href="index.html" target="_blank" rel="noopener noreferrer">
                       <span>Изменить</span>
-                      <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                      <span class="emp-drawer__edit-btn-icon" aria-hidden="true">
+                        <img
+                          class="asset-icon asset-icon--16 asset-icon--muted"
+                          src="assets/icons/In%20New%20Tab.svg"
+                          alt=""
+                          width="16"
+                          height="16"
+                          decoding="async"
+                        />
+                      </span>
                     </a>
                   </div>
 

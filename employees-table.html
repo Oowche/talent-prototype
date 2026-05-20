@@ -826,14 +826,507 @@
       margin-bottom: -1px;
       font-size: var(--body-s);
       line-height: var(--body-s-lh);
+      font-family: inherit;
       color: var(--text-secondary);
+      border: none;
       border-bottom: 1px solid transparent;
-      cursor: default;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-drawer__tab:hover {
+      color: var(--text-primary);
     }
 
     .emp-drawer__tab--active {
       color: var(--text-primary);
       border-bottom-color: #1f1f1f;
+    }
+
+    .emp-drawer__tab:focus-visible {
+      outline: 2px solid rgba(0, 98, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    .emp-drawer-view[hidden] {
+      display: none !important;
+    }
+
+    .emp-drawer-view--stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .emp-review-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .emp-review-title-row__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-review-title-row__link img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+
+    .emp-review-viewed {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      min-height: 32px;
+      padding: 0;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      cursor: default;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-review-viewed__box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      min-height: 32px;
+      flex-shrink: 0;
+    }
+
+    .emp-review-viewed__box::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      box-sizing: border-box;
+      background: var(--surface-100);
+    }
+
+    .emp-review-viewed__label {
+      padding: 6px 12px 6px 0;
+      white-space: nowrap;
+    }
+
+    .emp-result-block {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .emp-result-block__status {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 20px;
+      background: var(--surface-0);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-block__chain {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      font: inherit;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      cursor: default;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .emp-result-block__chain img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.55;
+    }
+
+    .emp-result-block__panel {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 16px 16px;
+      background: var(--surface-100);
+      padding: 8px;
+    }
+
+    .emp-result-block__metrics {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .emp-result-block__score-group {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(167, 89, 207, 0.08);
+    }
+
+    .emp-result-block__mark {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+    }
+
+    .emp-result-mark__badge {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      min-height: 32px;
+      border-radius: 8px;
+      background: #dcbdec;
+      overflow: hidden;
+    }
+
+    .emp-result-mark__score {
+      padding: 6px 0;
+      min-width: 38px;
+      text-align: center;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: #50375c;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-mark__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .emp-result-mark__icon img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .emp-result-mark__text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      color: #8e49b1;
+    }
+
+    .emp-result-mark__label {
+      font-weight: 500;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+    }
+
+    .emp-result-mark__caption {
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emp-result-block__grade {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0;
+    }
+
+    .emp-result-block__grade-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      min-height: 32px;
+    }
+
+    .emp-result-block__grade-num {
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-block__edit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-primary);
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .emp-result-block__edit-btn svg {
+      display: block;
+    }
+
+    .emp-result-block__field-label {
+      font-weight: 500;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-block__field-caption {
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-block__field-caption--muted {
+      color: var(--text-secondary);
+    }
+
+    .emp-result-block__pay-group {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .emp-result-block__pay-cell {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .emp-review-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .emp-review-actions__primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #1f1f1f;
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.96);
+      cursor: default;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-review-actions__flag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      min-height: 40px;
+      padding: 0 8px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.04);
+      cursor: default;
+    }
+
+    .emp-review-actions__flag-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .emp-review-actions__flag-icon img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.88;
+    }
+
+    .emp-review-actions__flag-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--border-strong);
+      flex-shrink: 0;
+    }
+
+    .emp-review-actions__flag-chevron {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 40px;
+    }
+
+    .emp-review-actions__flag-chevron img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.55;
+    }
+
+    .emp-review-actions__divider {
+      width: 8px;
+      height: 40px;
+      flex-shrink: 0;
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - 0.5px),
+        var(--border-strong) calc(50% - 0.5px),
+        var(--border-strong) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+      );
+    }
+
+    .emp-btn-talent-markup {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      min-height: 40px;
+      padding: 10px 8px 10px 16px;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.04);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      font-weight: 400;
+      color: var(--text-primary);
+      text-decoration: none;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-btn-talent-markup:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .emp-btn-talent-markup:focus-visible {
+      outline: 2px solid rgba(0, 98, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    .emp-btn-talent-markup__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .emp-btn-talent-markup__icon img {
+      width: 16px;
+      height: 16px;
+      display: block;
+      opacity: 0.6;
+    }
+
+    .emp-review-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      padding-top: 16px;
+    }
+
+    .emp-review-section--comments {
+      padding-top: 32px;
+    }
+
+    .emp-review-section__title {
+      margin: 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-review-section__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 32px;
+      padding: 6px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      background: var(--surface-100);
+      font-family: inherit;
+      font-size: var(--control-fs);
+      line-height: var(--control-lh);
+      color: var(--text-primary);
+      cursor: default;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-review-section__btn img {
+      width: 16px;
+      height: 16px;
+      opacity: 0.65;
+    }
+
+    .emp-drawer__stub-text {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      max-width: 48ch;
     }
 
     .emp-drawer__content {
@@ -861,11 +1354,6 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-    }
-
-    #emp-drawer-markup-saved[hidden],
-    #emp-drawer-markup-empty[hidden] {
-      display: none !important;
     }
 
     .emp-drawer__saved-anketa {
@@ -1948,75 +2436,205 @@
             <span class="emp-drawer__pill">Activity insights <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
             <span class="emp-drawer__pill">План развития <img src="assets/icons/Arrow%20_%20Short%20_%20Right.svg" alt="" /></span>
           </div>
-          <nav class="emp-drawer__tabs" aria-label="Разделы">
-            <span class="emp-drawer__tab">Ревью</span>
-            <span class="emp-drawer__tab emp-drawer__tab--active">Разметка талантов</span>
-            <span class="emp-drawer__tab">Цели и проекты</span>
-            <span class="emp-drawer__tab">История</span>
-            <span class="emp-drawer__tab">Отзывы</span>
-            <span class="emp-drawer__tab">Сигналы</span>
-            <span class="emp-drawer__tab">Калибровки</span>
+          <nav class="emp-drawer__tabs" role="tablist" aria-label="Разделы профиля">
+            <button type="button" role="tab" class="emp-drawer__tab emp-drawer__tab--active" data-drawer-tab="review" aria-selected="true">
+              Ревью
+            </button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="talent" aria-selected="false">Разметка талантов</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="goals" aria-selected="false">Цели и проекты</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="history" aria-selected="false">История</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="feedback" aria-selected="false">Отзывы</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="signals" aria-selected="false">Сигналы</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="calib" aria-selected="false">Калибровки</button>
           </nav>
           <div class="emp-drawer__content">
-            <div id="emp-drawer-markup-empty" class="emp-drawer__markup-empty">
-              <h2>Заполните разметку талантов</h2>
-              <p class="emp-drawer__lead">Это поможет понять, какие задачи и область ответственности можно предложить этому сотруднику</p>
-              <a id="emp-drawer-cta" class="emp-drawer__cta" href="index.html">Заполнить разметку</a>
-            </div>
-            <div id="emp-drawer-markup-saved" class="emp-drawer__markup-saved" hidden>
-              <div class="emp-drawer__saved-anketa">
-                <div class="emp-drawer__anketa-head">
-                  <div class="emp-drawer__anketa-head-text">
-                    <h2 id="emp-saved-cohort-title" class="emp-drawer__anketa-title"></h2>
-                    <p id="emp-saved-cohort-sub" class="emp-drawer__anketa-sub"></p>
-                  </div>
-                  <a id="emp-drawer-edit" class="emp-drawer__edit-btn" href="index.html">
-                    <img src="assets/icons/Refresh.svg" alt="" width="16" height="16" decoding="async" />
-                    Изменить
-                  </a>
-                </div>
+            <div id="emp-view-review-empty" class="emp-drawer-view emp-drawer-view--stack" hidden>
+              <div class="emp-review-title-row">
+                <span class="emp-review-title-row__link">
+                  Название ревью будет отображено здесь
+                  <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                </span>
+                <span class="emp-review-viewed" role="presentation">
+                  <span class="emp-review-viewed__box" aria-hidden="true"></span>
+                  <span class="emp-review-viewed__label">Просмотрели</span>
+                </span>
+              </div>
 
-                <div id="emp-ank-row-potential" class="emp-drawer__anketa-row">
-                  <div class="emp-drawer__anketa-label">Потенциал</div>
-                  <div class="emp-drawer__anketa-value">
-                    <p id="emp-saved-potential-line" class="emp-drawer__anketa-lead"></p>
-                    <p id="emp-saved-potential-detail" class="emp-drawer__anketa-p" hidden></p>
-                  </div>
+              <div class="emp-result-block" data-name="Employee Card Result Block">
+                <div class="emp-result-block__status">
+                  <span>Оценку согласовали 3 из 5</span>
+                  <button type="button" class="emp-result-block__chain" tabindex="-1">
+                    Цепочка согласующих
+                    <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" width="16" height="16" decoding="async" />
+                  </button>
                 </div>
-
-                <div id="emp-ank-row-risk" class="emp-drawer__anketa-row">
-                  <div class="emp-drawer__anketa-label">Риск потери</div>
-                  <div class="emp-drawer__anketa-value">
-                    <p id="emp-saved-risk-line" class="emp-drawer__anketa-lead"></p>
-                    <p id="emp-saved-risk-impact" class="emp-drawer__anketa-p" hidden></p>
-                    <p id="emp-saved-risk-reasons-block" class="emp-drawer__anketa-p emp-drawer__anketa-p--reasons" hidden></p>
-                  </div>
-                </div>
-
-                <div id="emp-ank-row-succ" class="emp-drawer__anketa-row">
-                  <div class="emp-drawer__anketa-label">Преемники</div>
-                  <div class="emp-drawer__anketa-value">
-                    <div id="emp-saved-successors" class="emp-succ-tags" hidden></div>
-                  </div>
-                </div>
-
-                <div id="emp-ank-row-growth" class="emp-drawer__anketa-row">
-                  <div class="emp-drawer__anketa-label">Направления роста</div>
-                  <div class="emp-drawer__anketa-value">
-                    <p id="emp-saved-growth-role" class="emp-drawer__anketa-p" hidden></p>
-                    <p id="emp-saved-growth-ambi" class="emp-drawer__anketa-p" hidden></p>
-                    <p id="emp-saved-growth-open" class="emp-drawer__anketa-p" hidden></p>
-                  </div>
-                </div>
-
-                <div id="emp-ank-row-skills" class="emp-drawer__anketa-row">
-                  <div class="emp-drawer__anketa-label">Сильные стороны и зоны роста</div>
-                  <div class="emp-drawer__anketa-value">
-                    <p id="emp-saved-skills-st" class="emp-drawer__anketa-p" hidden></p>
-                    <p id="emp-saved-skills-gr" class="emp-drawer__anketa-p" hidden></p>
+                <div class="emp-result-block__panel">
+                  <div class="emp-result-block__metrics">
+                    <div class="emp-result-block__score-group">
+                      <div class="emp-result-block__mark">
+                        <div class="emp-result-mark__badge">
+                          <span class="emp-result-mark__score">16</span>
+                          <span class="emp-result-mark__icon" aria-hidden="true">
+                            <img src="assets/icons/Review%20_%20Fantastic.svg" alt="" width="16" height="16" decoding="async" />
+                          </span>
+                        </div>
+                        <div class="emp-result-mark__text">
+                          <span class="emp-result-mark__label">Оценка результата</span>
+                          <span class="emp-result-mark__caption">Фантастический</span>
+                        </div>
+                      </div>
+                      <div class="emp-result-block__grade">
+                        <div class="emp-result-block__grade-top">
+                          <span class="emp-result-block__grade-num">18</span>
+                          <button type="button" class="emp-result-block__edit-btn" aria-label="Изменить грейд" tabindex="-1">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                              <path
+                                d="M11.05 2.617a1.06 1.06 0 0 1 1.5 1.5L5.55 11.117l-2.2.55.55-2.2 7.15-7.85Z"
+                                stroke="currentColor"
+                                stroke-width="1.2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                        <div>
+                          <div class="emp-result-block__field-label">Грейд</div>
+                          <div class="emp-result-block__field-caption">Без изменений</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="emp-result-block__pay-group">
+                      <div class="emp-result-block__pay-cell">
+                        <div>
+                          <div class="emp-result-block__field-label">Премия</div>
+                          <div class="emp-result-block__field-caption emp-result-block__field-caption--muted">Ещё не рассчитана</div>
+                        </div>
+                      </div>
+                      <div class="emp-result-block__pay-cell">
+                        <div>
+                          <div class="emp-result-block__field-label">Оклад</div>
+                          <div class="emp-result-block__field-caption">Текущий 239&nbsp;600&nbsp;₽</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <div class="emp-review-actions">
+                <button type="button" class="emp-review-actions__primary" tabindex="-1">Согласовать оценку</button>
+                <button type="button" class="emp-review-actions__flag" aria-label="Поставить флаг" tabindex="-1">
+                  <span class="emp-review-actions__flag-icon">
+                    <img src="assets/icons/Flag%20_%20Checked.svg" alt="" width="16" height="16" decoding="async" />
+                  </span>
+                  <span class="emp-review-actions__flag-sep" aria-hidden="true"></span>
+                  <span class="emp-review-actions__flag-chevron" aria-hidden="true">
+                    <img src="assets/icons/Arrow%20_%20Short%20_%20Down.svg" alt="" width="16" height="16" decoding="async" />
+                  </span>
+                </button>
+                <span class="emp-review-actions__divider" aria-hidden="true"></span>
+                <a
+                  class="emp-btn-talent-markup emp-drawer-markup-cta"
+                  href="index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Заполнить разметку талантов</span>
+                  <span class="emp-btn-talent-markup__icon" aria-hidden="true">
+                    <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                  </span>
+                </a>
+              </div>
+
+              <div class="emp-review-section">
+                <h3 class="emp-review-section__title">Обоснования оценки пока нет</h3>
+                <button type="button" class="emp-review-section__btn" tabindex="-1">Написать</button>
+              </div>
+              <div class="emp-review-section emp-review-section--comments">
+                <h3 class="emp-review-section__title">Комментариев и событий пока нет</h3>
+                <button type="button" class="emp-review-section__btn" tabindex="-1">
+                  <img src="assets/icons/Plus.svg" alt="" width="16" height="16" decoding="async" />
+                  Добавить комментарий
+                </button>
+              </div>
+            </div>
+            <div id="emp-view-talent-empty" class="emp-drawer-view" hidden>
+              <div class="emp-drawer__markup-empty">
+                <h2>Заполните разметку талантов</h2>
+                <p class="emp-drawer__lead">
+                  Это поможет понять, какие задачи и область ответственности можно предложить этому сотруднику
+                </p>
+                <a
+                  class="emp-btn-talent-markup emp-drawer-markup-cta"
+                  href="index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Заполнить разметку талантов</span>
+                  <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                </a>
+              </div>
+            </div>
+            <div id="emp-view-talent-filled" class="emp-drawer-view" hidden>
+              <div id="emp-drawer-markup-saved" class="emp-drawer__markup-saved">
+                <div class="emp-drawer__saved-anketa">
+                  <div class="emp-drawer__anketa-head">
+                    <div class="emp-drawer__anketa-head-text">
+                      <h2 id="emp-saved-cohort-title" class="emp-drawer__anketa-title"></h2>
+                      <p id="emp-saved-cohort-sub" class="emp-drawer__anketa-sub"></p>
+                    </div>
+                    <a id="emp-drawer-edit" class="emp-drawer__edit-btn" href="index.html" target="_blank" rel="noopener noreferrer">
+                      <span>Изменить</span>
+                      <img src="assets/icons/In%20New%20Tab.svg" alt="" width="16" height="16" decoding="async" />
+                    </a>
+                  </div>
+
+                  <div id="emp-ank-row-potential" class="emp-drawer__anketa-row">
+                    <div class="emp-drawer__anketa-label">Потенциал</div>
+                    <div class="emp-drawer__anketa-value">
+                      <p id="emp-saved-potential-line" class="emp-drawer__anketa-lead"></p>
+                      <p id="emp-saved-potential-detail" class="emp-drawer__anketa-p" hidden></p>
+                    </div>
+                  </div>
+
+                  <div id="emp-ank-row-risk" class="emp-drawer__anketa-row">
+                    <div class="emp-drawer__anketa-label">Риск потери</div>
+                    <div class="emp-drawer__anketa-value">
+                      <p id="emp-saved-risk-line" class="emp-drawer__anketa-lead"></p>
+                      <p id="emp-saved-risk-impact" class="emp-drawer__anketa-p" hidden></p>
+                      <p id="emp-saved-risk-reasons-block" class="emp-drawer__anketa-p emp-drawer__anketa-p--reasons" hidden></p>
+                    </div>
+                  </div>
+
+                  <div id="emp-ank-row-succ" class="emp-drawer__anketa-row">
+                    <div class="emp-drawer__anketa-label">Преемники</div>
+                    <div class="emp-drawer__anketa-value">
+                      <div id="emp-saved-successors" class="emp-succ-tags" hidden></div>
+                    </div>
+                  </div>
+
+                  <div id="emp-ank-row-growth" class="emp-drawer__anketa-row">
+                    <div class="emp-drawer__anketa-label">Направления роста</div>
+                    <div class="emp-drawer__anketa-value">
+                      <p id="emp-saved-growth-role" class="emp-drawer__anketa-p" hidden></p>
+                      <p id="emp-saved-growth-ambi" class="emp-drawer__anketa-p" hidden></p>
+                      <p id="emp-saved-growth-open" class="emp-drawer__anketa-p" hidden></p>
+                    </div>
+                  </div>
+
+                  <div id="emp-ank-row-skills" class="emp-drawer__anketa-row">
+                    <div class="emp-drawer__anketa-label">Сильные стороны и зоны роста</div>
+                    <div class="emp-drawer__anketa-value">
+                      <p id="emp-saved-skills-st" class="emp-drawer__anketa-p" hidden></p>
+                      <p id="emp-saved-skills-gr" class="emp-drawer__anketa-p" hidden></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="emp-view-stub" class="emp-drawer-view" hidden>
+              <p id="emp-view-stub-text" class="emp-drawer__stub-text"></p>
             </div>
           </div>
         </div>
@@ -2032,11 +2650,73 @@
       var empName = document.getElementById("emp-drawer-emp-name");
       var login = document.getElementById("emp-drawer-login");
       var role = document.getElementById("emp-drawer-role");
-      var markupEmpty = document.getElementById("emp-drawer-markup-empty");
       var markupSaved = document.getElementById("emp-drawer-markup-saved");
-      var cta = document.getElementById("emp-drawer-cta");
+      var tablist = root.querySelector(".emp-drawer__tabs");
+      var tabButtons = tablist ? tablist.querySelectorAll("[data-drawer-tab]") : [];
+      var stubText = document.getElementById("emp-view-stub-text");
+      var drawerActiveTab = "review";
+      var drawerHasMarkup = false;
       var tbody = document.querySelector(".emp-table tbody");
       var TALENT_SAVE_PREFIX = "talentMarkupV2:";
+
+      function hideAllDrawerViews() {
+        ["emp-view-review-empty", "emp-view-talent-empty", "emp-view-talent-filled", "emp-view-stub"].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.hidden = true;
+        });
+      }
+
+      function showDrawerView(id) {
+        var el = document.getElementById(id);
+        if (el) el.hidden = false;
+      }
+
+      function setActiveTab(tab, skipPanels) {
+        drawerActiveTab = tab || "review";
+        tabButtons.forEach(function (b) {
+          var on = b.getAttribute("data-drawer-tab") === drawerActiveTab;
+          b.classList.toggle("emp-drawer__tab--active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        if (!skipPanels) syncDrawerPanels();
+      }
+
+      function syncDrawerPanels() {
+        hideAllDrawerViews();
+        var has = drawerHasMarkup;
+        var t = drawerActiveTab;
+        if (has) {
+          if (t === "talent") {
+            showDrawerView("emp-view-talent-filled");
+          } else if (t === "review") {
+            if (stubText) {
+              stubText.textContent =
+                "Разметка талантов для этого сотрудника уже заполнена. Откройте вкладку «Разметка талантов», чтобы посмотреть или изменить данные.";
+            }
+            showDrawerView("emp-view-stub");
+          } else {
+            if (stubText) stubText.textContent = "В прототипе этот раздел пока без контента.";
+            showDrawerView("emp-view-stub");
+          }
+        } else {
+          if (t === "review") {
+            showDrawerView("emp-view-review-empty");
+          } else if (t === "talent") {
+            showDrawerView("emp-view-talent-empty");
+          } else {
+            if (stubText) stubText.textContent = "В прототипе этот раздел пока без контента.";
+            showDrawerView("emp-view-stub");
+          }
+        }
+      }
+
+      if (tablist) {
+        tablist.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-drawer-tab]");
+          if (!btn) return;
+          setActiveTab(btn.getAttribute("data-drawer-tab"), false);
+        });
+      }
 
       function loadMarkupSave(slug) {
         try {
@@ -2068,14 +2748,17 @@
 
       function applyMarkupView(slug) {
         var data = loadMarkupSave(slug);
-        if (!markupEmpty || !markupSaved) return;
-        if (!data || !data.v) {
-          markupEmpty.hidden = false;
-          markupSaved.hidden = true;
+        if (!markupSaved) return;
+        var has = !!(data && data.v);
+        drawerHasMarkup = has;
+        root.dataset.hasMarkup = has ? "1" : "0";
+
+        setActiveTab(has ? "talent" : "review", true);
+
+        if (!has) {
+          syncDrawerPanels();
           return;
         }
-        markupEmpty.hidden = true;
-        markupSaved.hidden = false;
 
         function showRow(id, show) {
           var el = document.getElementById(id);
@@ -2227,6 +2910,7 @@
           }
         }
         showRow("emp-ank-row-skills", !!(st || gr));
+        syncDrawerPanels();
       }
 
       function setFromRow(tr) {
@@ -2238,7 +2922,9 @@
         var src = tr.dataset.employeeAvatar || "";
         avatar.src = src;
         avatar.alt = name;
-        if (cta) cta.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
+        document.querySelectorAll(".emp-drawer-markup-cta").forEach(function (a) {
+          a.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
+        });
         applyMarkupView(slug);
       }
 

@@ -419,14 +419,29 @@
 
     .field-block__title {
       font-weight: 500;
-      font-size: var(--title-m);
-      line-height: var(--title-m-lh);
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
       font-feature-settings: "lnum" 1, "pnum" 1;
-      margin-bottom: 20px;
+      margin: 0 0 20px;
+      color: var(--text-primary);
     }
 
-    .field-block > .label-row {
-      margin-bottom: var(--space-s);
+    .field-block__fields {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .form-field > .label-row {
+      margin-bottom: 0;
     }
 
     .label-row {
@@ -665,10 +680,9 @@
 
     /* Доп. вопросы при «Средняя» / «Высокая» (Figma 9712:125081) */
     .risk-followup {
-      margin-top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       max-width: 720px;
       width: 100%;
     }
@@ -1727,12 +1741,14 @@
             <!-- Потенциал -->
             <div class="field-block">
               <div class="field-block__title">Потенциал</div>
-              <div class="label-row">
-                <span class="label">Оцените потенциал</span>
-                <span class="req" aria-hidden="true">*</span>
-              </div>
-              <div class="segment segment--4" role="group" aria-label="Потенциал">
-                <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Не могу определить</button>
+              <div class="field-block__fields">
+                <div class="form-field">
+                  <div class="label-row">
+                    <span class="label">Оцените потенциал</span>
+                    <span class="req" aria-hidden="true">*</span>
+                  </div>
+                  <div class="segment segment--4" role="group" aria-label="Потенциал">
+                    <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Оценить потенциал</button>
                 <button type="button" class="segment__btn" data-name="potential" data-value="basic">Базовый</button>
                 <button type="button" class="segment__btn" data-name="potential" data-value="growing">Растущий</button>
                 <button type="button" class="segment__btn" data-name="potential" data-value="high">Высокий</button>
@@ -1832,11 +1848,15 @@
                   Рассчитать потенциал
                 </button>
               </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Риск -->
+            <!-- Риск потери и последствия (включая ключевую роль и преемников) -->
             <div class="field-block">
               <div class="field-block__title">Риск потери и последствия</div>
+              <div class="field-block__fields">
+                <div class="form-field">
               <div class="label-row">
                 <span class="label" id="talent-lbl-risk-probability">Оцените вероятность ухода Дарины</span>
                 <span class="req" aria-hidden="true">*</span>
@@ -1880,6 +1900,7 @@
                 <button type="button" class="segment__btn" data-name="risk" data-value="mid">Средняя</button>
                 <button type="button" class="segment__btn" data-name="risk" data-value="high">Высокая</button>
               </div>
+                </div>
               <div id="risk-followup" class="risk-followup" hidden>
                 <div class="risk-followup__section">
                   <div class="risk-followup__label" id="talent-lbl-risk-why">Почему она может уйти?</div>
@@ -1956,23 +1977,35 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Ключевая роль -->
-            <div class="field-block">
-              <div class="field-block__title">Ключевая роль и преемники</div>
-              <div class="stack-fields">
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label"><span id="talent-label-keyrole-name">Дарина</span> занимает ключевую роль?</span>
+                    <span class="info info--with-tooltip">
+                      <button
+                        type="button"
+                        class="info__btn"
+                        aria-label="Пояснение к ключевой роли"
+                        tabindex="-1"
+                      >
+                        <img
+                          class="info__icon-img"
+                          src="assets/icons/Info.svg"
+                          width="16"
+                          height="16"
+                          alt=""
+                          aria-hidden="true"
+                          decoding="async"
+                        />
+                      </button>
+                    </span>
                   </div>
                   <div class="segment segment--2" role="group">
                     <button type="button" class="segment__btn" data-name="keyrole" data-value="no">Нет</button>
                     <button type="button" class="segment__btn" data-name="keyrole" data-value="yes">Да</button>
                   </div>
                 </div>
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label" id="successor-label">Кто-то сможет заменить Дарину в случае ухода или повышения?</span>
                     <span id="successor-req" class="req" aria-hidden="true" hidden>*</span>
                   </div>
@@ -2171,12 +2204,12 @@
               </div>
             </template>
 
-            <!-- Рост -->
+            <!-- Направления роста (включая сильные стороны и зоны роста) -->
             <div class="field-block">
               <div class="field-block__title">Направления роста</div>
-              <div class="stack-fields">
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+              <div class="field-block__fields">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label" id="talent-lbl-future-role">Какую роль Дарина могла бы занять в будущем?</span>
                   </div>
                   <textarea
@@ -2185,8 +2218,8 @@
                     placeholder="Новый продукт, проект, направление или роль"
                   ></textarea>
                 </div>
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label">Как <span id="talent-label-dev-name">Дарина</span> видит своё развитие в компании?</span>
                   </div>
                   <textarea
@@ -2195,27 +2228,20 @@
                     placeholder="Карьерный путь, цели, проекты"
                   ></textarea>
                 </div>
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label" id="talent-lbl-open-profile"
                       >Если внутри команды нет возможности роста, можно открыть профиль Дарины для внутреннего найма</span
                     >
                   </div>
                   <div class="segment segment--3" role="group">
-                    <button type="button" class="segment__btn" data-name="openness" data-value="all">Во всём Яндексе</button>
-                    <button type="button" class="segment__btn" data-name="openness" data-value="bg">Внутри бизнес-группы</button>
                     <button type="button" class="segment__btn" data-name="openness" data-value="none">Не открывать никому</button>
+                    <button type="button" class="segment__btn" data-name="openness" data-value="bg">Внутри бизнес-группы</button>
+                    <button type="button" class="segment__btn" data-name="openness" data-value="all">Во всём Яндексе</button>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Сильные стороны -->
-            <div class="field-block">
-              <div class="field-block__title">Сильные стороны и зоны роста</div>
-              <div class="stack-fields">
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label" id="skill-strengths-label">Сильные стороны Дарины</span>
                   </div>
                   <div
@@ -2229,8 +2255,8 @@
                     <button type="button" class="skill-input__hint">Найти навык</button>
                   </div>
                 </div>
-                <div>
-                  <div class="label-row" style="margin-bottom: var(--space-s)">
+                <div class="form-field">
+                  <div class="label-row">
                     <span class="label" id="skill-growth-label">Над чем можно поработать</span>
                   </div>
                   <div

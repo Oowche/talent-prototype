@@ -55,6 +55,8 @@
       --title-l-lh: 32px;
       --title-m: 20px;
       --title-m-lh: 24px;
+      --title-s: 20px;
+      --title-s-lh: 24px;
       --body-s: 14px;
       --body-s-lh: 20px;
       --control-fs: 14px;
@@ -444,6 +446,23 @@
       margin-bottom: 0;
     }
 
+    .field-caption {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--control-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .form-field > .label-row + #talent-future-role-hint {
+      margin-top: -8px;
+    }
+
+    .field-caption__accent {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
     .label-row {
       display: flex;
       align-items: center;
@@ -577,6 +596,15 @@
       line-height: var(--body-s-lh);
       font-weight: 400;
       color: rgba(255, 255, 255, 0.6);
+    }
+
+    .info-tooltip--wide {
+      min-width: 300px;
+      max-width: min(380px, calc(100vw - 32px));
+    }
+
+    .info-tooltip--wide .info-tooltip__panel {
+      gap: 12px;
     }
 
     /* Segmented */
@@ -1193,6 +1221,15 @@
       background: rgba(0, 0, 0, 0.04);
     }
 
+    .succ-menu__opt[hidden] {
+      display: none !important;
+    }
+
+    .succ-menu__opt:disabled {
+      display: none !important;
+      pointer-events: none;
+    }
+
     .succ-chip-layer {
       display: none;
       align-items: center;
@@ -1746,6 +1783,47 @@
                   <div class="label-row">
                     <span class="label">Оцените потенциал</span>
                     <span class="req" aria-hidden="true">*</span>
+                    <span class="info info--with-tooltip">
+                      <button
+                        type="button"
+                        class="info__btn"
+                        aria-describedby="potential-hint"
+                        aria-label="Пояснение к уровням потенциала"
+                      >
+                        <img
+                          class="info__icon-img"
+                          src="assets/icons/Info.svg"
+                          width="16"
+                          height="16"
+                          alt=""
+                          decoding="async"
+                        />
+                      </button>
+                      <span id="potential-hint" class="info-tooltip info-tooltip--wide" role="tooltip">
+                        <span class="info-tooltip__panel">
+                          <span class="info-tooltip__row">
+                            <span class="info-tooltip__title">Базовый</span>
+                            <span class="info-tooltip__desc"
+                              >Соответствует текущей роли. Для перехода на следующий уровень пока недостаточно навыков, опыта и/или мотивации</span
+                            >
+                          </span>
+                          <span class="info-tooltip__row">
+                            <span class="info-tooltip__title">Растущий</span>
+                            <span class="info-tooltip__desc" id="potential-hint-growing"
+                              >Развивается в своей роли, нужно растить навыки для следующей роли. Мотивирован на развитие, амбициозен. Нужна поддержка, чтобы самостоятельно драйвить более сложные
+                              проекты</span
+                            >
+                          </span>
+                          <span class="info-tooltip__row">
+                            <span class="info-tooltip__title">Высокий</span>
+                            <span class="info-tooltip__desc" id="potential-hint-high"
+                              >Готов к переходу на следующую роль в течение года. Обладает необходимыми навыками и опытом, успешно ведет сложные проекты и проактивно расширяет
+                              зону ответственности</span
+                            >
+                          </span>
+                        </span>
+                      </span>
+                    </span>
                   </div>
                   <div class="segment segment--4" role="group" aria-label="Потенциал">
                     <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Оценить потенциал</button>
@@ -1984,8 +2062,8 @@
                       <button
                         type="button"
                         class="info__btn"
+                        aria-describedby="keyrole-hint"
                         aria-label="Пояснение к ключевой роли"
-                        tabindex="-1"
                       >
                         <img
                           class="info__icon-img"
@@ -1993,10 +2071,18 @@
                           width="16"
                           height="16"
                           alt=""
-                          aria-hidden="true"
                           decoding="async"
                         />
                       </button>
+                      <span id="keyrole-hint" class="info-tooltip" role="tooltip">
+                        <span class="info-tooltip__panel">
+                          <span class="info-tooltip__row">
+                            <span class="info-tooltip__desc"
+                              >Поставьте эту отметку, если считаете, что роль сотрудника очень важна для компании и нужно обязательно найти преемника на неё</span
+                            >
+                          </span>
+                        </span>
+                      </span>
                     </span>
                   </div>
                   <div class="segment segment--2" role="group">
@@ -2212,6 +2298,10 @@
                   <div class="label-row">
                     <span class="label" id="talent-lbl-future-role">Какую роль Дарина могла бы занять в будущем?</span>
                   </div>
+                  <p id="talent-future-role-hint" class="field-caption" hidden>
+                    В марте 2024 она была выбрана преемником
+                    <span class="field-caption__accent">Сергея Дубова</span> со временем подготовки год и больше.
+                  </p>
                   <textarea
                     id="talent-field-future-role"
                     class="textarea"
@@ -2361,6 +2451,16 @@
       );
       setText("skill-strengths-label", "Сильные стороны " + emp.firstGenitive);
 
+      var hintEl = document.getElementById("talent-future-role-hint");
+      if (hintEl) hintEl.hidden = raw !== "darina";
+
+      var hintHigh = document.getElementById("potential-hint-high");
+      if (hintHigh) {
+        hintHigh.textContent =
+          (emp.gender === "f" ? "Готова" : "Готов") +
+          " к переходу на следующую роль в течение года. Обладает необходимыми навыками и опытом, успешно ведет сложные проекты и проактивно расширяет зону ответственности";
+      }
+
       var hideVal = emp.succMenuValue;
       if (hideVal) {
         var tpl = document.getElementById("succ-row-template");
@@ -2380,14 +2480,19 @@
     (function () {
       var groups = {};
       var potentialCaptionEl = document.getElementById("potential-caption");
-      var potentialCaptions = {
-        basic:
-          "Соответствует текущей роли.\nДля перехода на следующий уровень пока недостаточно навыков, опыта и/или мотивации.",
-        growing:
-          "Успешно развивается в текущей роли.\nОсваивает необходимые компетенции и постепенно готовится к следующему уровню ответственности.",
-        high:
-          "Готов к переходу на следующую роль в течение года.\nОбладает необходимыми навыками и опытом, успешно ведет сложные проекты и проактивно расширяет зону ответственности.",
-      };
+      function getPotentialCaptions() {
+        var emp = window.__talentEmp || {};
+        var f = emp.gender === "f";
+        return {
+          basic:
+            "Соответствует текущей роли.\nДля перехода на следующий уровень пока недостаточно навыков, опыта и/или мотивации.",
+          growing:
+            "Развивается в своей роли, нужно растить навыки для следующей роли.\nМотивирован на развитие, амбициозен. Нужна поддержка, чтобы самостоятельно драйвить более сложные проекты",
+          high:
+            (f ? "Готова" : "Готов") +
+            " к переходу на следующую роль в течение года.\nОбладает необходимыми навыками и опытом, успешно ведет сложные проекты и проактивно расширяет зону ответственности.",
+        };
+      }
 
       function syncPotentialCaption() {
         if (!potentialCaptionEl || !groups.potential) return;
@@ -2399,7 +2504,8 @@
           }
         }
         var val = active ? active.getAttribute("data-value") : null;
-        var text = val && potentialCaptions[val] ? potentialCaptions[val] : null;
+        var captions = getPotentialCaptions();
+        var text = val && captions[val] ? captions[val] : null;
         if (text) {
           potentialCaptionEl.textContent = text;
           potentialCaptionEl.hidden = false;
@@ -2504,6 +2610,7 @@
             syncRiskFollowup();
           } else if (name === "keyrole") {
             syncSuccessorRequired();
+            syncSuccessorFollowup();
           } else if (name === "successor") {
             syncSuccessorFollowup();
           }
@@ -2565,16 +2672,25 @@
         if (keyrole !== "yes" && keyrole !== "no") return false;
         if (keyrole !== "yes") return true;
         var succ = getActiveSegmentValue("successor");
-        if (succ === "no") return true;
+        if (succ === "no") return !!getSuccessorNoPlanValue();
         if (succ !== "yes") return false;
+        return areSuccessorRowsValid();
+      }
+
+      function areSuccessorRowsValid() {
         if (!successorRowsEl) return false;
         var rows = successorRowsEl.querySelectorAll("[data-succ-row]");
+        var hasComplete = false;
         for (var r = 0; r < rows.length; r++) {
           var pv = rows[r].querySelector("[data-succ-person-value]");
           var rv = rows[r].querySelector("[data-succ-ready-value]");
-          if (pv && pv.value && rv && rv.value) return true;
+          var person = pv && pv.value;
+          var ready = rv && rv.value;
+          if (person && !ready) return false;
+          if (!person && ready) return false;
+          if (person && ready) hasComplete = true;
         }
-        return false;
+        return hasComplete;
       }
 
       function syncSubmitButton() {
@@ -2660,6 +2776,7 @@
             if (avatarInitials) avatarInitials.textContent = "";
             if (avatarWrap) avatarWrap.classList.remove("succ-chip-avatar--photo");
             if (nameEl) nameEl.textContent = "";
+            syncSuccessorPersonOptions();
             return;
           }
           var nameText = succPersonLabel(value);
@@ -2679,9 +2796,39 @@
             if (avatarWrap) avatarWrap.classList.remove("succ-chip-avatar--photo");
             if (avatarInitials) avatarInitials.textContent = initialsFromName(nameText);
           }
+          syncSuccessorPersonOptions();
         } finally {
           syncSubmitButton();
         }
+      }
+
+      function getSelectedSuccessorCodes(exceptRow) {
+        var codes = [];
+        if (!successorRowsEl) return codes;
+        successorRowsEl.querySelectorAll("[data-succ-row]").forEach(function (r) {
+          if (exceptRow && r === exceptRow) return;
+          var inp = r.querySelector("[data-succ-person-value]");
+          if (inp && inp.value) codes.push(inp.value);
+        });
+        return codes;
+      }
+
+      function syncSuccessorPersonOptions() {
+        if (!successorRowsEl) return;
+        var personCodes = Object.keys(SUCC_PERSON_LABELS);
+        successorRowsEl.querySelectorAll("[data-succ-row]").forEach(function (row) {
+          var taken = getSelectedSuccessorCodes(row);
+          var personMenu = row.querySelector("[data-succ-person-menu]");
+          if (!personMenu) return;
+          personMenu.querySelectorAll(".succ-menu__opt").forEach(function (opt) {
+            var val = opt.getAttribute("data-value");
+            if (!val || personCodes.indexOf(val) === -1) return;
+            var hide = taken.indexOf(val) !== -1;
+            opt.hidden = hide;
+            opt.disabled = hide;
+            opt.setAttribute("aria-hidden", hide ? "true" : "false");
+          });
+        });
       }
 
       function setReadinessValue(row, value) {
@@ -2725,6 +2872,7 @@
           e.stopPropagation();
           var wasOpen = !personMenu.hidden;
           closeAllSuccessorPickers();
+          syncSuccessorPersonOptions();
           if (!wasOpen) {
             personMenu.hidden = false;
             personTrig.setAttribute("aria-expanded", "true");
@@ -2734,6 +2882,7 @@
         personMenu.querySelectorAll(".succ-menu__opt").forEach(function (optBtn) {
           optBtn.addEventListener("click", function (e) {
             e.stopPropagation();
+            if (optBtn.hidden || optBtn.disabled) return;
             var val = optBtn.getAttribute("data-value");
             setPersonValue(row, val);
             personMenu.hidden = true;
@@ -2778,6 +2927,7 @@
             }
             row.remove();
             syncSuccessorAddButtonVisibility();
+            syncSuccessorPersonOptions();
           } finally {
             syncSubmitButton();
           }
@@ -2799,6 +2949,7 @@
         var row = successorRowsEl.lastElementChild;
         if (row) bindSuccessorRow(row);
         syncSuccessorAddButtonVisibility();
+        syncSuccessorPersonOptions();
         syncSubmitButton();
       }
 
@@ -2830,6 +2981,7 @@
         if (v === "yes") {
           ensureSuccessorRowsMinOne();
           syncSuccessorAddButtonVisibility();
+          syncSuccessorPersonOptions();
         }
         syncSubmitButton();
       }
@@ -2900,6 +3052,10 @@
         });
       }
 
+      document.querySelectorAll('input[name="successor-no-plan"]').forEach(function (inp) {
+        inp.addEventListener("change", syncSubmitButton);
+      });
+
       function syncSuccessorRequired() {
         if (!groups.keyrole) return;
         var activeK = null;
@@ -2945,6 +3101,56 @@
         return "Core";
       }
 
+      function buildPotentialLeadLabel(pot) {
+        if (pot === "high") return "Высокий потенциал";
+        if (pot === "growing") return "Растущий потенциал";
+        if (pot === "basic") return "Базовый потенциал";
+        return "";
+      }
+
+      function buildRiskDrawerLead(risk, keyrole) {
+        var line = RISK_LINE_MAP[risk] || "";
+        if (!line) return "";
+        if (keyrole === "yes") return line + ", занимает ключевую роль";
+        return line;
+      }
+
+      var SUCCESSOR_NO_PLAN_LABELS = {
+        reconsider: "Если уйдёт, пересмотрим роль",
+        find: "Нужно будет найти замену на эту роль",
+      };
+
+      function getSuccessorNoPlanValue() {
+        if (getActiveSegmentValue("keyrole") !== "yes") return null;
+        if (getActiveSuccessorValue() !== "no") return null;
+        var checked = document.querySelector('input[name="successor-no-plan"]:checked');
+        return checked ? checked.getAttribute("value") : null;
+      }
+
+      function getSuccessorPlanLine() {
+        var plan = getSuccessorNoPlanValue();
+        return plan ? SUCCESSOR_NO_PLAN_LABELS[plan] || "" : "";
+      }
+
+      function formatMarkupPeriod(ts) {
+        var months = [
+          "Январь",
+          "Февраль",
+          "Март",
+          "Апрель",
+          "Май",
+          "Июнь",
+          "Июль",
+          "Август",
+          "Сентябрь",
+          "Октябрь",
+          "Ноябрь",
+          "Декабрь",
+        ];
+        var d = ts ? new Date(ts) : new Date();
+        return (months[d.getMonth()] || "") + " " + d.getFullYear();
+      }
+
       function buildPotentialHeadline(pot, keyrole) {
         var potShort = getActiveSegmentLabel("potential") || "";
         if (pot === "high" && keyrole === "yes") return "Высокий потенциал, занимает ключевую роль";
@@ -2978,28 +3184,76 @@
       }
 
       function collectRiskImpactText() {
+        return collectRiskImpactDrawerParts().join(", ");
+      }
+
+      function lowercaseFrag(s) {
+        s = String(s || "").trim();
+        if (!s) return "";
+        return s.charAt(0).toLowerCase() + s.slice(1);
+      }
+
+      function lowercaseReasonItem(s) {
+        s = String(s || "").trim();
+        if (!s) return "";
+        return s
+          .split(/\s*\/\s*/)
+          .map(function (part) {
+            return lowercaseFrag(part.trim());
+          })
+          .join(" / ");
+      }
+
+      function formatReasonsDrawerList(reasons) {
+        if (!reasons || !reasons.length) return "";
+        return reasons.map(lowercaseReasonItem).join(", ");
+      }
+
+      function collectRiskImpactDrawerParts() {
         var parts = [];
-        document.querySelectorAll('input.risk-cb-input[name="risk-impact"]:checked').forEach(function (inp) {
-          var id = inp.id;
-          if (id === "risk-impact-critical") {
-            parts.push("Пострадает критический процесс.");
-            return;
-          }
-          if (id === "risk-impact-expertise") {
-            var d = document.getElementById("risk-impact-expertise-detail");
-            parts.push("Потеряем редкую экспертизу" + (d && d.value.trim() ? ": " + d.value.trim() : "") + ".");
-            return;
-          }
-          if (id === "risk-impact-team") {
-            parts.push("Команда может развалиться или потерять мотивацию.");
-            return;
-          }
-          if (id === "risk-impact-other") {
-            var o = document.getElementById("risk-impact-other-detail");
-            if (o && o.value.trim()) parts.push(o.value.trim());
-          }
-        });
-        return parts.join(" ");
+        var crit = document.getElementById("risk-impact-critical");
+        if (crit && crit.checked) {
+          parts.push("пострадает критический процесс");
+        }
+        var exp = document.getElementById("risk-impact-expertise");
+        if (exp && exp.checked) {
+          var d = document.getElementById("risk-impact-expertise-detail");
+          var detail = d && d.value.trim() ? d.value.trim() : "";
+          parts.push(
+            "потеряем редкую экспертизу" + (detail ? " (" + lowercaseFrag(detail) + ")" : "")
+          );
+        }
+        var team = document.getElementById("risk-impact-team");
+        if (team && team.checked) {
+          parts.push("команда может развалиться или потерять мотивацию");
+        }
+        var oth = document.getElementById("risk-impact-other");
+        if (oth && oth.checked) {
+          var o = document.getElementById("risk-impact-other-detail");
+          if (o && o.value.trim()) parts.push(lowercaseFrag(o.value.trim()));
+        }
+        return parts;
+      }
+
+      function buildRiskImpactDrawerPartsFromState(st) {
+        if (!st) return [];
+        var parts = [];
+        if (st.critical) parts.push("пострадает критический процесс");
+        if (st.expertise) {
+          parts.push(
+            "потеряем редкую экспертизу" +
+              (st.expertiseDetail ? " (" + lowercaseFrag(st.expertiseDetail) + ")" : "")
+          );
+        }
+        if (st.team) parts.push("команда может развалиться или потерять мотивацию");
+        if (st.other && st.otherDetail) parts.push(lowercaseFrag(st.otherDetail));
+        return parts;
+      }
+
+      function buildRiskImpactDrawerText(emp, parts) {
+        if (!parts || !parts.length) return "";
+        var who = (emp && emp.first) || "сотрудник";
+        return "Если " + who + " уйдёт, " + parts.join(", ");
       }
 
       function collectSuccessorsSnap() {
@@ -3068,7 +3322,7 @@
         if (potentialCaptionEl && !potentialCaptionEl.hidden) {
           cap = potentialCaptionEl.textContent.replace(/\n/g, " ").trim();
         }
-        var detailParts = [cap, devText].filter(Boolean);
+        var detailParts = [cap].filter(Boolean);
         var opennessLabel = getActiveSegmentLabel("openness");
         var fg = emp.firstGenitive || "";
         return {
@@ -3079,22 +3333,33 @@
           nominative: emp.nominative || "",
           cohortTitle: "Предварительная когорта " + fg + " — " + buildCohortBand(pot),
           cohortSub: "Определим точную когорту, когда будет согласована оценка перформанса",
+          first: emp.first || "",
+          markupTitle: (emp.first || fg) + " — " + buildCohortBand(pot),
+          markupPeriod: formatMarkupPeriod(Date.now()),
           potential: pot,
           keyrole: keyrole,
+          potentialLead: buildPotentialLeadLabel(pot),
           potentialLine: buildPotentialHeadline(pot, keyrole),
-          potentialDetail: detailParts.length ? detailParts.join(" ") : "",
+          potentialCaption: cap,
+          potentialDetail: cap || "",
+          riskDrawerLead: buildRiskDrawerLead(risk, keyrole),
           risk: risk,
           riskLine: RISK_LINE_MAP[risk] || "",
           riskImpact: collectRiskImpactText() || "",
+          riskImpactDrawer: buildRiskImpactDrawerText(emp, collectRiskImpactDrawerParts()),
           riskReasons: collectRiskReasonList(),
+          riskReasonsDrawer: formatReasonsDrawerList(collectRiskReasonList()),
           futureRole: futureText || "",
           careerDev: devText,
           opennessLabel: opennessLabel,
-          successors: collectSuccessorsSnap(),
+          successors:
+            getActiveSuccessorValue() === "yes" ? collectSuccessorsSnap() : [],
           strengths: collectSkillTags("strengths"),
           growth: collectSkillTags("growth"),
           openness: getActiveSegmentValue("openness"),
           successorChoice: getActiveSuccessorValue(),
+          successorNoPlan: getSuccessorNoPlanValue(),
+          successorPlanLine: getSuccessorPlanLine(),
           riskChips: collectRiskChipSelection(),
           riskImpactState: collectRiskImpactState(),
         };
@@ -3193,7 +3458,7 @@
       function applySnapshotToForm(data) {
         if (!data || !data.v) return;
         activateSegment("potential", data.potential);
-        activateSegment("keyrole", data.keyrole);
+        activateSegment("keyrole", data.keyrole || "no");
         activateSegment("risk", data.risk);
         if (data.openness != null) {
           activateSegment("openness", data.openness);
@@ -3211,6 +3476,9 @@
         } else {
           activateSegment("successor", "no");
         }
+        document.querySelectorAll('input[name="successor-no-plan"]').forEach(function (inp) {
+          inp.checked = data.successorNoPlan === inp.getAttribute("value");
+        });
         syncSuccessorFollowup();
 
         var tf = document.getElementById("talent-field-future-role");
@@ -3244,6 +3512,7 @@
         syncRiskFollowup();
         syncRiskLeaveOtherInput();
         syncRiskImpactDetailInputs();
+        syncSuccessorPersonOptions();
         syncSubmitButton();
       }
 
@@ -3263,7 +3532,10 @@
           try {
             var snap = collectTalentSnapshot();
             localStorage.setItem(TALENT_SAVE_PREFIX + snap.slug, JSON.stringify(snap));
-            window.location.href = "employees-table.html?openDrawer=" + encodeURIComponent(snap.slug);
+            window.location.href =
+              "employees-table.html?openDrawer=" +
+              encodeURIComponent(snap.slug) +
+              "&drawerTab=talent";
           } catch (err) {}
         });
       }
@@ -3280,6 +3552,9 @@
             b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === "low");
           });
         }
+        activateSegment("keyrole", "no");
+        syncSuccessorRequired();
+        syncSuccessorFollowup();
         potentialUnknownQuizShown = false;
         syncPotentialCaption();
         syncPotentialQuizVisibility();

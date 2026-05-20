@@ -845,6 +845,10 @@
       border-bottom-color: #1f1f1f;
     }
 
+    .emp-drawer__tab-count {
+      color: inherit;
+    }
+
     .emp-drawer__tab:focus-visible {
       outline: 2px solid rgba(0, 98, 255, 0.45);
       outline-offset: 2px;
@@ -996,6 +1000,10 @@
       background: rgba(167, 89, 207, 0.08);
     }
 
+    .emp-result-block__score-group.emp-result-block__score-group--blue {
+      background: rgba(43, 149, 202, 0.08);
+    }
+
     .emp-result-block__mark {
       flex: 1 1 0;
       min-width: 0;
@@ -1011,8 +1019,16 @@
       align-self: flex-start;
       min-height: 32px;
       border-radius: 8px;
-      background: #dcbdec;
+      background: #aad5ea;
       overflow: hidden;
+    }
+
+    .emp-result-block__mark--lavender .emp-result-mark__badge {
+      background: #dcbdec;
+    }
+
+    .emp-result-block__mark--blue .emp-result-mark__badge {
+      background: #aad5ea;
     }
 
     .emp-result-mark__score {
@@ -1021,8 +1037,16 @@
       text-align: center;
       font-size: var(--control-fs);
       line-height: var(--control-lh);
-      color: #50375c;
+      color: rgba(0, 0, 0, 0.88);
       font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-result-block__mark--lavender .emp-result-mark__score {
+      color: #50375c;
+    }
+
+    .emp-result-block__mark--blue .emp-result-mark__score {
+      color: rgba(0, 0, 0, 0.88);
     }
 
     .emp-result-mark__icon {
@@ -1044,7 +1068,32 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
+      color: #2b95ca;
+    }
+
+    .emp-result-block__mark--lavender .emp-result-mark__text {
       color: #8e49b1;
+    }
+
+    .emp-result-block__mark--blue .emp-result-mark__text {
+      color: #2b95ca;
+    }
+
+    .col-potential,
+    .col-talent-markup {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .col-potential--empty,
+    .col-talent-markup--empty {
+      color: var(--text-secondary);
+    }
+
+    .cell-markup-band {
+      font-weight: 500;
     }
 
     .emp-result-mark__label {
@@ -1356,6 +1405,166 @@
       max-width: 48ch;
     }
 
+    .emp-goals-view {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+
+    .emp-goals-section-title {
+      margin: 0;
+      padding: 24px 0 0;
+      font-weight: 500;
+      font-size: var(--title-s);
+      line-height: var(--title-s-lh);
+      color: var(--text-primary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-goals-section-title--projects {
+      padding-top: 24px;
+    }
+
+    .emp-goals-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 0 0;
+      width: 100%;
+    }
+
+    .emp-tracker-card {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 220px;
+      min-height: 84px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-100);
+      box-sizing: border-box;
+    }
+
+    .emp-tracker-card__body {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .emp-tracker-card__title {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: var(--text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-tracker-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-tracker-card__meta-sep {
+      width: 1px;
+      height: 12px;
+      background: var(--border-strong);
+      flex-shrink: 0;
+    }
+
+    .emp-tracker-card__status {
+      flex: 0 0 90px;
+      width: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 2px;
+      text-align: right;
+    }
+
+    .emp-tracker-card__status-label {
+      margin: 0;
+      font-size: var(--caption-m);
+      line-height: var(--caption-m-lh);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-tracker-card__status-label--green {
+      color: var(--hr-green-500);
+    }
+
+    .emp-tracker-card__status-label--orange {
+      color: var(--hr-orange-500);
+    }
+
+    .emp-tracker-card__status-label--muted {
+      color: var(--text-secondary);
+    }
+
+    .emp-tracker-card__progress-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+    }
+
+    .emp-tracker-card__progress-bar {
+      flex: 1 1 auto;
+      height: 4px;
+      min-width: 0;
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .emp-tracker-card__progress-fill {
+      display: block;
+      height: 100%;
+      border-radius: 100px;
+      background: var(--text-primary);
+    }
+
+    .emp-tracker-card__progress-fill--orange {
+      background: var(--hr-orange-500);
+    }
+
+    .emp-tracker-card__progress-pct {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      font-weight: 500;
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-tracker-card__progress-pct--orange {
+      color: var(--hr-orange-500);
+    }
+
+    .emp-goals-footnote {
+      margin: 0;
+      padding: 24px 0 8px;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: var(--text-secondary);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
     .emp-drawer__content {
       padding: 24px 24px 40px;
       display: flex;
@@ -1502,6 +1711,39 @@
 
     .emp-drawer__anketa-p--reasons {
       white-space: pre-wrap;
+    }
+
+    .emp-drawer__predecessor-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .emp-drawer__predecessor-wrap .emp-succ-tag {
+      align-self: flex-start;
+      width: auto;
+      max-width: none;
+      flex: 0 0 auto;
+    }
+
+    .emp-drawer__predecessor-wrap .emp-succ-tag__name {
+      max-width: none;
+    }
+
+    .emp-drawer__succ-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .emp-drawer__succ-label {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
     .emp-succ-tags {
@@ -1790,7 +2032,7 @@
       padding: 4px 10px 5px;
       border-radius: 999px;
       background: #aad5ea;
-      color: rgba(0, 0, 0, 0.75);
+      color: rgba(0, 0, 0, 0.88);
       gap: 4px;
       box-sizing: border-box;
     }
@@ -2158,7 +2400,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr data-employee-slug="darina" data-employee-name="Дарина Аверьянова" data-employee-login="darinaaverianova@" data-employee-role="Руководитель группы" data-employee-avatar="assets/avatars/Darina.png">
+                <tr
+                  data-employee-slug="darina"
+                  data-employee-name="Дарина Аверьянова"
+                  data-employee-login="darinaaverianova@"
+                  data-employee-role="Руководитель группы"
+                  data-employee-avatar="assets/avatars/Darina.png"
+                  data-review-score="18"
+                  data-review-grade="18"
+                  data-review-grade-caption="Без изменений"
+                  data-review-tier-caption="Фантастический"
+                  data-review-tier-icon="assets/icons/Review%20_%20Fantastic.svg"
+                  data-review-mark-variant="lavender"
+                >
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -2220,17 +2474,17 @@
                   </td>
                   <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
                   <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
-                  <td class="emp-cell--muted">—</td>
-                  <td>
+                  <td class="col-talent-markup col-talent-markup--empty" data-col="talent-markup">
                     <button type="button" class="btn-markup-fill">Заполнить разметку</button>
                   </td>
-                  <td>
-                    <div class="emp-cell-emp" style="padding-left:0">
+                  <td class="col-potential col-potential--empty" data-col="potential">—</td>
+                  <td class="col-manager" data-col="manager">
+                    <div class="emp-cell-emp" style="padding-left: 0">
                       <div class="emp-user">
-                        <img class="emp-user__avatar" src="assets/avatars/Elena.png" alt="" />
+                        <img class="emp-user__avatar" src="assets/avatars/Irina.png" alt="" />
                         <div class="emp-user__meta">
-                          <div class="emp-user__name">Полина Миронова</div>
-                          <div class="emp-user__login">polinamir@</div>
+                          <div class="emp-user__name">Василиса Добровольская</div>
+                          <div class="emp-user__login">dobrovolskaya@</div>
                         </div>
                       </div>
                     </div>
@@ -2251,7 +2505,19 @@
                   <td><span class="text-spectre-green">+16,97%</span></td>
                   <td>200&nbsp;600&nbsp;₽</td>
                 </tr>
-                <tr data-employee-slug="ekaterina" data-employee-name="Екатерина Компанченко" data-employee-login="ekaterinak@" data-employee-role="Старший разработчик" data-employee-avatar="assets/avatars/Ekaterina.png">
+                <tr
+                  data-employee-slug="ekaterina"
+                  data-employee-name="Екатерина Компанченко"
+                  data-employee-login="ekaterinak@"
+                  data-employee-role="Старший разработчик"
+                  data-employee-avatar="assets/avatars/Ekaterina.png"
+                  data-review-score="17"
+                  data-review-grade="17"
+                  data-review-grade-caption="Без изменений"
+                  data-review-tier-caption="Прекрасный"
+                  data-review-tier-icon="assets/icons/Review%20_%20Excellent.svg"
+                  data-review-mark-variant="blue"
+                >
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -2310,17 +2576,17 @@
                   </td>
                   <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
                   <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
-                  <td class="emp-cell--muted">—</td>
-                  <td>
+                  <td class="col-talent-markup col-talent-markup--empty" data-col="talent-markup">
                     <button type="button" class="btn-markup-fill">Заполнить разметку</button>
                   </td>
-                  <td>
-                    <div class="emp-cell-emp" style="padding-left:0">
+                  <td class="col-potential col-potential--empty" data-col="potential">—</td>
+                  <td class="col-manager" data-col="manager">
+                    <div class="emp-cell-emp" style="padding-left: 0">
                       <div class="emp-user">
-                        <img class="emp-user__avatar" src="assets/avatars/Elena.png" alt="" />
+                        <img class="emp-user__avatar" src="assets/avatars/Irina.png" alt="" />
                         <div class="emp-user__meta">
-                          <div class="emp-user__name">Елена Комиссарова</div>
-                          <div class="emp-user__login">elena.kom@</div>
+                          <div class="emp-user__name">Василиса Добровольская</div>
+                          <div class="emp-user__login">dobrovolskaya@</div>
                         </div>
                       </div>
                     </div>
@@ -2341,7 +2607,19 @@
                   <td><span class="text-danger">−2,46%</span></td>
                   <td>178&nbsp;400&nbsp;₽</td>
                 </tr>
-                <tr data-employee-slug="alexey" data-employee-name="Алексей Морозов" data-employee-login="alexeym@" data-employee-role="Разработчик" data-employee-avatar="assets/avatars/Alexey.png">
+                <tr
+                  data-employee-slug="alexey"
+                  data-employee-name="Алексей Морозов"
+                  data-employee-login="alexeym@"
+                  data-employee-role="Разработчик"
+                  data-employee-avatar="assets/avatars/Alexey.png"
+                  data-review-score="16"
+                  data-review-grade="16"
+                  data-review-grade-caption="Без изменений"
+                  data-review-tier-caption="Прекрасный"
+                  data-review-tier-icon="assets/icons/Review%20_%20Excellent.svg"
+                  data-review-mark-variant="blue"
+                >
                   <td class="td-sticky td-sticky--employee">
                     <div class="emp-cell-emp">
                       <input class="ui-checkbox" type="checkbox" aria-label="Выбрать строку" />
@@ -2400,17 +2678,17 @@
                   </td>
                   <td><img class="icon-check-circle" src="assets/icons/Review%20%C2%B7%20Empty.svg" alt="" style="opacity:0.35;width:20px;height:20px" /></td>
                   <td><img class="icon-check-circle" src="assets/icons/Check%20_%20Circle.svg" alt="" /></td>
-                  <td class="emp-cell--muted">—</td>
-                  <td>
+                  <td class="col-talent-markup col-talent-markup--empty" data-col="talent-markup">
                     <button type="button" class="btn-markup-fill">Заполнить разметку</button>
                   </td>
-                  <td>
-                    <div class="emp-cell-emp" style="padding-left:0">
+                  <td class="col-potential col-potential--empty" data-col="potential">—</td>
+                  <td class="col-manager" data-col="manager">
+                    <div class="emp-cell-emp" style="padding-left: 0">
                       <div class="emp-user">
-                        <img class="emp-user__avatar" src="assets/avatars/Dmitry.png" alt="" />
+                        <img class="emp-user__avatar" src="assets/avatars/Irina.png" alt="" />
                         <div class="emp-user__meta">
-                          <div class="emp-user__name">Дмитрий Орлов</div>
-                          <div class="emp-user__login">dorlov@</div>
+                          <div class="emp-user__name">Василиса Добровольская</div>
+                          <div class="emp-user__login">dobrovolskaya@</div>
                         </div>
                       </div>
                     </div>
@@ -2474,7 +2752,9 @@
               Ревью
             </button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="talent" aria-selected="false">Разметка талантов</button>
-            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="goals" aria-selected="false">Цели и проекты</button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="goals" aria-selected="false">
+              Цели и проекты <span class="emp-drawer__tab-count">· 5</span>
+            </button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="history" aria-selected="false">История</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="feedback" aria-selected="false">Отзывы</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="signals" aria-selected="false">Сигналы</button>
@@ -2511,21 +2791,28 @@
                 <div class="emp-result-block__panel">
                   <div class="emp-result-block__metrics">
                     <div class="emp-result-block__score-group">
-                      <div class="emp-result-block__mark">
+                      <div id="emp-drawer-review-mark" class="emp-result-block__mark emp-result-block__mark--blue">
                         <div class="emp-result-mark__badge">
-                          <span class="emp-result-mark__score">16</span>
+                          <span id="emp-drawer-review-score" class="emp-result-mark__score">16</span>
                           <span class="emp-result-mark__icon" aria-hidden="true">
-                            <img src="assets/icons/Review%20_%20Fantastic.svg" alt="" width="16" height="16" decoding="async" />
+                            <img
+                              id="emp-drawer-review-tier-icon"
+                              src="assets/icons/Review%20_%20Fantastic.svg"
+                              alt=""
+                              width="16"
+                              height="16"
+                              decoding="async"
+                            />
                           </span>
                         </div>
                         <div class="emp-result-mark__text">
                           <span class="emp-result-mark__label">Оценка результата</span>
-                          <span class="emp-result-mark__caption">Фантастический</span>
+                          <span id="emp-drawer-review-tier-caption" class="emp-result-mark__caption">Фантастический</span>
                         </div>
                       </div>
                       <div class="emp-result-block__grade">
                         <div class="emp-result-block__grade-top">
-                          <span class="emp-result-block__grade-num">18</span>
+                          <span id="emp-drawer-review-grade" class="emp-result-block__grade-num">18</span>
                           <button type="button" class="emp-result-block__edit-btn" aria-label="Изменить грейд" tabindex="-1">
                             <img
                               class="asset-icon asset-icon--16"
@@ -2539,7 +2826,7 @@
                         </div>
                         <div>
                           <div class="emp-result-block__field-label">Грейд</div>
-                          <div class="emp-result-block__field-caption">Без изменений</div>
+                          <div id="emp-drawer-review-grade-caption" class="emp-result-block__field-caption">Без изменений</div>
                         </div>
                       </div>
                     </div>
@@ -2581,6 +2868,7 @@
                 </button>
                 <span class="emp-review-actions__divider" aria-hidden="true"></span>
                 <a
+                  id="emp-review-markup-cta"
                   class="emp-btn-talent-markup emp-btn-talent-markup--secondary emp-drawer-markup-cta"
                   href="index.html"
                   target="_blank"
@@ -2643,8 +2931,8 @@
                 <div class="emp-drawer__saved-anketa">
                   <div class="emp-drawer__anketa-head">
                     <div class="emp-drawer__anketa-head-text">
-                      <h2 id="emp-saved-cohort-title" class="emp-drawer__anketa-title"></h2>
-                      <p id="emp-saved-cohort-sub" class="emp-drawer__anketa-sub"></p>
+                      <h2 id="emp-saved-markup-title" class="emp-drawer__anketa-title"></h2>
+                      <p id="emp-saved-markup-period" class="emp-drawer__anketa-sub"></p>
                     </div>
                     <a id="emp-drawer-edit" class="emp-drawer__edit-btn" href="index.html" target="_blank" rel="noopener noreferrer">
                       <span>Изменить</span>
@@ -2664,24 +2952,36 @@
                   <div id="emp-ank-row-potential" class="emp-drawer__anketa-row">
                     <div class="emp-drawer__anketa-label">Потенциал</div>
                     <div class="emp-drawer__anketa-value">
-                      <p id="emp-saved-potential-line" class="emp-drawer__anketa-lead"></p>
+                      <p id="emp-saved-potential-lead" class="emp-drawer__anketa-lead" hidden></p>
+                      <div id="emp-saved-predecessor-wrap" class="emp-drawer__predecessor-wrap" hidden>
+                        <p id="emp-saved-predecessor-note" class="emp-drawer__anketa-p"></p>
+                        <div class="emp-succ-tag">
+                          <img
+                            class="emp-succ-tag__avatar"
+                            src="assets/avatars/Dmitry.png"
+                            alt=""
+                            width="24"
+                            height="24"
+                            decoding="async"
+                          />
+                          <span class="emp-succ-tag__name">Сергея Дубова</span>
+                        </div>
+                      </div>
                       <p id="emp-saved-potential-detail" class="emp-drawer__anketa-p" hidden></p>
                     </div>
                   </div>
 
                   <div id="emp-ank-row-risk" class="emp-drawer__anketa-row">
-                    <div class="emp-drawer__anketa-label">Риск потери</div>
+                    <div class="emp-drawer__anketa-label">Риск потери и&nbsp;последствия</div>
                     <div class="emp-drawer__anketa-value">
-                      <p id="emp-saved-risk-line" class="emp-drawer__anketa-lead"></p>
+                      <p id="emp-saved-risk-lead" class="emp-drawer__anketa-lead" hidden></p>
                       <p id="emp-saved-risk-impact" class="emp-drawer__anketa-p" hidden></p>
                       <p id="emp-saved-risk-reasons-block" class="emp-drawer__anketa-p emp-drawer__anketa-p--reasons" hidden></p>
-                    </div>
-                  </div>
-
-                  <div id="emp-ank-row-succ" class="emp-drawer__anketa-row">
-                    <div class="emp-drawer__anketa-label">Преемники</div>
-                    <div class="emp-drawer__anketa-value">
-                      <div id="emp-saved-successors" class="emp-succ-tags" hidden></div>
+                      <p id="emp-saved-successor-plan" class="emp-drawer__anketa-p" hidden></p>
+                      <div id="emp-saved-successors-wrap" class="emp-drawer__succ-wrap" hidden>
+                        <p class="emp-drawer__succ-label">Преемники:</p>
+                        <div id="emp-saved-successors" class="emp-succ-tags"></div>
+                      </div>
                     </div>
                   </div>
 
@@ -2691,17 +2991,104 @@
                       <p id="emp-saved-growth-role" class="emp-drawer__anketa-p" hidden></p>
                       <p id="emp-saved-growth-ambi" class="emp-drawer__anketa-p" hidden></p>
                       <p id="emp-saved-growth-open" class="emp-drawer__anketa-p" hidden></p>
-                    </div>
-                  </div>
-
-                  <div id="emp-ank-row-skills" class="emp-drawer__anketa-row">
-                    <div class="emp-drawer__anketa-label">Сильные стороны и зоны роста</div>
-                    <div class="emp-drawer__anketa-value">
                       <p id="emp-saved-skills-st" class="emp-drawer__anketa-p" hidden></p>
                       <p id="emp-saved-skills-gr" class="emp-drawer__anketa-p" hidden></p>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div id="emp-view-goals" class="emp-drawer-view" hidden>
+              <div class="emp-goals-view">
+                <h3 class="emp-goals-section-title">Цели</h3>
+                <div class="emp-goals-grid" role="list">
+                  <article class="emp-tracker-card" role="listitem">
+                    <div class="emp-tracker-card__body">
+                      <p class="emp-tracker-card__title">Увеличить долю сотрудников покрытых целями в Трекере…</p>
+                      <div class="emp-tracker-card__meta">
+                        <span>Ответственный</span>
+                        <span class="emp-tracker-card__meta-sep" aria-hidden="true"></span>
+                        <span>До Q4 2025</span>
+                      </div>
+                    </div>
+                    <div class="emp-tracker-card__status">
+                      <p class="emp-tracker-card__status-label emp-tracker-card__status-label--green">Достигнута</p>
+                    </div>
+                  </article>
+                  <article class="emp-tracker-card" role="listitem">
+                    <div class="emp-tracker-card__body">
+                      <p class="emp-tracker-card__title">Сократить время на создание встреч по калибровкам до 3 мин</p>
+                      <div class="emp-tracker-card__meta">
+                        <span>Участник</span>
+                        <span class="emp-tracker-card__meta-sep" aria-hidden="true"></span>
+                        <span>До 25 ноября</span>
+                      </div>
+                    </div>
+                    <div class="emp-tracker-card__status">
+                      <p class="emp-tracker-card__status-label emp-tracker-card__status-label--green">Частично достигнута</p>
+                    </div>
+                  </article>
+                  <article class="emp-tracker-card" role="listitem">
+                    <div class="emp-tracker-card__body">
+                      <p class="emp-tracker-card__title">Пересобрать страницу «Мои сотрудники» для руководителей и партнеров</p>
+                      <div class="emp-tracker-card__meta">
+                        <span>Участник</span>
+                        <span class="emp-tracker-card__meta-sep" aria-hidden="true"></span>
+                        <span>До Q3 2025</span>
+                      </div>
+                    </div>
+                    <div class="emp-tracker-card__status">
+                      <div class="emp-tracker-card__progress-row">
+                        <div class="emp-tracker-card__progress-bar" aria-hidden="true">
+                          <span class="emp-tracker-card__progress-fill emp-tracker-card__progress-fill--orange" style="width: 70%"></span>
+                        </div>
+                        <p class="emp-tracker-card__progress-pct emp-tracker-card__progress-pct--orange">70%</p>
+                      </div>
+                      <p class="emp-tracker-card__status-label emp-tracker-card__status-label--orange">Есть риски</p>
+                    </div>
+                  </article>
+                </div>
+
+                <h3 class="emp-goals-section-title emp-goals-section-title--projects">Проекты</h3>
+                <div class="emp-goals-grid" role="list">
+                  <article class="emp-tracker-card" role="listitem">
+                    <div class="emp-tracker-card__body">
+                      <p class="emp-tracker-card__title">Переезд сценариев руководителя в перформанс цикле в пространство Lead</p>
+                      <div class="emp-tracker-card__meta">
+                        <span>Ответственный</span>
+                        <span class="emp-tracker-card__meta-sep" aria-hidden="true"></span>
+                        <span>До 27 октября</span>
+                      </div>
+                    </div>
+                    <div class="emp-tracker-card__status">
+                      <p class="emp-tracker-card__status-label emp-tracker-card__status-label--green">Завершён</p>
+                    </div>
+                  </article>
+                  <article class="emp-tracker-card" role="listitem">
+                    <div class="emp-tracker-card__body">
+                      <p class="emp-tracker-card__title">Показ метрик и сигналов в пространствах</p>
+                      <div class="emp-tracker-card__meta">
+                        <span>Участник</span>
+                        <span class="emp-tracker-card__meta-sep" aria-hidden="true"></span>
+                        <span>До Q1 2026</span>
+                      </div>
+                    </div>
+                    <div class="emp-tracker-card__status">
+                      <div class="emp-tracker-card__progress-row">
+                        <div class="emp-tracker-card__progress-bar" aria-hidden="true">
+                          <span class="emp-tracker-card__progress-fill" style="width: 25%"></span>
+                        </div>
+                        <p class="emp-tracker-card__progress-pct">25%</p>
+                      </div>
+                      <p class="emp-tracker-card__status-label emp-tracker-card__status-label--muted">По плану</p>
+                    </div>
+                  </article>
+                </div>
+
+                <p class="emp-goals-footnote">
+                  Если вы не видите здесь или в Трекере какие-то из целей или проектов сотрудника, возможно, они скрыты и вы
+                  не добавлены в них в Трекере
+                </p>
               </div>
             </div>
             <div id="emp-view-stub" class="emp-drawer-view" hidden>
@@ -2726,12 +3113,19 @@
       var tabButtons = tablist ? tablist.querySelectorAll("[data-drawer-tab]") : [];
       var stubText = document.getElementById("emp-view-stub-text");
       var drawerActiveTab = "review";
+      var drawerOpenTab = "review";
       var drawerHasMarkup = false;
       var tbody = document.querySelector(".emp-table tbody");
       var TALENT_SAVE_PREFIX = "talentMarkupV2:";
 
       function hideAllDrawerViews() {
-        ["emp-view-review-empty", "emp-view-talent-empty", "emp-view-talent-filled", "emp-view-stub"].forEach(function (id) {
+        [
+          "emp-view-review-empty",
+          "emp-view-talent-empty",
+          "emp-view-talent-filled",
+          "emp-view-goals",
+          "emp-view-stub",
+        ].forEach(function (id) {
           var el = document.getElementById(id);
           if (el) el.hidden = true;
         });
@@ -2752,19 +3146,23 @@
         if (!skipPanels) syncDrawerPanels();
       }
 
+      function syncReviewMarkupCta() {
+        var cta = document.getElementById("emp-review-markup-cta");
+        if (cta) cta.hidden = drawerHasMarkup;
+      }
+
       function syncDrawerPanels() {
         hideAllDrawerViews();
         var has = drawerHasMarkup;
         var t = drawerActiveTab;
+        syncReviewMarkupCta();
         if (has) {
           if (t === "talent") {
             showDrawerView("emp-view-talent-filled");
           } else if (t === "review") {
-            if (stubText) {
-              stubText.textContent =
-                "Разметка талантов для этого сотрудника уже заполнена. Откройте вкладку «Разметка талантов», чтобы посмотреть или изменить данные.";
-            }
-            showDrawerView("emp-view-stub");
+            showDrawerView("emp-view-review-empty");
+          } else if (t === "goals") {
+            showDrawerView("emp-view-goals");
           } else {
             if (stubText) stubText.textContent = "В прототипе этот раздел пока без контента.";
             showDrawerView("emp-view-stub");
@@ -2774,6 +3172,8 @@
             showDrawerView("emp-view-review-empty");
           } else if (t === "talent") {
             showDrawerView("emp-view-talent-empty");
+          } else if (t === "goals") {
+            showDrawerView("emp-view-goals");
           } else {
             if (stubText) stubText.textContent = "В прототипе этот раздел пока без контента.";
             showDrawerView("emp-view-stub");
@@ -2824,7 +3224,11 @@
         drawerHasMarkup = has;
         root.dataset.hasMarkup = has ? "1" : "0";
 
-        setActiveTab(has ? "talent" : "review", true);
+        var openTab = drawerOpenTab;
+        if (!has) openTab = "review";
+        else if (openTab !== "talent") openTab = "review";
+        setActiveTab(openTab, true);
+        drawerOpenTab = "review";
 
         if (!has) {
           syncDrawerPanels();
@@ -2838,17 +3242,119 @@
 
         function formatOpennessLine(d) {
           var lab = d.opennessLabel || "";
+          var openness = d.openness;
           var g = d.firstGenitive || "сотрудника";
-          if (!lab || lab.indexOf("Не открывать") !== -1) {
-            return "Профиль " + g + " не открыт для внутреннего найма.";
+          if (openness === "none" || !lab || lab.indexOf("Не открывать") !== -1) {
+            return "";
           }
-          if (lab.indexOf("бизнес-групп") !== -1) {
+          if (lab.indexOf("бизнес-групп") !== -1 || openness === "bg") {
             return "Профиль " + g + " открыт для найма внутри бизнес-группы";
           }
-          if (lab.indexOf("Яндекс") !== -1) {
+          if (lab.indexOf("Яндекс") !== -1 || openness === "all") {
             return "Профиль " + g + " открыт для найма во всём Яндексе";
           }
-          return "Внутренний найм: «" + lab + "».";
+          return "";
+        }
+
+        var SUCCESSOR_NO_PLAN_LABELS = {
+          reconsider: "Если уйдёт, пересмотрим роль",
+          find: "Нужно будет найти замену на эту роль",
+        };
+
+        function capitalizeLead(s) {
+          if (!s) return "";
+          return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+
+        function lowercaseFrag(s) {
+          s = String(s || "").trim();
+          if (!s) return "";
+          return s.charAt(0).toLowerCase() + s.slice(1);
+        }
+
+        function lowercaseReasonItem(s) {
+          s = String(s || "").trim();
+          if (!s) return "";
+          return s
+            .split(/\s*\/\s*/)
+            .map(function (part) {
+              return lowercaseFrag(part.trim());
+            })
+            .join(" / ");
+        }
+
+        function formatReasonsDrawerBody(data) {
+          var raw = data.riskReasonsDrawer;
+          if (raw) {
+            return raw
+              .split(/,\s*/)
+              .map(lowercaseReasonItem)
+              .filter(Boolean)
+              .join(", ");
+          }
+          var list = data.riskReasons || [];
+          if (!list.length) return "";
+          return list.map(lowercaseReasonItem).join(", ");
+        }
+
+        function formatReasonsDrawerLine(data) {
+          var body = formatReasonsDrawerBody(data);
+          if (!body) return "";
+          var fg = data.firstGenitive || "сотрудника";
+          return "Причины, по которым " + fg + " может уйти: " + body;
+        }
+
+        function buildImpactPartsFromState(st) {
+          if (!st) return [];
+          var parts = [];
+          if (st.critical) parts.push("пострадает критический процесс");
+          if (st.expertise) {
+            parts.push(
+              "потеряем редкую экспертизу" +
+                (st.expertiseDetail ? " (" + lowercaseFrag(st.expertiseDetail) + ")" : "")
+            );
+          }
+          if (st.team) parts.push("команда может развалиться или потерять мотивацию");
+          if (st.other && st.otherDetail) parts.push(lowercaseFrag(st.otherDetail));
+          return parts;
+        }
+
+        function normalizeImpactParens(line) {
+          return String(line || "").replace(/\(([^)]+)\)/g, function (_m, inner) {
+            return "(" + lowercaseFrag(String(inner).trim()) + ")";
+          });
+        }
+
+        function formatRiskImpactDrawer(data) {
+          var parts = buildImpactPartsFromState(data.riskImpactState);
+          if (parts.length) {
+            var who =
+              data.first ||
+              (data.nominative ? String(data.nominative).trim().split(/\s+/)[0] : "сотрудник");
+            return "Если " + who + " уйдёт, " + parts.join(", ");
+          }
+          if (data.riskImpactDrawer) return normalizeImpactParens(data.riskImpactDrawer);
+          if (data.riskImpact) {
+            var whoFallback =
+              data.first ||
+              (data.nominative ? String(data.nominative).trim().split(/\s+/)[0] : "сотрудник");
+            var body = data.riskImpact.charAt(0).toLowerCase() + data.riskImpact.slice(1);
+            return normalizeImpactParens("Если " + whoFallback + " уйдёт, " + body);
+          }
+          return "";
+        }
+
+        function potentialDetailForDrawer(data) {
+          if (data.potentialCaption) return data.potentialCaption;
+          var pd = (data.potentialDetail || "").trim();
+          var cd = (data.careerDev || "").trim();
+          if (pd && cd) {
+            if (pd === cd) return "";
+            if (pd.indexOf(cd) !== -1) {
+              return pd.replace(cd, "").replace(/\s+/g, " ").trim();
+            }
+          }
+          return pd;
         }
 
         function tagLine(arr) {
@@ -2856,45 +3362,152 @@
           return arr.join(", ");
         }
 
-        setText("emp-saved-cohort-title", data.cohortTitle || "");
-        setText("emp-saved-cohort-sub", data.cohortSub || "");
+        function potentialLeadFromData(d) {
+          if (d.potentialLead) return d.potentialLead;
+          var m = { high: "Высокий потенциал", growing: "Растущий потенциал", basic: "Базовый потенциал" };
+          return m[d.potential] || "";
+        }
+
+        function riskLeadFromData(d) {
+          if (d.riskDrawerLead) return capitalizeLead(d.riskDrawerLead);
+          var riskMap = {
+            low: "Низкая вероятность ухода",
+            mid: "Средняя вероятность ухода",
+            medium: "Средняя вероятность ухода",
+            high: "Высокая вероятность ухода",
+          };
+          var line = riskMap[d.risk] || "";
+          if (!line) return capitalizeLead(d.riskLine || "");
+          if (d.keyrole === "yes") return line + ", занимает ключевую роль";
+          return line;
+        }
+
+        function markupTitleFromData(d) {
+          if (d.markupTitle) return d.markupTitle;
+          var band = "";
+          var m = (d.cohortTitle || "").match(/—\s*(\S+)\s*$/);
+          if (m) band = m[1];
+          var name =
+            d.first ||
+            (d.nominative ? String(d.nominative).trim().split(/\s+/)[0] : "");
+          if (name && band) return name + " — " + band;
+          return d.cohortTitle || "";
+        }
+
+        function formatRiskImpactDrawer(d) {
+          if (d.riskImpactDrawer) return d.riskImpactDrawer;
+          var impact = (d.riskImpact || "").trim();
+          if (!impact) return "";
+          var who =
+            d.first ||
+            (d.nominative ? String(d.nominative).trim().split(/\s+/)[0] : "сотрудник");
+          var body = impact.charAt(0).toLowerCase() + impact.slice(1);
+          return "Если " + who + " уйдёт, " + body;
+        }
+
+        function markupPeriodFromData(d) {
+          if (d.markupPeriod) return d.markupPeriod;
+          if (!d.savedAt) return "";
+          var months = [
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь",
+          ];
+          var dt = new Date(d.savedAt);
+          return months[dt.getMonth()] + " " + dt.getFullYear();
+        }
+
+        setText("emp-saved-markup-title", markupTitleFromData(data));
+        setText("emp-saved-markup-period", markupPeriodFromData(data));
         var edit = document.getElementById("emp-drawer-edit");
         if (edit) edit.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
 
-        setText("emp-saved-potential-line", data.potentialLine || "");
-        setOptionalBlock("emp-saved-potential-detail", data.potentialDetail || "");
+        var potLead = potentialLeadFromData(data);
+        var potLeadEl = document.getElementById("emp-saved-potential-lead");
+        if (potLeadEl) {
+          if (potLead) {
+            potLeadEl.textContent = potLead;
+            potLeadEl.hidden = false;
+          } else {
+            potLeadEl.textContent = "";
+            potLeadEl.hidden = true;
+          }
+        }
+        setOptionalBlock("emp-saved-potential-detail", potentialDetailForDrawer(data));
+        var predWrap = document.getElementById("emp-saved-predecessor-wrap");
+        var predNote = document.getElementById("emp-saved-predecessor-note");
+        var showPred = slug === "darina";
+        if (predWrap) predWrap.hidden = !showPred;
+        if (predNote && showPred) {
+          predNote.textContent =
+            "В сентябре 2024 в разметке было отражено, что через 1-2 года Дарина сможет стать преемником";
+        }
         showRow(
           "emp-ank-row-potential",
-          !!(data.potentialLine && String(data.potentialLine).trim()) ||
-            !!(data.potentialDetail && String(data.potentialDetail).trim())
+          !!potLead ||
+            showPred ||
+            !!(potentialDetailForDrawer(data) && String(potentialDetailForDrawer(data)).trim())
         );
 
-        setText("emp-saved-risk-line", data.riskLine || "");
-        setOptionalBlock("emp-saved-risk-impact", data.riskImpact || "");
+        var isLowRisk = data.risk === "low";
+        var riskLead = riskLeadFromData(data);
+        var riskLeadEl = document.getElementById("emp-saved-risk-lead");
+        if (riskLeadEl) {
+          if (riskLead) {
+            riskLeadEl.textContent = riskLead;
+            riskLeadEl.hidden = false;
+          } else {
+            riskLeadEl.textContent = "";
+            riskLeadEl.hidden = true;
+          }
+        }
+        var impactLine = isLowRisk ? "" : formatRiskImpactDrawer(data);
+        setOptionalBlock("emp-saved-risk-impact", impactLine);
         var rb = document.getElementById("emp-saved-risk-reasons-block");
         if (rb) {
-          if (data.riskReasons && data.riskReasons.length) {
-            var fg = data.firstGenitive || "сотрудника";
-            rb.textContent =
-              "Причины, по которым " + fg + " может уйти:\n" + data.riskReasons.join(", ");
+          var reasonsLine = isLowRisk ? "" : formatReasonsDrawerLine(data);
+          if (reasonsLine) {
+            rb.textContent = reasonsLine;
             rb.hidden = false;
           } else {
             rb.textContent = "";
             rb.hidden = true;
           }
         }
-        showRow(
-          "emp-ank-row-risk",
-          !!(data.riskLine && String(data.riskLine).trim()) ||
-            !!(data.riskImpact && String(data.riskImpact).trim()) ||
-            !!(data.riskReasons && data.riskReasons.length)
-        );
 
+        var planEl = document.getElementById("emp-saved-successor-plan");
+        var planText = "";
+        if (data.keyrole === "yes") {
+          planText =
+            data.successorPlanLine ||
+            (data.successorNoPlan ? SUCCESSOR_NO_PLAN_LABELS[data.successorNoPlan] || "" : "");
+        }
+        if (planEl) {
+          if (planText) {
+            planEl.textContent = planText;
+            planEl.hidden = false;
+          } else {
+            planEl.textContent = "";
+            planEl.hidden = true;
+          }
+        }
+
+        var succWrap = document.getElementById("emp-saved-successors-wrap");
         var succHost = document.getElementById("emp-saved-successors");
+        var hasSucc = !!(data.successors && data.successors.length);
+        var showSuccessors = data.successorChoice === "yes" && hasSucc;
         if (succHost) {
           succHost.innerHTML = "";
-          if (data.successors && data.successors.length) {
-            succHost.hidden = false;
+          if (showSuccessors) {
             data.successors.forEach(function (s) {
               var tag = document.createElement("div");
               tag.className = "emp-succ-tag";
@@ -2921,11 +3534,18 @@
               tag.appendChild(rd);
               succHost.appendChild(tag);
             });
-          } else {
-            succHost.hidden = true;
           }
         }
-        showRow("emp-ank-row-succ", !!(data.successors && data.successors.length));
+        if (succWrap) succWrap.hidden = !showSuccessors;
+
+        showRow(
+          "emp-ank-row-risk",
+          !!riskLead ||
+            !!impactLine ||
+            !!(!isLowRisk && formatReasonsDrawerBody(data)) ||
+            showSuccessors ||
+            !!planText
+        );
 
         var roleEl = document.getElementById("emp-saved-growth-role");
         var ambiEl = document.getElementById("emp-saved-growth-ambi");
@@ -2952,11 +3572,14 @@
           }
         }
         if (openEl) {
-          openEl.textContent = ol;
-          openEl.hidden = false;
+          if (ol) {
+            openEl.textContent = ol;
+            openEl.hidden = false;
+          } else {
+            openEl.textContent = "";
+            openEl.hidden = true;
+          }
         }
-        showRow("emp-ank-row-growth", !!(fr || cd || ol));
-
         var st = tagLine(data.strengths);
         var gr = tagLine(data.growth);
         var stEl = document.getElementById("emp-saved-skills-st");
@@ -2980,8 +3603,105 @@
             grEl.hidden = true;
           }
         }
-        showRow("emp-ank-row-skills", !!(st || gr));
+        showRow("emp-ank-row-growth", !!(fr || cd || ol || st || gr));
+        refreshTableMarkupRow(tbody ? tbody.querySelector('tr[data-employee-slug="' + slug + '"]') : null);
         syncDrawerPanels();
+      }
+
+      var TABLE_POTENTIAL_LABELS = {
+        high: "Высокий",
+        growing: "Растущий",
+        basic: "Базовый",
+        unknown: "Perf Focus",
+      };
+
+      var TABLE_BAND_LABELS = {
+        high: "HiPo",
+        growing: "HiPro",
+        basic: "Core",
+        unknown: "Perf Focus",
+      };
+
+      function bandFromMarkupData(data) {
+        if (!data || !data.v) return "";
+        if (data.potential === "high") return "HiPo";
+        if (data.potential === "growing") return "HiPro";
+        if (data.potential === "basic") return "Core";
+        if (data.potential === "unknown") return "Perf Focus";
+        var m = (data.cohortTitle || "").match(/—\s*(\S+)\s*$/);
+        return m ? m[1] : "";
+      }
+
+      function potentialLabelFromMarkupData(data) {
+        if (!data || !data.v || !data.potential) return "";
+        return TABLE_POTENTIAL_LABELS[data.potential] || "";
+      }
+
+      function refreshTableMarkupRow(tr) {
+        if (!tr) return;
+        var slug = (tr.dataset.employeeSlug || "").trim();
+        var data = loadMarkupSave(slug);
+        var markupCell = tr.querySelector(".col-talent-markup");
+        var potentialCell = tr.querySelector(".col-potential");
+        var btn = tr.querySelector(".btn-markup-fill");
+        var has = !!(data && data.v);
+
+        if (markupCell) {
+          markupCell.classList.toggle("col-talent-markup--empty", !has);
+          if (has) {
+            var band = bandFromMarkupData(data);
+            markupCell.innerHTML =
+              '<span class="cell-markup-band">' + (band || "—") + "</span>";
+          } else {
+            markupCell.innerHTML =
+              '<button type="button" class="btn-markup-fill">Заполнить разметку</button>';
+            btn = markupCell.querySelector(".btn-markup-fill");
+          }
+        }
+
+        if (potentialCell) {
+          var potLabel = has ? potentialLabelFromMarkupData(data) : "";
+          potentialCell.textContent = potLabel || "—";
+          potentialCell.classList.toggle("col-potential--empty", !potLabel);
+        }
+      }
+
+      function refreshAllTableMarkupRows() {
+        if (!tbody) return;
+        tbody.querySelectorAll("tr[data-employee-slug]").forEach(refreshTableMarkupRow);
+      }
+
+      function applyDrawerReviewFromRow(tr) {
+        var mark = document.getElementById("emp-drawer-review-mark");
+        var scoreGroup = mark ? mark.closest(".emp-result-block__score-group") : null;
+        var scoreEl = document.getElementById("emp-drawer-review-score");
+        var tierIcon = document.getElementById("emp-drawer-review-tier-icon");
+        var tierCaption = document.getElementById("emp-drawer-review-tier-caption");
+        var gradeEl = document.getElementById("emp-drawer-review-grade");
+        var gradeCaption = document.getElementById("emp-drawer-review-grade-caption");
+        if (!tr) return;
+
+        var score = tr.dataset.reviewScore || "";
+        var grade = tr.dataset.reviewGrade || "";
+        var gradeCap = tr.dataset.reviewGradeCaption || "Без изменений";
+        var tierCap = tr.dataset.reviewTierCaption || "";
+        var tierSrc = tr.dataset.reviewTierIcon || "";
+        var variant = tr.dataset.reviewMarkVariant || "blue";
+
+        if (scoreEl) scoreEl.textContent = score;
+        if (gradeEl) gradeEl.textContent = grade;
+        if (gradeCaption) gradeCaption.textContent = gradeCap;
+        if (tierCaption) tierCaption.textContent = tierCap;
+        if (tierIcon && tierSrc) tierIcon.src = tierSrc;
+        if (mark) {
+          mark.classList.remove("emp-result-block__mark--lavender", "emp-result-block__mark--blue");
+          mark.classList.add(
+            variant === "lavender" ? "emp-result-block__mark--lavender" : "emp-result-block__mark--blue"
+          );
+        }
+        if (scoreGroup) {
+          scoreGroup.classList.toggle("emp-result-block__score-group--blue", variant !== "lavender");
+        }
       }
 
       function setFromRow(tr) {
@@ -2996,10 +3716,13 @@
         document.querySelectorAll(".emp-drawer-markup-cta").forEach(function (a) {
           a.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
         });
+        applyDrawerReviewFromRow(tr);
+        refreshTableMarkupRow(tr);
         applyMarkupView(slug);
       }
 
-      function openDrawer(tr) {
+      function openDrawer(tr, opts) {
+        drawerOpenTab = opts && opts.tab === "talent" ? "talent" : "review";
         setFromRow(tr);
         root.classList.add("is-open");
         root.removeAttribute("hidden");
@@ -3022,7 +3745,7 @@
           if (!tr) return;
           if (cell && tr.querySelector("td.td-sticky--employee") !== cell) return;
           e.preventDefault();
-          openDrawer(tr);
+          openDrawer(tr, btn ? { tab: "talent" } : null);
         });
       }
 
@@ -3037,6 +3760,7 @@
       try {
         var params = new URLSearchParams(window.location.search);
         var openSlug = params.get("openDrawer");
+        var drawerTabParam = params.get("drawerTab");
         if (openSlug && tbody) {
           var s = decodeURIComponent(openSlug).trim();
           if (s) {
@@ -3046,7 +3770,7 @@
                 : s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
             var row = tbody.querySelector('tr[data-employee-slug="' + esc + '"]');
             if (row) {
-              openDrawer(row);
+              openDrawer(row, drawerTabParam === "talent" ? { tab: "talent" } : null);
               var base = window.location.pathname.split("/").pop();
               if (!base) base = "employees-table.html";
               history.replaceState(null, "", base);
@@ -3054,6 +3778,12 @@
           }
         }
       } catch (eOpen) {}
+
+      refreshAllTableMarkupRows();
+      window.addEventListener("storage", function (e) {
+        if (!e.key || e.key.indexOf(TALENT_SAVE_PREFIX) !== 0) return;
+        refreshAllTableMarkupRows();
+      });
     })();
   </script>
 </body>

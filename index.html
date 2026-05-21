@@ -607,34 +607,33 @@
       gap: 12px;
     }
 
-    /* Segmented — равные колонки, текст без обрезки (Figma 9800:809509) */
+    /* Segmented Control (Figma 9800:809875) */
     .segment {
-      display: grid;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
       gap: 2px;
-      align-items: stretch;
       padding: 2px;
       box-sizing: border-box;
       background: var(--segment-bg);
       border-radius: var(--radius-control);
       max-width: 100%;
       align-self: flex-start;
-      height: auto;
       min-height: 40px;
+      height: 40px;
     }
 
     .segment--2 {
       width: 50%;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .segment--3 {
       width: 75%;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .segment--4 {
       width: 100%;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .segment__btn {
@@ -646,22 +645,22 @@
       font-size: var(--body-s);
       line-height: var(--body-s-lh);
       font-weight: 400;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--text-secondary);
       background: transparent;
       border-radius: var(--radius-inner);
-      width: 100%;
+      flex: 1 0 0;
       min-width: 0;
       min-height: 36px;
-      height: 100%;
-      padding: 8px 10px;
+      height: 36px;
+      padding: 0 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      white-space: normal;
-      overflow: visible;
-      word-break: break-word;
-      transition: background 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
       font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
@@ -673,7 +672,7 @@
       background: var(--surface-100);
       box-shadow: var(--shadow-sm);
       font-weight: 400;
-      color: #000;
+      color: var(--text-primary);
     }
 
     /* Подпись под «Оцените потенциал» (Figma 9706:411859, Caption / Body S) */

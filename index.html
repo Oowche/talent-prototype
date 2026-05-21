@@ -638,6 +638,24 @@
       width: 100%;
     }
 
+    /* Потенциал — Segmented Control (Figma 9800:809509) */
+    .segment--potential {
+      gap: 2px;
+    }
+
+    .segment--potential .segment__btn {
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      min-height: 36px;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .segment--potential .segment__btn[data-value="unknown"] {
+      flex: 1.55 1 0;
+      min-width: 11.5em;
+    }
+
     .segment__btn {
       appearance: none;
       border: none;
@@ -689,7 +707,7 @@
       white-space: pre-wrap;
     }
 
-    /* Анкета «Не могу определить» (Figma 9700:366972) */
+    /* Анкета «Рассчитать по вопросам» (Figma 9700:366972) */
     .potential-quiz {
       margin-top: 16px;
       max-width: 720px;
@@ -1825,12 +1843,12 @@
                       </span>
                     </span>
                   </div>
-                  <div class="segment segment--4" role="group" aria-label="Потенциал">
-                    <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Оценить потенциал</button>
-                <button type="button" class="segment__btn" data-name="potential" data-value="basic">Базовый</button>
-                <button type="button" class="segment__btn" data-name="potential" data-value="growing">Растущий</button>
-                <button type="button" class="segment__btn" data-name="potential" data-value="high">Высокий</button>
-              </div>
+                  <div class="segment segment--4 segment--potential" role="group" aria-label="Потенциал">
+                    <button type="button" class="segment__btn" data-name="potential" data-value="unknown">Рассчитать по вопросам</button>
+                    <button type="button" class="segment__btn" data-name="potential" data-value="basic">Базовый</button>
+                    <button type="button" class="segment__btn" data-name="potential" data-value="growing">Растущий</button>
+                    <button type="button" class="segment__btn" data-name="potential" data-value="high">Высокий</button>
+                  </div>
               <p id="potential-caption" class="potential-caption" hidden aria-live="polite"></p>
               <div id="potential-quiz" class="potential-quiz" hidden>
                 <div class="potential-quiz__q">
@@ -2516,7 +2534,7 @@
       }
 
       var potentialQuizEl = document.getElementById("potential-quiz");
-      /* Анкета с вопросами — только после явного нажатия «Не могу определить» */
+      /* Анкета с вопросами — только после явного нажатия «Рассчитать по вопросам» */
       var potentialUnknownQuizShown = false;
 
       function syncPotentialQuizVisibility() {

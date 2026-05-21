@@ -607,53 +607,34 @@
       gap: 12px;
     }
 
-    /* Segmented */
+    /* Segmented — равные колонки, текст без обрезки (Figma 9800:809509) */
     .segment {
-      display: flex;
-      flex-wrap: nowrap;
+      display: grid;
+      gap: 2px;
       align-items: stretch;
-      gap: 4px;
-      height: 40px;
-      min-height: 40px;
-      max-height: 40px;
       padding: 2px;
       box-sizing: border-box;
       background: var(--segment-bg);
       border-radius: var(--radius-control);
       max-width: 100%;
       align-self: flex-start;
-      overflow-x: auto;
-      overflow-y: hidden;
+      height: auto;
+      min-height: 40px;
     }
 
     .segment--2 {
       width: 50%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .segment--3 {
       width: 75%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .segment--4 {
       width: 100%;
-    }
-
-    /* Потенциал — Segmented Control (Figma 9800:809509) */
-    .segment--potential {
-      gap: 2px;
-    }
-
-    .segment--potential .segment__btn {
-      font-size: var(--body-s);
-      line-height: var(--body-s-lh);
-      min-height: 36px;
-      overflow: visible;
-      text-overflow: clip;
-    }
-
-    .segment--potential .segment__btn[data-value="unknown"] {
-      flex: 1.55 1 0;
-      min-width: 11.5em;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .segment__btn {
@@ -662,24 +643,24 @@
       margin: 0;
       cursor: pointer;
       font-family: inherit;
-      font-size: var(--control-fs);
-      line-height: var(--control-lh);
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
       font-weight: 400;
       color: rgba(0, 0, 0, 0.6);
       background: transparent;
       border-radius: var(--radius-inner);
-      flex: 1 1 0;
+      width: 100%;
       min-width: 0;
-      height: auto;
-      align-self: stretch;
-      padding: 0 var(--space-m);
+      min-height: 36px;
+      height: 100%;
+      padding: 8px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow: visible;
+      word-break: break-word;
       transition: background 0.15s, box-shadow 0.15s;
       font-feature-settings: "lnum" 1, "pnum" 1;
     }
@@ -3383,6 +3364,13 @@
         };
       }
 
+      function clearSegmentSelection(name) {
+        if (!groups[name]) return;
+        groups[name].forEach(function (b) {
+          b.classList.remove("segment__btn--active");
+        });
+      }
+
       function activateSegment(name, value) {
         if (value == null || !groups[name]) return;
         groups[name].forEach(function (b) {
@@ -3560,6 +3548,7 @@
 
       function bootstrapForm() {
         if (successorRowsEl) successorRowsEl.innerHTML = "";
+        clearSegmentSelection("potential");
         if (groups.openness) {
           groups.openness.forEach(function (b) {
             b.classList.toggle("segment__btn--active", b.getAttribute("data-value") === "none");
@@ -3587,5 +3576,7 @@
       tryHydrateSavedMarkup();
     })();
   </script>
+  <link rel="stylesheet" href="assets/fab-reset.css" />
+  <script src="assets/fab-reset.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+/* Floating — сброс разметки (Figma 9935:148792), все экраны */
+.fab-reset {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 120;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.88);
+  font-family: "YS Text", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-feature-settings: "lnum" 1, "pnum" 1;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fab-reset:hover {
+  background: #fafafa;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.14), 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+.fab-reset:active {
+  background: #f0f0f0;
+}
+
+@media (max-width: 640px) {
+  .fab-reset {
+    left: 16px;
+    bottom: 16px;
+  }
+}

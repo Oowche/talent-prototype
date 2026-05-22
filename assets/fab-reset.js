@@ -28,8 +28,8 @@
     btn.type = "button";
     btn.id = "fab-reset-markup";
     btn.className = "fab-reset";
-    btn.setAttribute("aria-label", "Сбросить разметки");
-    btn.textContent = "Сбросить разметки";
+    btn.setAttribute("aria-label", "Сбросить изменения");
+    btn.textContent = "Сбросить изменения";
     btn.addEventListener("click", function () {
       clearAllSavedMarkups();
       window.location.reload();

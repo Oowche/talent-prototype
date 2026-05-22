@@ -3099,6 +3099,13 @@
         return "Core";
       }
 
+      function buildMarkupTitle(emp, pot) {
+        var fg = emp.firstGenitive || "";
+        var band = buildCohortBand(pot);
+        if (fg && band) return "Когорта " + fg + " — " + band;
+        return (emp.first || "") + (band ? " — " + band : "");
+      }
+
       function buildPotentialLeadLabel(pot) {
         if (pot === "high") return "Высокий потенциал";
         if (pot === "growing") return "Растущий потенциал";
@@ -3311,6 +3318,8 @@
         var slug = window.__talentEmpSlug || "darina";
         var pot = getActiveSegmentValue("potential");
         var keyrole = getActiveSegmentValue("keyrole");
+        var successorChoice =
+          keyrole === "yes" ? getActiveSuccessorValue() : "no";
         var risk = getActiveSegmentValue("risk");
         var taFuture = document.getElementById("talent-field-future-role");
         var taDev = document.getElementById("talent-field-career-dev");
@@ -3332,7 +3341,7 @@
           cohortTitle: "Предварительная когорта " + fg + " — " + buildCohortBand(pot),
           cohortSub: "Определим точную когорту, когда будет согласована оценка перформанса",
           first: emp.first || "",
-          markupTitle: (emp.first || fg) + " — " + buildCohortBand(pot),
+          markupTitle: buildMarkupTitle(emp, pot),
           markupPeriod: formatMarkupPeriod(Date.now()),
           potential: pot,
           keyrole: keyrole,
@@ -3350,12 +3359,11 @@
           futureRole: futureText || "",
           careerDev: devText,
           opennessLabel: opennessLabel,
-          successors:
-            getActiveSuccessorValue() === "yes" ? collectSuccessorsSnap() : [],
+          successors: successorChoice === "yes" ? collectSuccessorsSnap() : [],
           strengths: collectSkillTags("strengths"),
           growth: collectSkillTags("growth"),
           openness: getActiveSegmentValue("openness"),
-          successorChoice: getActiveSuccessorValue(),
+          successorChoice: successorChoice,
           successorNoPlan: getSuccessorNoPlanValue(),
           successorPlanLine: getSuccessorPlanLine(),
           riskChips: collectRiskChipSelection(),

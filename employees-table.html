@@ -2751,10 +2751,10 @@
             <button type="button" role="tab" class="emp-drawer__tab emp-drawer__tab--active" data-drawer-tab="review" aria-selected="true">
               Ревью
             </button>
-            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="talent" aria-selected="false">Разметка талантов</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="goals" aria-selected="false">
               Цели и проекты <span class="emp-drawer__tab-count">· 5</span>
             </button>
+            <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="talent" aria-selected="false">Разметка талантов</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="history" aria-selected="false">История</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="feedback" aria-selected="false">Отзывы</button>
             <button type="button" role="tab" class="emp-drawer__tab" data-drawer-tab="signals" aria-selected="false">Сигналы</button>
@@ -2979,7 +2979,7 @@
                       <p id="emp-saved-risk-reasons-block" class="emp-drawer__anketa-p emp-drawer__anketa-p--reasons" hidden></p>
                       <p id="emp-saved-successor-plan" class="emp-drawer__anketa-p" hidden></p>
                       <div id="emp-saved-successors-wrap" class="emp-drawer__succ-wrap" hidden>
-                        <p class="emp-drawer__succ-label">Преемники:</p>
+                        <p id="emp-saved-successors-label" class="emp-drawer__succ-label" hidden>Преемники:</p>
                         <div id="emp-saved-successors" class="emp-succ-tags"></div>
                       </div>
                     </div>
@@ -3148,7 +3148,14 @@
 
       function syncReviewMarkupCta() {
         var cta = document.getElementById("emp-review-markup-cta");
-        if (cta) cta.hidden = drawerHasMarkup;
+        if (!cta) return;
+        var label = cta.querySelector("span");
+        if (label) {
+          label.textContent = drawerHasMarkup
+            ? "Изменить разметку талантов"
+            : "Заполнить разметку талантов";
+        }
+        cta.hidden = false;
       }
 
       function syncDrawerPanels() {
@@ -3383,14 +3390,12 @@
         }
 
         function markupTitleFromData(d) {
-          if (d.markupTitle) return d.markupTitle;
           var band = "";
-          var m = (d.cohortTitle || "").match(/—\s*(\S+)\s*$/);
+          var m = (d.markupTitle || d.cohortTitle || "").match(/—\s*(\S+)\s*$/);
           if (m) band = m[1];
-          var name =
-            d.first ||
-            (d.nominative ? String(d.nominative).trim().split(/\s+/)[0] : "");
-          if (name && band) return name + " — " + band;
+          var fg = d.firstGenitive || "";
+          if (fg && band) return "Когорта " + fg + " — " + band;
+          if (d.markupTitle) return d.markupTitle;
           return d.cohortTitle || "";
         }
 
@@ -3501,14 +3506,23 @@
           }
         }
 
+        function selectedSuccessorsForDrawer(d) {
+          if (d.keyrole !== "yes") return [];
+          if (d.successorChoice !== "yes") return [];
+          return (d.successors || []).filter(function (s) {
+            return s && String(s.code || "").trim() && String(s.name || "").trim();
+          });
+        }
+
         var succWrap = document.getElementById("emp-saved-successors-wrap");
         var succHost = document.getElementById("emp-saved-successors");
-        var hasSucc = !!(data.successors && data.successors.length);
-        var showSuccessors = data.successorChoice === "yes" && hasSucc;
+        var succLabel = document.getElementById("emp-saved-successors-label");
+        var successorsToShow = selectedSuccessorsForDrawer(data);
+        var showSuccessors = successorsToShow.length > 0;
         if (succHost) {
           succHost.innerHTML = "";
           if (showSuccessors) {
-            data.successors.forEach(function (s) {
+            successorsToShow.forEach(function (s) {
               var tag = document.createElement("div");
               tag.className = "emp-succ-tag";
               if (s.avatar) {
@@ -3537,6 +3551,7 @@
           }
         }
         if (succWrap) succWrap.hidden = !showSuccessors;
+        if (succLabel) succLabel.hidden = !showSuccessors;
 
         showRow(
           "emp-ank-row-risk",

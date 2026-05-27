@@ -3102,7 +3102,8 @@
       function buildMarkupTitle(emp, pot) {
         var fg = emp.firstGenitive || "";
         var band = buildCohortBand(pot);
-        if (fg && band) return "Когорта " + fg + " — " + band;
+        if (fg && band) return "Предварительная когорта " + fg + " — " + band;
+        if (fg) return "Предварительная когорта " + fg;
         return (emp.first || "") + (band ? " — " + band : "");
       }
 
@@ -3332,12 +3333,30 @@
         var detailParts = [cap].filter(Boolean);
         var opennessLabel = getActiveSegmentLabel("openness");
         var fg = emp.firstGenitive || "";
+        var predecessorFor =
+          slug === "darina"
+            ? [
+                {
+                  name: "Сергея Дубова",
+                  avatar: "assets/avatars/Dmitry.png",
+                  ready: "с готовностью до года в сентябре 2025",
+                },
+                {
+                  name: "Валерия Лунина",
+                  avatar: "assets/avatars/Ekaterina.png",
+                  ready: "с готовностью 1–2 года в октябре 2025",
+                },
+              ]
+            : [];
+
         return {
           v: 1,
           slug: slug,
           savedAt: Date.now(),
           firstGenitive: fg,
           nominative: emp.nominative || "",
+          gender: emp.gender || "",
+          predecessorFor: predecessorFor,
           cohortTitle: "Предварительная когорта " + fg + " — " + buildCohortBand(pot),
           cohortSub: "Определим точную когорту, когда будет согласована оценка перформанса",
           first: emp.first || "",

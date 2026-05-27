@@ -1716,19 +1716,50 @@
     .emp-drawer__predecessor-wrap {
       display: flex;
       flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .emp-drawer__predecessor-label {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
+    }
+
+    .emp-drawer__predecessor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .emp-drawer__predecessor-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
       gap: 4px;
       width: 100%;
     }
 
-    .emp-drawer__predecessor-wrap .emp-succ-tag {
+    .emp-drawer__predecessor-row .emp-succ-tag {
       align-self: flex-start;
       width: auto;
       max-width: none;
       flex: 0 0 auto;
     }
 
-    .emp-drawer__predecessor-wrap .emp-succ-tag__name {
+    .emp-drawer__predecessor-row .emp-succ-tag__name {
       max-width: none;
+    }
+
+    .emp-drawer__predecessor-ready {
+      margin: 0;
+      font-size: var(--body-s);
+      line-height: var(--body-s-lh);
+      color: rgba(0, 0, 0, 0.88);
+      font-feature-settings: "lnum" 1, "pnum" 1;
     }
 
     .emp-drawer__succ-wrap {
@@ -2954,18 +2985,8 @@
                     <div class="emp-drawer__anketa-value">
                       <p id="emp-saved-potential-lead" class="emp-drawer__anketa-lead" hidden></p>
                       <div id="emp-saved-predecessor-wrap" class="emp-drawer__predecessor-wrap" hidden>
-                        <p id="emp-saved-predecessor-note" class="emp-drawer__anketa-p"></p>
-                        <div class="emp-succ-tag">
-                          <img
-                            class="emp-succ-tag__avatar"
-                            src="assets/avatars/Dmitry.png"
-                            alt=""
-                            width="24"
-                            height="24"
-                            decoding="async"
-                          />
-                          <span class="emp-succ-tag__name">Сергея Дубова</span>
-                        </div>
+                        <p id="emp-saved-predecessor-label" class="emp-drawer__predecessor-label"></p>
+                        <div id="emp-saved-predecessor-list" class="emp-drawer__predecessor-list"></div>
                       </div>
                       <p id="emp-saved-potential-detail" class="emp-drawer__anketa-p" hidden></p>
                     </div>
@@ -3389,14 +3410,104 @@
           return line;
         }
 
-        function markupTitleFromData(d) {
-          var band = "";
-          var m = (d.markupTitle || d.cohortTitle || "").match(/—\s*(\S+)\s*$/);
-          if (m) band = m[1];
-          var fg = d.firstGenitive || "";
-          if (fg && band) return "Когорта " + fg + " — " + band;
-          if (d.markupTitle) return d.markupTitle;
-          return d.cohortTitle || "";
+        var EMP_FIRST_GENITIVE = {
+          darina: "Дарины",
+          ekaterina: "Екатерины",
+          alexey: "Алексея",
+        };
+
+        var EMP_GENDER = {
+          darina: "f",
+          ekaterina: "f",
+          alexey: "m",
+        };
+
+        var DARINA_PREDECESSOR_FOR = [
+          {
+            name: "Сергея Дубова",
+            avatar: "assets/avatars/Dmitry.png",
+            ready: "с готовностью до года в сентябре 2025",
+          },
+          {
+            name: "Валерия Лунина",
+            avatar: "assets/avatars/Ekaterina.png",
+            ready: "с готовностью 1–2 года в октябре 2025",
+          },
+        ];
+
+        function renderPredecessorFor(slug, data) {
+          var predWrap = document.getElementById("emp-saved-predecessor-wrap");
+          var predLabel = document.getElementById("emp-saved-predecessor-label");
+          var predList = document.getElementById("emp-saved-predecessor-list");
+          if (!predWrap || !predList) return false;
+
+          var items =
+            data && data.predecessorFor && data.predecessorFor.length
+              ? data.predecessorFor
+              : slug === "darina"
+                ? DARINA_PREDECESSOR_FOR
+                : [];
+
+          if (!items.length) {
+            predWrap.hidden = true;
+            predList.innerHTML = "";
+            return false;
+          }
+
+          var first = (data && data.first) || "Дарина";
+          var gender = (data && data.gender) || EMP_GENDER[slug] || "f";
+          if (predLabel) {
+            predLabel.textContent =
+              gender === "m" ? first + " выбран преемником:" : first + " выбрана преемником:";
+          }
+
+          predList.innerHTML = "";
+          items.forEach(function (item) {
+            var row = document.createElement("div");
+            row.className = "emp-drawer__predecessor-row";
+
+            var tag = document.createElement("div");
+            tag.className = "emp-succ-tag";
+            if (item.avatar) {
+              var im = document.createElement("img");
+              im.className = "emp-succ-tag__avatar";
+              im.src = item.avatar;
+              im.alt = "";
+              im.width = 24;
+              im.height = 24;
+              im.decoding = "async";
+              tag.appendChild(im);
+            }
+            var nm = document.createElement("span");
+            nm.className = "emp-succ-tag__name";
+            nm.textContent = item.name || "";
+            tag.appendChild(nm);
+
+            var ready = document.createElement("p");
+            ready.className = "emp-drawer__predecessor-ready";
+            ready.textContent = item.ready || "";
+
+            row.appendChild(tag);
+            row.appendChild(ready);
+            predList.appendChild(row);
+          });
+
+          predWrap.hidden = false;
+          return true;
+        }
+
+        function markupTitleFromData(d, slug) {
+          var fg = d.firstGenitive || EMP_FIRST_GENITIVE[slug] || "";
+          var band = bandFromMarkupData(d);
+          if (fg && band) return "Предварительная когорта " + fg + " — " + band;
+          if (fg) return "Предварительная когорта " + fg;
+          var ct = (d.cohortTitle || d.markupTitle || "").trim();
+          return ct;
+        }
+
+        function markupSubtitleFromData(d) {
+          if (d.cohortSub) return d.cohortSub;
+          return "Определим точную когорту, когда будет согласована оценка перформанса";
         }
 
         function formatRiskImpactDrawer(d) {
@@ -3410,29 +3521,8 @@
           return "Если " + who + " уйдёт, " + body;
         }
 
-        function markupPeriodFromData(d) {
-          if (d.markupPeriod) return d.markupPeriod;
-          if (!d.savedAt) return "";
-          var months = [
-            "Январь",
-            "Февраль",
-            "Март",
-            "Апрель",
-            "Май",
-            "Июнь",
-            "Июль",
-            "Август",
-            "Сентябрь",
-            "Октябрь",
-            "Ноябрь",
-            "Декабрь",
-          ];
-          var dt = new Date(d.savedAt);
-          return months[dt.getMonth()] + " " + dt.getFullYear();
-        }
-
-        setText("emp-saved-markup-title", markupTitleFromData(data));
-        setText("emp-saved-markup-period", markupPeriodFromData(data));
+        setText("emp-saved-markup-title", markupTitleFromData(data, slug));
+        setText("emp-saved-markup-period", markupSubtitleFromData(data));
         var edit = document.getElementById("emp-drawer-edit");
         if (edit) edit.setAttribute("href", "index.html?e=" + encodeURIComponent(slug));
 
@@ -3448,14 +3538,7 @@
           }
         }
         setOptionalBlock("emp-saved-potential-detail", potentialDetailForDrawer(data));
-        var predWrap = document.getElementById("emp-saved-predecessor-wrap");
-        var predNote = document.getElementById("emp-saved-predecessor-note");
-        var showPred = slug === "darina";
-        if (predWrap) predWrap.hidden = !showPred;
-        if (predNote && showPred) {
-          predNote.textContent =
-            "В сентябре 2024 в разметке было отражено, что через 1-2 года Дарина сможет стать преемником";
-        }
+        var showPred = renderPredecessorFor(slug, data);
         showRow(
           "emp-ank-row-potential",
           !!potLead ||
